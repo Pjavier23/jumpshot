@@ -476,7 +476,7 @@
 
   <!-- Top-right button cluster -->
   <div class="cam-btn-group" id="basketballBtns">
-    <button class="cam-btn" id="btnLockOn" onclick="toggleLockOn()">🎯 Lock</button>
+    <button class="cam-btn active" id="btnLockOn" onclick="toggleLockOn()">🎯 Lock ON</button>
     <button class="cam-btn" id="btnVoice" onclick="toggleVoice()">🔊 Voice</button>
     <button class="cam-btn" id="btnBallTrack" onclick="toggleBallTrack()">🏀 Ball Track</button>
     <button class="cam-btn" id="btnHoopPin" onclick="startHoopPin()">📍 Set Hoop</button>
@@ -774,7 +774,7 @@ let lastFormScores = { elbow: 0, height: 0, follow: 0, overall: 0 };
 let postPeakWristPositions = [];
 
 // Player tracking
-let lockOnEnabled = false;
+let lockOnEnabled = true; // auto-enabled
 let playerDetected = false;
 let playerCenterX = 0;
 let playerCenterY = 0;
@@ -1760,7 +1760,7 @@ function drawPose(pose) {
 // ════════════════════════════════════════════════════════════════════
 function analyzePose(pose, now) {
   const kps = pose.keypoints;
-  const MIN_CONF = 0.3;
+  const MIN_CONF = 0.2; // lowered for exercise detection
   const wristIdx = shootingHand === 'right' ? KP.rightWrist : KP.leftWrist;
   const elbowIdx = shootingHand === 'right' ? KP.rightElbow : KP.leftElbow;
   const shoulderIdx = shootingHand === 'right' ? KP.rightShoulder : KP.leftShoulder;
@@ -1806,7 +1806,7 @@ function analyzePose(pose, now) {
 }
 
 function scoreShot(kps, peakWristY, peakWristTime, motionStart, postPeak, VH) {
-  const MIN_CONF = 0.3;
+  const MIN_CONF = 0.2; // lowered for exercise detection
   const wristIdx = shootingHand === 'right' ? KP.rightWrist : KP.leftWrist;
   const elbowIdx = shootingHand === 'right' ? KP.rightElbow : KP.leftElbow;
   const shoulderIdx = shootingHand === 'right' ? KP.rightShoulder : KP.leftShoulder;
@@ -1944,7 +1944,7 @@ function updateWorkoutDisplay() {
 
 function analyzeWorkout(pose, now) {
   const kps = pose.keypoints;
-  const MIN_CONF = 0.3;
+  const MIN_CONF = 0.2; // lowered for exercise detection
   const get = idx => {
     const k = kps[idx];
     return (k && k.score >= MIN_CONF) ? toCanvasCoords(k) : null;
@@ -2007,16 +2007,16 @@ function analyzeWorkoutJacks(pose, now, get) {
   const tipEl = document.getElementById('workoutTip');
   if (!ls || !rs || !lw || !rw) return;
   const shoulderWidth = Math.abs(rs.x - ls.x);
-  const armsOut = Math.abs(rw.x - lw.x) > shoulderWidth * 1.4 ||
+  const armsOut = Math.abs(rw.x - lw.x) > shoulderWidth * 1.1 ||
     (lw.y < ls.y && rw.y < rs.y); // arms raised
   jackArmsOut = armsOut;
   let legsOut = false;
   if (la && ra && lh && rh) {
     const hipWidth = Math.abs(rh.x - lh.x);
-    legsOut = Math.abs(ra.x - la.x) > hipWidth * 1.4;
+    legsOut = Math.abs(ra.x - la.x) > hipWidth * 1.1;
     jackLegsOut = legsOut;
   }
-  const fullOut = jackArmsOut && (jackLegsOut || !la);
+  const fullOut = jackArmsOut; // arms only required
   if (jackState === 'neutral' && fullOut) { jackState = 'out'; }
   else if (jackState === 'out' && !jackArmsOut) {
     jackState = 'neutral';
