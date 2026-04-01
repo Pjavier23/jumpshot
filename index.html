@@ -1947,12 +1947,15 @@ function analyzeWorkout(pose, now) {
   const MIN_CONF = 0.2; // lowered for exercise detection
   const get = idx => {
     const k = kps[idx];
-    return (k && k.score >= MIN_CONF) ? toCanvasCoords(k) : null;
+    if (!k || k.score < MIN_CONF) return null;
+    // Use raw pixel coords (not mirrored canvas coords) for exercise detection
+    const vw = VIDEO.videoWidth || 640, vh = VIDEO.videoHeight || 480;
+    return { x: k.x * (CANVAS.width / vw), y: k.y * (CANVAS.height / vh), score: k.score };
   };
   // Calibration
   if (!calibrated) {
     calibrationFrames++;
-    if (calibrationFrames >= 20) {
+    if (calibrationFrames >= 5) {
       calibrated = true;
       document.getElementById('calibratingMsg').style.display = 'none';
       // Set baseline from current pose
@@ -2007,7 +2010,7 @@ function analyzeWorkoutJacks(pose, now, get) {
   const tipEl = document.getElementById('workoutTip');
   if (!ls || !rs || !lw || !rw) return;
   const shoulderWidth = Math.abs(rs.x - ls.x);
-  const armsOut = Math.abs(rw.x - lw.x) > shoulderWidth * 1.1 ||
+  const armsOut = Math.abs(rw.x - lw.x) > shoulderWidth * 1.05 ||
     (lw.y < ls.y && rw.y < rs.y); // arms raised
   jackArmsOut = armsOut;
   let legsOut = false;
@@ -2025,7 +2028,8 @@ function analyzeWorkoutJacks(pose, now, get) {
     if (tipEl) tipEl.textContent = '⭐ Jack #' + exerciseCounters.jacks + '!';
     if (voiceEnabled && exerciseCounters.jacks % 10 === 0) speak(exerciseCounters.jacks + ' jacks!', 1.2, 1.1);
   }
-  if (tipEl && jackState === 'neutral') tipEl.textContent = '↕️ Arms up + legs out!';
+  const armRatio = (ls && rs && lw && rw) ? (Math.abs(rw.x - lw.x) / Math.abs(rs.x - ls.x)).toFixed(2) : '?';
+  if (tipEl && jackState === 'neutral') tipEl.textContent = '↕️ Spread arms wide! (ratio: ' + armRatio + ', need >1.05)';
   if (tipEl && jackState === 'out') tipEl.textContent = '⬇️ Back to neutral!';
 }
 
