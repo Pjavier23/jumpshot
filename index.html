@@ -18,7 +18,7 @@
       --orange: #f97316;
       --orange-dim: #c2570e;
       --gold: #fbbf24;
-      --surface: rgba(15,15,15,0.85);
+      --surface: rgba(15,15,15,0.88);
       --surface-solid: #111;
       --text: #f1f1f1;
       --muted: #888;
@@ -43,52 +43,81 @@
 
     /* ─── LANDING ─── */
     #landing {
-      background: radial-gradient(ellipse at 50% 30%, #1a0a00 0%, var(--bg) 65%);
-      padding: 32px 24px;
+      background: radial-gradient(ellipse at 50% 30%, #1a0800 0%, var(--bg) 65%);
+      padding: 24px 24px;
       text-align: center;
       gap: 0;
       overflow-y: auto;
-      justify-content: center;
+      justify-content: flex-start;
+      padding-top: calc(env(safe-area-inset-top,16px) + 24px);
     }
-    .ball-icon { font-size: 72px; margin-bottom: 12px; animation: bounce 2s ease-in-out infinite; }
+    .ball-icon { font-size: 64px; margin-bottom: 8px; animation: bounce 2s ease-in-out infinite; }
     @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-    .app-name { font-size: 42px; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, var(--orange), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .app-tagline { font-size: 15px; color: var(--muted); margin-top: 8px; line-height: 1.5; max-width: 300px; }
-    .features { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 24px 0 12px; width: 100%; max-width: 360px; }
-    .feat { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); border-radius: 12px; padding: 14px 10px; text-align: center; }
-    .feat-icon { font-size: 24px; margin-bottom: 4px; }
-    .feat-label { font-size: 12px; color: var(--muted); font-weight: 500; }
-    .btn-primary { background: var(--orange); color: #fff; border: none; border-radius: var(--radius); padding: 18px 36px; font-size: 17px; font-weight: 700; cursor: pointer; width: 100%; max-width: 360px; letter-spacing: 0.3px; transition: transform 0.15s, opacity 0.15s; }
-    .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
-    .hand-toggle { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 14px; color: var(--muted); }
+    .app-name { font-size: 40px; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, var(--orange), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .app-tagline { font-size: 14px; color: var(--muted); margin-top: 6px; line-height: 1.5; max-width: 300px; margin-left: auto; margin-right: auto; }
+
+    /* Player profile row */
+    .player-bar { display: flex; align-items: center; gap: 10px; margin: 14px auto 0; width: 100%; max-width: 360px; background: rgba(249,115,22,0.07); border: 1px solid rgba(249,115,22,0.18); border-radius: 12px; padding: 10px 14px; cursor: pointer; transition: background 0.2s; }
+    .player-bar:active { background: rgba(249,115,22,0.14); }
+    .player-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg,var(--orange),var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #fff; flex-shrink: 0; }
+    .player-bar-info { flex: 1; text-align: left; }
+    .player-bar-name { font-size: 15px; font-weight: 700; color: var(--text); }
+    .player-bar-pos { font-size: 12px; color: var(--muted); }
+    .player-bar-chevron { color: var(--muted); font-size: 18px; }
+
+    .features { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0 8px; width: 100%; max-width: 360px; }
+    .feat { background: rgba(249,115,22,0.07); border: 1px solid rgba(249,115,22,0.18); border-radius: 12px; padding: 12px 8px; text-align: center; }
+    .feat-icon { font-size: 22px; margin-bottom: 3px; }
+    .feat-label { font-size: 11px; color: var(--muted); font-weight: 500; }
+
+    .hand-toggle { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 14px; color: var(--muted); }
     .hand-toggle label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
     .hand-toggle input[type=radio] { accent-color: var(--orange); width: 16px; height: 16px; }
-    .btn-ghost { background: transparent; border: 1px solid rgba(249,115,22,0.3); color: var(--orange); border-radius: var(--radius); padding: 13px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; max-width: 360px; margin-top: 10px; transition: background 0.2s; }
+
+    .btn-primary { background: linear-gradient(135deg,#f97316,#ea6c0a); color: #fff; border: none; border-radius: var(--radius); padding: 16px 36px; font-size: 17px; font-weight: 700; cursor: pointer; width: 100%; max-width: 360px; letter-spacing: 0.3px; transition: transform 0.15s, opacity 0.15s; box-shadow: 0 4px 20px rgba(249,115,22,0.35); margin-top: 10px; }
+    .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
+    .btn-workout { background: linear-gradient(135deg,#1d4ed8,#2563eb); color: #fff; border: none; border-radius: var(--radius); padding: 14px 36px; font-size: 16px; font-weight: 700; cursor: pointer; width: 100%; max-width: 360px; letter-spacing: 0.3px; transition: transform 0.15s, opacity 0.15s; box-shadow: 0 4px 16px rgba(37,99,235,0.3); margin-top: 8px; }
+    .btn-workout:active { transform: scale(0.97); opacity: 0.9; }
+    .btn-ghost { background: transparent; border: 1px solid rgba(249,115,22,0.3); color: var(--orange); border-radius: var(--radius); padding: 13px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; max-width: 360px; margin-top: 8px; transition: background 0.2s; }
     .btn-ghost:active { background: rgba(249,115,22,0.1); }
 
+    /* ─── PROFILE MODAL ─── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; display: flex; align-items: flex-end; justify-content: center; transition: opacity 0.3s; }
+    .modal-overlay.hidden { opacity: 0; pointer-events: none; }
+    .modal-sheet { background: #141414; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; padding: 0 20px calc(env(safe-area-inset-bottom,0px) + 32px); max-height: 80vh; overflow-y: auto; }
+    .modal-handle { width: 40px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 12px auto 20px; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .modal-header h2 { font-size: 20px; font-weight: 800; }
+    .modal-close { background: rgba(255,255,255,0.1); border: none; color: var(--text); border-radius: 50%; width: 32px; height: 32px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .profile-card { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: background 0.2s; }
+    .profile-card:active { background: rgba(249,115,22,0.16); }
+    .profile-card.active-profile { border-color: var(--orange); background: rgba(249,115,22,0.14); }
+    .profile-card-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg,var(--orange),var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: #fff; flex-shrink: 0; }
+    .profile-card-info { flex: 1; }
+    .profile-card-name { font-size: 16px; font-weight: 700; }
+    .profile-card-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .profile-card-check { color: var(--orange); font-size: 20px; }
+    .profile-form { background: rgba(255,255,255,0.04); border-radius: 14px; padding: 16px; margin-top: 12px; }
+    .profile-form input { width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; font-size: 15px; color: var(--text); margin-bottom: 10px; outline: none; }
+    .profile-form input::placeholder { color: var(--muted); }
+    .profile-form input:focus { border-color: rgba(249,115,22,0.5); }
+    .profile-form-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .profile-pos-btn { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: var(--muted); border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .profile-pos-btn.sel { border-color: var(--orange); color: var(--orange); background: rgba(249,115,22,0.1); }
+    .profile-hand-label { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .profile-hand-label input { accent-color: var(--orange); }
+    .no-profiles { text-align: center; color: var(--muted); padding: 24px 0; font-size: 15px; }
+    .btn-add-profile { background: var(--orange); color: #fff; border: none; border-radius: 12px; padding: 12px 20px; font-size: 15px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 4px; transition: opacity 0.2s; }
+    .btn-add-profile:active { opacity: 0.85; }
+    .btn-del-profile { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: var(--red); border-radius: 8px; padding: 6px 12px; font-size: 12px; cursor: pointer; margin-left: auto; }
+
     /* ─── ZONE SELECT ─── */
-    #zone-select {
-      background: var(--bg);
-      overflow-y: auto;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-    .zone-select-inner {
-      width: 100%; max-width: 440px; margin: 0 auto;
-      padding: calc(env(safe-area-inset-top, 16px) + 16px) 20px calc(env(safe-area-inset-bottom, 0px) + 20px);
-      display: flex; flex-direction: column; gap: 16px;
-    }
+    #zone-select { background: var(--bg); overflow-y: auto; justify-content: flex-start; align-items: stretch; }
+    .zone-select-inner { width: 100%; max-width: 440px; margin: 0 auto; padding: calc(env(safe-area-inset-top, 16px) + 16px) 20px calc(env(safe-area-inset-bottom, 0px) + 20px); display: flex; flex-direction: column; gap: 14px; }
     .zone-select-inner h2 { font-size: 22px; font-weight: 800; color: var(--text); }
     .zone-select-inner p { font-size: 14px; color: var(--muted); }
     .zone-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-    .zone-btn {
-      background: var(--surface-solid);
-      border: 2px solid rgba(255,255,255,0.08);
-      border-radius: 12px; padding: 12px 8px;
-      font-size: 12px; font-weight: 600; color: var(--muted);
-      cursor: pointer; text-align: center; transition: all 0.2s;
-      line-height: 1.3;
-    }
+    .zone-btn { background: var(--surface-solid); border: 2px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 8px; font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer; text-align: center; transition: all 0.2s; line-height: 1.3; }
     .zone-btn .zone-icon { font-size: 20px; display: block; margin-bottom: 4px; }
     .zone-btn.selected { border-color: var(--orange); color: var(--orange); background: rgba(249,115,22,0.12); }
     .zone-btn:active { transform: scale(0.96); }
@@ -99,82 +128,51 @@
     #poseCanvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
     /* Tracking toolbar */
-    .tracking-toolbar {
-      position: absolute;
-      top: calc(env(safe-area-inset-top, 16px) + 56px);
-      left: 50%; transform: translateX(-50%);
-      display: flex; gap: 8px; z-index: 15;
-    }
-    .track-pill {
-      background: var(--surface); backdrop-filter: blur(12px);
-      border-radius: 50px; padding: 6px 12px;
-      font-size: 12px; font-weight: 600;
-      border: 1px solid rgba(255,255,255,0.1);
-      white-space: nowrap; transition: all 0.3s;
-    }
+    .tracking-toolbar { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 52px); left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 15; }
+    .track-pill { background: var(--surface); backdrop-filter: blur(12px); border-radius: 50px; padding: 5px 12px; font-size: 11px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); white-space: nowrap; transition: all 0.3s; }
     .track-pill.locked { border-color: rgba(34,197,94,0.5); color: var(--green); }
     .track-pill.searching { color: var(--muted); }
     .track-pill.closer { border-color: rgba(249,115,22,0.5); color: var(--orange); }
 
     /* Directional arrows */
-    .dir-arrow {
-      position: absolute; z-index: 15;
-      background: rgba(249,115,22,0.85); color: #fff;
-      border-radius: 10px; padding: 8px 14px;
-      font-size: 14px; font-weight: 700;
-      pointer-events: none; opacity: 0; transition: opacity 0.3s;
-      backdrop-filter: blur(8px);
-    }
+    .dir-arrow { position: absolute; z-index: 15; background: rgba(249,115,22,0.85); color: #fff; border-radius: 10px; padding: 8px 14px; font-size: 14px; font-weight: 700; pointer-events: none; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(8px); }
     .dir-arrow.show { opacity: 1; }
     #arrowLeft  { left: 12px;  top: 50%; transform: translateY(-50%); }
     #arrowRight { right: 12px; top: 50%; transform: translateY(-50%); }
     #arrowUp    { top: calc(env(safe-area-inset-top, 16px) + 120px); left: 50%; transform: translateX(-50%); }
-    #arrowDown  { bottom: calc(env(safe-area-inset-bottom, 0px) + 140px); left: 50%; transform: translateX(-50%); }
+    #arrowDown  { bottom: calc(env(safe-area-inset-bottom, 0px) + 150px); left: 50%; transform: translateX(-50%); }
 
     /* REC indicator */
-    .rec-indicator {
-      position: absolute;
-      top: calc(env(safe-area-inset-top, 16px) + 4px);
-      left: 16px; z-index: 20;
-      display: flex; align-items: center; gap: 5px;
-      background: rgba(0,0,0,0.5); border-radius: 20px; padding: 4px 10px;
-    }
+    .rec-indicator { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 4px); left: 16px; z-index: 20; display: flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.5); border-radius: 20px; padding: 4px 10px; }
     .rec-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); animation: blink 1.2s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
     .rec-text { font-size: 11px; font-weight: 700; color: var(--red); letter-spacing: 1px; }
     .rec-indicator.hidden { display: none; }
 
-    /* Lock-On button */
-    .btn-lockon {
-      position: absolute;
-      top: calc(env(safe-area-inset-top, 16px) + 4px);
-      right: 80px; z-index: 20;
-      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px; padding: 4px 12px;
-      font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-lockon.active { border-color: rgba(34,197,94,0.6); color: var(--green); background: rgba(34,197,94,0.1); }
+    /* Camera top-right buttons */
+    .cam-btn-group { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 4px); right: 8px; z-index: 20; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+    .cam-btn { background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; padding: 5px 12px; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.2s; white-space: nowrap; backdrop-filter: blur(8px); }
+    .cam-btn.active { border-color: rgba(249,115,22,0.6); color: var(--orange); background: rgba(249,115,22,0.12); }
+    .cam-btn.active-green { border-color: rgba(34,197,94,0.6); color: var(--green); background: rgba(34,197,94,0.1); }
+    .cam-btn.active-blue { border-color: rgba(99,102,241,0.7); color: #818cf8; background: rgba(99,102,241,0.12); }
 
-    /* Voice coach button */
-    .btn-voice {
-      position: absolute;
-      top: calc(env(safe-area-inset-top, 16px) + 36px);
-      right: 16px; z-index: 20;
-      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px; padding: 4px 12px;
-      font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-voice.active { border-color: rgba(249,115,22,0.6); color: var(--orange); background: rgba(249,115,22,0.1); }
+    /* Hoop indicator */
+    .hoop-set-indicator { position: absolute; top: calc(env(safe-area-inset-top,16px) + 4px); left: 80px; z-index: 20; background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.5); color: var(--green); border-radius: 20px; padding: 5px 12px; font-size: 11px; font-weight: 700; display: none; backdrop-filter: blur(8px); }
 
     /* Top HUD */
-    .hud-top { position: absolute; top: env(safe-area-inset-top, 16px); left: 0; right: 0; display: flex; justify-content: space-between; align-items: flex-start; padding: 16px; z-index: 10; }
-    .shot-counter { background: var(--surface); backdrop-filter: blur(12px); border-radius: 50px; padding: 8px 16px; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(249,115,22,0.3); }
-    .shot-counter-num { font-size: 22px; font-weight: 800; color: var(--orange); line-height: 1; }
-    .shot-counter-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .hud-top { position: absolute; top: env(safe-area-inset-top, 16px); left: 0; right: 0; display: flex; justify-content: space-between; align-items: flex-start; padding: 16px; z-index: 10; pointer-events: none; }
+    .hud-top > * { pointer-events: auto; }
+    /* NBA Scoreboard shot counter */
+    .shot-counter { background: #0f0800; border: 2px solid var(--orange); backdrop-filter: blur(12px); border-radius: 10px; padding: 7px 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 0 12px rgba(249,115,22,0.3), inset 0 0 8px rgba(249,115,22,0.08); }
+    .shot-counter-num { font-size: 24px; font-weight: 900; color: var(--orange); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: 1px; }
+    .shot-counter-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
+    .shot-pct-label { font-size: 10px; color: var(--gold); font-weight: 700; margin-top: 2px; }
     .btn-end { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.5); color: #ef4444; border-radius: 50px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; backdrop-filter: blur(12px); transition: all 0.2s; }
     .btn-end:active { background: rgba(239,68,68,0.3); }
+
+    /* Floating reset button */
+    .btn-stat-reset { position: absolute; bottom: calc(env(safe-area-inset-bottom,0px) + 110px); right: 14px; z-index: 20; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); color: var(--muted); border-radius: 50%; width: 42px; height: 42px; font-size: 18px; cursor: pointer; backdrop-filter: blur(8px); transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+    .btn-stat-reset:active { background: rgba(255,255,255,0.1); color: var(--text); transform: rotate(180deg); }
 
     /* Shot flash */
     #shotFlash { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; z-index: 20; opacity: 0; transition: opacity 0.15s; }
@@ -184,114 +182,185 @@
     @keyframes ping { 0%{transform:scale(0.5);opacity:1} 100%{transform:scale(1.5);opacity:0} }
     .flash-text { font-size: 20px; font-weight: 700; color: var(--orange); margin-top: -60px; text-shadow: 0 0 20px rgba(249,115,22,0.8); }
 
+    /* Make/Miss flash */
+    #makeFlash { position: absolute; inset: 0; pointer-events: none; z-index: 19; opacity: 0; transition: opacity 0.3s; }
+    #makeFlash.make { background: rgba(34,197,94,0.15); opacity: 1; }
+    #makeFlash.miss { background: rgba(239,68,68,0.15); opacity: 1; }
+    #makeFlash.fade { opacity: 0; transition: opacity 0.8s; }
+
+    /* Make/Miss popup */
+    .make-miss-popup { position: absolute; bottom: calc(env(safe-area-inset-bottom,0px) + 120px); left: 50%; transform: translateX(-50%); z-index: 30; background: rgba(10,10,10,0.95); border: 2px solid rgba(249,115,22,0.4); border-radius: 20px; padding: 18px 24px; text-align: center; min-width: 260px; backdrop-filter: blur(20px); transition: opacity 0.3s, transform 0.3s; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+    .make-miss-popup.hidden { opacity: 0; transform: translateX(-50%) translateY(20px); pointer-events: none; }
+    .mmp-title { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+    .mmp-subtitle { font-size: 17px; font-weight: 700; margin-bottom: 14px; }
+    .mmp-btns { display: flex; gap: 10px; }
+    .mmp-make { flex: 1; background: rgba(34,197,94,0.2); border: 2px solid var(--green); color: var(--green); border-radius: 12px; padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .mmp-make:active { background: rgba(34,197,94,0.4); }
+    .mmp-miss { flex: 1; background: rgba(239,68,68,0.15); border: 2px solid var(--red); color: var(--red); border-radius: 12px; padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .mmp-miss:active { background: rgba(239,68,68,0.3); }
+    .mmp-timer { font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+    /* NBA Jam overlay */
+    .jam-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; z-index: 25; opacity: 0; transform: scale(0.7); transition: opacity 0.3s, transform 0.3s; }
+    .jam-overlay.show { opacity: 1; transform: scale(1); }
+    .jam-emoji { font-size: 64px; margin-bottom: 8px; animation: jamBounce 0.4s ease-out; }
+    @keyframes jamBounce { 0%{transform:scale(0.5)} 60%{transform:scale(1.2)} 100%{transform:scale(1)} }
+    .jam-text { font-size: 28px; font-weight: 900; color: var(--orange); text-shadow: 0 0 20px rgba(249,115,22,0.8); text-align: center; padding: 0 20px; letter-spacing: 1px; }
+    .fire-text { animation: fireFlicker 0.4s ease-in-out infinite; font-size: 32px; }
+    @keyframes fireFlicker {
+      0%  { color: #f97316; text-shadow: 0 0 10px #f97316, 0 0 30px #ff4400, 0 0 60px #ff2200; }
+      25% { color: #ff6600; text-shadow: 0 0 20px #ff6600, 0 0 45px #ff2200, 0 0 70px #ff0000; }
+      50% { color: #fbbf24; text-shadow: 0 0 15px #fbbf24, 0 0 35px #ff8800, 0 0 55px #ff4400; }
+      75% { color: #f97316; text-shadow: 0 0 25px #f97316, 0 0 50px #ff4400, 0 0 75px #ff2200; }
+      100%{ color: #ef4444; text-shadow: 0 0 10px #ef4444, 0 0 30px #ff0000, 0 0 60px #cc0000; }
+    }
+
     /* Live score pill */
-    .live-score-pill { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 60px); left: 50%; transform: translateX(-50%); background: var(--surface); backdrop-filter: blur(12px); border-radius: 50px; padding: 6px 16px; border: 1px solid rgba(249,115,22,0.2); font-size: 13px; color: var(--muted); white-space: nowrap; z-index: 10; }
+    .live-score-pill { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 58px); left: 50%; transform: translateX(-50%); background: var(--surface); backdrop-filter: blur(12px); border-radius: 50px; padding: 5px 14px; border: 1px solid rgba(249,115,22,0.2); font-size: 12px; color: var(--muted); white-space: nowrap; z-index: 10; }
     .live-score-pill span { color: var(--orange); font-weight: 700; }
 
+    /* Release timer badge */
+    .release-badge { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 92px); left: 16px; background: var(--surface); backdrop-filter: blur(12px); border-radius: 12px; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.1); z-index: 10; text-align: left; min-width: 90px; }
+    .release-ms { font-size: 20px; font-weight: 800; color: var(--gold); }
+    .release-grade { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+    /* Hoop pin crosshair hint */
+    .hoop-pin-hint { position: absolute; inset: 0; z-index: 18; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.35); pointer-events: auto; }
+    .hoop-pin-hint.hidden { display: none; }
+    .hoop-pin-inner { background: rgba(0,0,0,0.7); border: 2px solid var(--orange); border-radius: 16px; padding: 16px 24px; text-align: center; }
+    .hoop-pin-inner p { font-size: 15px; color: var(--text); margin-bottom: 6px; font-weight: 600; }
+    .hoop-pin-inner small { font-size: 12px; color: var(--muted); }
+
+    /* Ball track info pill */
+    .ball-info-pill { position: absolute; bottom: calc(env(safe-area-inset-bottom,0px) + 115px); left: 14px; background: rgba(0,0,0,0.6); border: 1px solid rgba(249,115,22,0.3); border-radius: 10px; padding: 5px 10px; font-size: 10px; color: var(--muted); z-index: 11; display: none; backdrop-filter: blur(8px); }
+    .ball-info-pill.show { display: block; }
+    .ball-info-pill span { color: var(--orange); font-weight: 700; }
+
     /* Bottom stats overlay */
-    .stats-overlay { position: absolute; bottom: env(safe-area-inset-bottom, 0); left: 0; right: 0; background: var(--surface); backdrop-filter: blur(20px); border-top: 1px solid rgba(249,115,22,0.15); padding: 16px 20px calc(env(safe-area-inset-bottom, 0px) + 16px); z-index: 10; }
-    .stats-row { display: flex; justify-content: space-between; gap: 8px; }
+    .stats-overlay { position: absolute; bottom: env(safe-area-inset-bottom, 0); left: 0; right: 0; background: var(--surface); backdrop-filter: blur(20px); border-top: 1px solid rgba(249,115,22,0.15); padding: 14px 20px calc(env(safe-area-inset-bottom, 0px) + 14px); z-index: 10; }
+    .stats-row { display: flex; justify-content: space-between; gap: 6px; }
     .stat-item { flex: 1; text-align: center; }
-    .stat-val { font-size: 20px; font-weight: 700; color: var(--text); }
-    .stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-    .stat-bar-wrap { height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 6px; overflow: hidden; }
-    .stat-bar { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+    .stat-val { font-size: 19px; font-weight: 700; color: var(--text); }
+    .stat-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1px; }
+    .stat-bar-wrap { height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 5px; overflow: hidden; }
+    .stat-bar { height: 100%; border-radius: 2px; transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1); }
     .bar-elbow { background: #818cf8; }
     .bar-height { background: var(--green); }
     .bar-follow { background: var(--gold); }
 
+    /* ─── WORKOUT OVERLAY ─── */
+    .workout-overlay { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
+    .workout-overlay.active { pointer-events: auto; }
+    /* Workout bottom panel */
+    .workout-panel { position: absolute; bottom: 0; left: 0; right: 0; background: var(--surface); backdrop-filter: blur(24px); border-top: 1px solid rgba(37,99,235,0.3); padding: 0 0 calc(env(safe-area-inset-bottom,0px) + 8px); z-index: 11; }
+    .workout-tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .workout-tab { flex: 1; padding: 12px 4px; text-align: center; font-size: 11px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.2s; border-bottom: 3px solid transparent; pointer-events: auto; }
+    .workout-tab.active { color: #60a5fa; border-bottom-color: #60a5fa; }
+    .workout-main { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; }
+    .workout-counter-block { text-align: center; flex: 1; }
+    .wc-num { font-size: 64px; font-weight: 900; color: var(--text); line-height: 1; font-variant-numeric: tabular-nums; }
+    .wc-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .wc-calories { font-size: 13px; color: var(--gold); font-weight: 600; margin-top: 2px; }
+    .workout-side { display: flex; flex-direction: column; gap: 8px; }
+    .btn-workout-reset { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: var(--muted); border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 600; cursor: pointer; pointer-events: auto; transition: all 0.2s; }
+    .btn-workout-end { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.4); color: var(--red); border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 600; cursor: pointer; pointer-events: auto; }
+    .workout-tip { font-size: 11px; color: var(--gold); text-align: center; padding: 4px 20px 0; min-height: 20px; }
+    .workout-calibrating { font-size: 12px; color: var(--muted); text-align: center; padding: 4px 0; }
+
     /* Loading overlay */
-    #loadingOverlay { position: absolute; inset: 0; background: rgba(10,10,10,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; z-index: 50; }
+    #loadingOverlay { position: absolute; inset: 0; background: rgba(10,10,10,0.93); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; z-index: 50; }
     #loadingOverlay.hidden { display: none; }
     .spinner { width: 48px; height: 48px; border: 3px solid rgba(249,115,22,0.2); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .loading-text { font-size: 15px; color: var(--muted); }
 
-    /* Release timer badge */
-    .release-badge { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 96px); right: 16px; background: var(--surface); backdrop-filter: blur(12px); border-radius: 12px; padding: 10px 14px; border: 1px solid rgba(255,255,255,0.1); z-index: 10; text-align: right; min-width: 100px; }
-    .release-ms { font-size: 22px; font-weight: 800; color: var(--gold); }
-    .release-grade { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
     /* ─── SUMMARY ─── */
     #summary { background: var(--bg); overflow-y: auto; padding: 0; align-items: stretch; justify-content: flex-start; }
-    .summary-inner { padding: 48px 20px calc(env(safe-area-inset-bottom, 0px) + 32px); width: 100%; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+    .summary-inner { padding: 48px 20px calc(env(safe-area-inset-bottom, 0px) + 32px); width: 100%; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
     .summary-header { text-align: center; }
     .summary-title { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, var(--orange), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .summary-sub { font-size: 14px; color: var(--muted); margin-top: 4px; }
-
-    .big-score-card { background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(251,191,36,0.08)); border: 1px solid rgba(249,115,22,0.3); border-radius: 20px; padding: 28px; text-align: center; }
+    .summary-player-row { display: flex; align-items: center; gap: 10px; background: rgba(249,115,22,0.06); border: 1px solid rgba(249,115,22,0.15); border-radius: 12px; padding: 10px 14px; }
+    .summary-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg,var(--orange),var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; color: #fff; }
+    .summary-player-name { font-size: 15px; font-weight: 700; flex: 1; }
+    .summary-player-pos { font-size: 12px; color: var(--muted); }
+    .big-score-card { background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(251,191,36,0.08)); border: 1px solid rgba(249,115,22,0.3); border-radius: 20px; padding: 24px; text-align: center; }
     .big-score-num { font-size: 72px; font-weight: 900; line-height: 1; }
     .big-score-label { font-size: 13px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat-card { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 16px; }
+    .stat-card-val { font-size: 26px; font-weight: 800; }
+    .stat-card-label { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .stat-card { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 18px 16px; }
-    .stat-card-val { font-size: 28px; font-weight: 800; }
-    .stat-card-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    /* Make/Miss summary card */
+    .mm-summary-card { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 16px; }
+    .mm-summary-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .mm-summary-row { display: flex; align-items: center; gap: 12px; }
+    .mm-big { font-size: 36px; font-weight: 900; }
+    .mm-pct { font-size: 20px; color: var(--muted); font-weight: 700; }
+    .mm-bars { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .mm-bar-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+    .mm-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+    .mm-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
+    .streak-badge { background: linear-gradient(135deg,rgba(249,115,22,0.2),rgba(251,191,36,0.12)); border: 1px solid rgba(249,115,22,0.3); border-radius: 10px; padding: 8px 14px; font-size: 13px; text-align: center; margin-top: 8px; }
 
-    .form-breakdown { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 18px 16px; }
-    .breakdown-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
-    .breakdown-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    /* Best zone */
+    .best-zone-row { font-size: 12px; color: var(--gold); text-align: center; margin-top: 6px; font-weight: 600; }
+
+    .form-breakdown { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 16px; }
+    .breakdown-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .breakdown-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .breakdown-row:last-child { margin-bottom: 0; }
     .breakdown-label { font-size: 13px; width: 110px; flex-shrink: 0; }
     .breakdown-bar-wrap { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
     .breakdown-bar { height: 100%; border-radius: 4px; transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
     .breakdown-pct { font-size: 13px; font-weight: 700; width: 38px; text-align: right; }
-
-    /* Save actions row */
     .save-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .btn-save { flex: 1; min-width: 100px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text); border-radius: 12px; padding: 12px 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .btn-save { flex: 1; min-width: 90px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text); border-radius: 12px; padding: 12px 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
     .btn-save:active { background: rgba(255,255,255,0.12); }
     .btn-save.orange { border-color: rgba(249,115,22,0.4); color: var(--orange); }
-
     .action-row { display: flex; gap: 12px; }
-    .btn-secondary { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text); border-radius: var(--radius); padding: 16px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .btn-secondary { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text); border-radius: var(--radius); padding: 15px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
     .btn-secondary:active { background: rgba(255,255,255,0.1); }
-    .btn-primary-sm { flex: 1; background: var(--orange); color: #fff; border: none; border-radius: var(--radius); padding: 16px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .btn-primary-sm { flex: 1; background: var(--orange); color: #fff; border: none; border-radius: var(--radius); padding: 15px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
     .btn-primary-sm:active { opacity: 0.85; }
-
-    /* AI Coach card */
-    .coach-card { background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(15,15,15,0.9)); border: 1px solid rgba(249,115,22,0.25); border-radius: 16px; padding: 18px; }
-    .coach-header { font-size: 15px; font-weight: 700; color: var(--orange); margin-bottom: 12px; }
-    .coach-tip { font-size: 13px; color: var(--text); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; }
+    .coach-card { background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(15,15,15,0.9)); border: 1px solid rgba(249,115,22,0.25); border-radius: 16px; padding: 16px; }
+    .coach-header { font-size: 15px; font-weight: 700; color: var(--orange); margin-bottom: 10px; }
+    .coach-tip { font-size: 13px; color: var(--text); line-height: 1.6; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; }
     .coach-tip:last-child { border-bottom: none; }
     .coach-bullet { color: var(--orange); flex-shrink: 0; }
 
     /* Shot Chart */
-    .shot-chart-card { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 16px; }
-    .shot-chart-card h3 { font-size: 14px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .shot-chart-card { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 14px; }
+    .shot-chart-card h3 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
     #shotChartCanvas { width: 100%; border-radius: 8px; display: block; }
 
-    /* Past Sessions screen */
-    #past-sessions {
-      background: var(--bg);
-      overflow-y: auto;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
+    /* Past Sessions */
+    #past-sessions { background: var(--bg); overflow-y: auto; justify-content: flex-start; align-items: stretch; }
     .past-inner { width: 100%; max-width: 480px; margin: 0 auto; padding: calc(env(safe-area-inset-top, 16px) + 16px) 20px calc(env(safe-area-inset-bottom, 0px) + 20px); display: flex; flex-direction: column; gap: 12px; }
     .past-inner h2 { font-size: 22px; font-weight: 800; }
-    .past-session-row { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 16px; cursor: pointer; transition: background 0.2s; }
+    .past-session-row { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 14px; cursor: pointer; transition: background 0.2s; }
     .past-session-row:active { background: rgba(255,255,255,0.05); }
     .past-row-header { display: flex; justify-content: space-between; align-items: center; }
     .past-date { font-size: 13px; color: var(--muted); }
     .past-score { font-size: 20px; font-weight: 800; color: var(--orange); }
     .past-meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
-    .past-details { margin-top: 12px; display: none; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px; }
+    .past-details { margin-top: 10px; display: none; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px; }
     .past-details.open { display: block; }
     .past-detail-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding: 3px 0; }
     .past-detail-row span:last-child { color: var(--text); font-weight: 600; }
     .no-sessions { text-align: center; color: var(--muted); font-size: 15px; padding: 40px 0; }
 
-    /* color helpers */
+    /* Helpers */
     .score-green { color: var(--green); }
     .score-yellow { color: var(--yellow); }
     .score-red { color: var(--red); }
+    .hidden { display: none !important; }
 
-    /* Error toast */
-    #errorMsg { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(239,68,68,0.9); color: #fff; border-radius: 12px; padding: 12px 20px; font-size: 14px; max-width: 320px; text-align: center; z-index: 100; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    /* Error/Success toasts */
+    #errorMsg { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(239,68,68,0.9); color: #fff; border-radius: 12px; padding: 12px 20px; font-size: 14px; max-width: 320px; text-align: center; z-index: 200; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     #errorMsg.show { opacity: 1; }
-    /* Success toast */
-    #successMsg { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(34,197,94,0.9); color: #fff; border-radius: 12px; padding: 12px 20px; font-size: 14px; max-width: 320px; text-align: center; z-index: 100; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    #successMsg { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(34,197,94,0.9); color: #fff; border-radius: 12px; padding: 12px 20px; font-size: 14px; max-width: 320px; text-align: center; z-index: 200; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     #successMsg.show { opacity: 1; }
   </style>
 </head>
@@ -303,11 +372,21 @@
   <div class="app-name">ShotIQ</div>
   <div class="app-tagline">AI-powered jump shot analysis. Real-time form scoring using pose detection.</div>
 
+  <!-- Player bar -->
+  <div class="player-bar" onclick="openProfileModal()">
+    <div class="player-avatar" id="landingAvatar">?</div>
+    <div class="player-bar-info">
+      <div class="player-bar-name" id="landingPlayerName">Select Player</div>
+      <div class="player-bar-pos" id="landingPlayerPos">Tap to create or switch profile</div>
+    </div>
+    <div class="player-bar-chevron">›</div>
+  </div>
+
   <div class="features">
     <div class="feat"><div class="feat-icon">🎯</div><div class="feat-label">Form Score</div></div>
     <div class="feat"><div class="feat-icon">⚡</div><div class="feat-label">Release Time</div></div>
-    <div class="feat"><div class="feat-icon">💪</div><div class="feat-label">Elbow Check</div></div>
-    <div class="feat"><div class="feat-icon">📊</div><div class="feat-label">Session Stats</div></div>
+    <div class="feat"><div class="feat-icon">🔥</div><div class="feat-label">NBA Chants</div></div>
+    <div class="feat"><div class="feat-icon">📊</div><div class="feat-label">Shot Chart</div></div>
   </div>
 
   <div class="hand-toggle">
@@ -316,9 +395,43 @@
     <label><input type="radio" name="hand" value="left" /> Left</label>
   </div>
 
-  <br/>
-  <button class="btn-primary" onclick="goToZoneSelect()">📷 Allow Camera &amp; Start</button>
+  <button class="btn-primary" onclick="goToZoneSelect()">📷 Basketball Session</button>
+  <button class="btn-workout" onclick="startWorkoutMode()">🏋️ Workout Mode</button>
   <button class="btn-ghost" id="btnPastSessions" style="display:none" onclick="showPastSessions()">📊 View Past Sessions</button>
+</div>
+
+<!-- ── PLAYER PROFILE MODAL ── -->
+<div id="profileModal" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h2>👤 Player Profiles</h2>
+      <button class="modal-close" onclick="closeProfileModal()">✕</button>
+    </div>
+    <div id="profileList"></div>
+    <div id="newProfileForm" class="profile-form" style="display:none">
+      <input type="text" id="profileName" placeholder="Your Name" maxlength="20" />
+      <input type="text" id="profileNumber" placeholder="Jersey # (optional)" maxlength="3" />
+      <div style="margin-bottom:8px;font-size:13px;color:var(--muted)">Position:</div>
+      <div class="profile-form-row">
+        <button class="profile-pos-btn" onclick="selectPos(this,'PG')">PG</button>
+        <button class="profile-pos-btn" onclick="selectPos(this,'SG')">SG</button>
+        <button class="profile-pos-btn" onclick="selectPos(this,'SF')">SF</button>
+        <button class="profile-pos-btn" onclick="selectPos(this,'PF')">PF</button>
+        <button class="profile-pos-btn" onclick="selectPos(this,'C')">C</button>
+      </div>
+      <div style="margin-bottom:10px;font-size:13px;color:var(--muted)">Shooting Hand:</div>
+      <div class="profile-form-row">
+        <label class="profile-hand-label"><input type="radio" name="phand" value="right" checked /> Right</label>
+        <label class="profile-hand-label" style="margin-left:16px"><input type="radio" name="phand" value="left" /> Left</label>
+      </div>
+      <button class="btn-add-profile" onclick="saveNewProfile()">💾 Save Profile</button>
+      <button class="btn-ghost" style="margin-top:8px" onclick="cancelNewProfile()">Cancel</button>
+    </div>
+    <div id="addProfileBtn" style="margin-top:8px">
+      <button class="btn-add-profile" onclick="showNewProfileForm()">+ New Profile</button>
+    </div>
+  </div>
 </div>
 
 <!-- ── ZONE SELECT ── -->
@@ -352,7 +465,7 @@
 
   <div id="loadingOverlay">
     <div class="spinner"></div>
-    <div class="loading-text">Loading AI model…</div>
+    <div class="loading-text" id="loadingText">Loading AI model…</div>
   </div>
 
   <!-- REC indicator -->
@@ -361,11 +474,16 @@
     <div class="rec-text">REC</div>
   </div>
 
-  <!-- Lock-On toggle -->
-  <button class="btn-lockon" id="btnLockOn" onclick="toggleLockOn()">🎯 Lock</button>
+  <!-- Top-right button cluster -->
+  <div class="cam-btn-group" id="basketballBtns">
+    <button class="cam-btn" id="btnLockOn" onclick="toggleLockOn()">🎯 Lock</button>
+    <button class="cam-btn" id="btnVoice" onclick="toggleVoice()">🔊 Voice</button>
+    <button class="cam-btn" id="btnBallTrack" onclick="toggleBallTrack()">🏀 Ball Track</button>
+    <button class="cam-btn" id="btnHoopPin" onclick="startHoopPin()">📍 Set Hoop</button>
+  </div>
 
-  <!-- Voice Coach toggle -->
-  <button class="btn-voice" id="btnVoice" onclick="toggleVoice()">🔊 Voice</button>
+  <!-- Hoop set indicator -->
+  <div class="hoop-set-indicator" id="hoopSetIndicator">Hoop set ✓</div>
 
   <!-- Directional arrows -->
   <div class="dir-arrow" id="arrowLeft">← Move left</div>
@@ -373,35 +491,75 @@
   <div class="dir-arrow" id="arrowUp">↑ Move up</div>
   <div class="dir-arrow" id="arrowDown">↓ Move down</div>
 
+  <!-- HUD top -->
   <div class="hud-top">
-    <div class="shot-counter">
+    <div class="shot-counter" id="shotCounterEl">
       <div>
         <div class="shot-counter-num" id="shotCountEl">0</div>
-        <div class="shot-counter-label">Shots</div>
+        <div class="shot-counter-label">SHOTS</div>
+        <div class="shot-pct-label" id="shotPctEl" style="display:none">–</div>
       </div>
     </div>
     <button class="btn-end" onclick="endSession()">End Session</button>
   </div>
 
-  <!-- Tracking toolbar -->
-  <div class="tracking-toolbar">
+  <!-- Tracking toolbar (basketball only) -->
+  <div class="tracking-toolbar" id="trackingToolbar">
     <div class="track-pill searching" id="trackStatus">🔍 Searching...</div>
     <div class="track-pill closer hidden" id="trackCloser">📱 Move closer</div>
   </div>
 
+  <!-- Live score pill (basketball) -->
   <div class="live-score-pill" id="liveScorePill">Form Score: <span id="liveScoreEl">–</span></div>
 
+  <!-- Release badge -->
   <div class="release-badge" id="releaseBadge" style="display:none">
     <div class="release-ms" id="releaseMs">–</div>
     <div class="release-grade" id="releaseGrade">Release</div>
   </div>
 
+  <!-- Ball track info pill -->
+  <div class="ball-info-pill" id="ballInfoPill">Ball: <span id="ballInfoText">searching…</span></div>
+
+  <!-- Shot flash -->
   <div id="shotFlash">
     <div class="flash-ring"></div>
     <div class="flash-text">🏀 Shot Detected!</div>
   </div>
 
-  <div class="stats-overlay">
+  <!-- Make/Miss flash overlay -->
+  <div id="makeFlash"></div>
+
+  <!-- Make/Miss popup -->
+  <div class="make-miss-popup hidden" id="makeMissPopup">
+    <div class="mmp-title">Shot #<span id="mmpShotNum">1</span></div>
+    <div class="mmp-subtitle">Make or Miss?</div>
+    <div class="mmp-btns">
+      <button class="mmp-make" onclick="recordMakeMiss('make')">✅ Make</button>
+      <button class="mmp-miss" onclick="recordMakeMiss('miss')">❌ Miss</button>
+    </div>
+    <div class="mmp-timer" id="mmpTimer">Auto-dismiss in 3s</div>
+  </div>
+
+  <!-- NBA Jam overlay -->
+  <div class="jam-overlay hidden" id="jamOverlay">
+    <div class="jam-emoji" id="jamEmoji">🔥</div>
+    <div class="jam-text" id="jamText">HE'S ON FIRE!</div>
+  </div>
+
+  <!-- Hoop pin hint -->
+  <div class="hoop-pin-hint hidden" id="hoopPinHint" onclick="handleHoopTap(event)">
+    <div class="hoop-pin-inner">
+      <p>📍 Tap to set hoop location</p>
+      <small>Works best in bright gym light</small>
+    </div>
+  </div>
+
+  <!-- Floating reset button (basketball) -->
+  <button class="btn-stat-reset" id="btnStatReset" onclick="confirmResetStats()" title="Reset stats">🔄</button>
+
+  <!-- Bottom stats overlay (basketball) -->
+  <div class="stats-overlay" id="statsOverlay">
     <div class="stats-row">
       <div class="stat-item">
         <div class="stat-val" id="statElbow">–</div>
@@ -425,25 +583,58 @@
       </div>
     </div>
   </div>
+
+  <!-- Workout overlay (shown in workout mode) -->
+  <div class="workout-overlay hidden" id="workoutOverlay">
+    <div class="workout-panel">
+      <div class="workout-tabs">
+        <div class="workout-tab active" onclick="setExercise('pushups')" id="tabPushups">🏋️ Push-ups</div>
+        <div class="workout-tab" onclick="setExercise('jacks')" id="tabJacks">⭐ Jacks</div>
+        <div class="workout-tab" onclick="setExercise('run')" id="tabRun">🏃 Run</div>
+      </div>
+      <div class="workout-main">
+        <div class="workout-counter-block">
+          <div class="wc-num" id="wcNum">0</div>
+          <div class="wc-label" id="wcLabel">Push-ups</div>
+          <div class="wc-calories" id="wcCalories">0.0 cal</div>
+        </div>
+        <div class="workout-side">
+          <button class="btn-workout-reset" onclick="resetCurrentExercise()">🔄 Reset</button>
+          <button class="btn-workout-end" onclick="endSession()">⏹ End</button>
+        </div>
+      </div>
+      <div class="workout-tip" id="workoutTip"></div>
+      <div class="workout-calibrating" id="calibratingMsg">Calibrating… stand in frame</div>
+    </div>
+  </div>
 </div>
 
 <!-- ── SUMMARY ── -->
 <div id="summary" class="screen hidden">
   <div class="summary-inner">
     <div class="summary-header">
-      <div class="summary-title">Session Complete 🏆</div>
+      <div class="summary-title" id="summaryTitle">Session Complete 🏆</div>
       <div class="summary-sub" id="summarySubtitle">Your shot analysis</div>
     </div>
 
-    <div class="big-score-card">
-      <div class="big-score-num" id="summaryAvgScore">–</div>
-      <div class="big-score-label">Average Form Score</div>
+    <!-- Player row (basketball only) -->
+    <div class="summary-player-row" id="summaryPlayerRow" style="display:none">
+      <div class="summary-avatar" id="summaryAvatar">?</div>
+      <div>
+        <div class="summary-player-name" id="summaryPlayerName">Player</div>
+        <div class="summary-player-pos" id="summaryPlayerPos"></div>
+      </div>
     </div>
 
-    <div class="stats-grid">
+    <div class="big-score-card" id="bigScoreCard">
+      <div class="big-score-num" id="summaryAvgScore">–</div>
+      <div class="big-score-label" id="summaryScoreLabel">Average Form Score</div>
+    </div>
+
+    <div class="stats-grid" id="summaryStatsGrid">
       <div class="stat-card">
         <div class="stat-card-val" id="summaryShots" style="color:var(--orange)">0</div>
-        <div class="stat-card-label">Shot Attempts</div>
+        <div class="stat-card-label" id="summaryShot1Label">Shot Attempts</div>
       </div>
       <div class="stat-card">
         <div class="stat-card-val" id="summaryBest" style="color:var(--gold)">–</div>
@@ -459,7 +650,41 @@
       </div>
     </div>
 
-    <div class="form-breakdown">
+    <!-- Make/Miss summary card -->
+    <div class="mm-summary-card" id="mmSummaryCard" style="display:none">
+      <div class="mm-summary-title">🏀 Shooting %</div>
+      <div class="mm-summary-row">
+        <div>
+          <div class="mm-big score-green" id="mmMakes">0</div>
+          <div style="font-size:11px;color:var(--muted)">Makes</div>
+        </div>
+        <div style="margin:0 8px;color:var(--muted);font-size:20px">/</div>
+        <div>
+          <div class="mm-big" style="color:var(--text)" id="mmTotal">0</div>
+          <div style="font-size:11px;color:var(--muted)">Attempts</div>
+        </div>
+        <div style="margin-left:16px;flex:1">
+          <div class="mm-pct" id="mmPct">–%</div>
+          <div style="font-size:11px;color:var(--muted)">Shot %</div>
+        </div>
+      </div>
+      <div class="mm-bars" style="margin-top:10px">
+        <div class="mm-bar-row">
+          <span style="color:var(--green);width:50px">Makes</span>
+          <div class="mm-bar-wrap"><div class="mm-bar-fill" id="mmMakeBar" style="width:0%;background:var(--green)"></div></div>
+          <span id="mmMakePct" style="width:36px;text-align:right;font-size:11px"></span>
+        </div>
+        <div class="mm-bar-row">
+          <span style="color:var(--red);width:50px">Misses</span>
+          <div class="mm-bar-wrap"><div class="mm-bar-fill" id="mmMissBar" style="width:0%;background:var(--red)"></div></div>
+          <span id="mmMissPct" style="width:36px;text-align:right;font-size:11px"></span>
+        </div>
+      </div>
+      <div class="streak-badge" id="summaryStreakBadge" style="display:none"></div>
+    </div>
+
+    <!-- Form breakdown (basketball) -->
+    <div class="form-breakdown" id="formBreakdown">
       <div class="breakdown-title">Form Breakdown</div>
       <div class="breakdown-row">
         <div class="breakdown-label">💪 Elbow</div>
@@ -479,9 +704,10 @@
     </div>
 
     <!-- Shot Chart -->
-    <div class="shot-chart-card">
+    <div class="shot-chart-card" id="shotChartCard">
       <h3>🏀 Shot Chart</h3>
       <canvas id="shotChartCanvas" height="200"></canvas>
+      <div class="best-zone-row" id="bestZoneRow"></div>
     </div>
 
     <!-- AI Coach -->
@@ -496,7 +722,6 @@
       <button class="btn-save" onclick="copySessionSummary()">📋 Copy</button>
       <button class="btn-save" id="btnSaveVideo" onclick="saveSessionVideo()" style="display:none">🎬 Save Video</button>
     </div>
-
     <div class="action-row">
       <button class="btn-secondary" onclick="shareStats()">📸 Share</button>
       <button class="btn-primary-sm" onclick="newSession()">New Session</button>
@@ -521,12 +746,15 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.3/dist/pose-detection.min.js"></script>
 
 <script>
-// ── State ──────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════════
 let detector = null;
 let stream = null;
 let rafId = null;
 let shootingHand = 'right';
 let sessionStartTime = null;
+let appMode = 'basketball'; // 'basketball' | 'workout'
 
 // Session data
 let sessionShots = [];
@@ -545,17 +773,37 @@ let shootingPhase = 'idle';
 let lastFormScores = { elbow: 0, height: 0, follow: 0, overall: 0 };
 let postPeakWristPositions = [];
 
-// Player tracking / Lock-On
+// Player tracking
 let lockOnEnabled = false;
 let playerDetected = false;
 let playerCenterX = 0;
 let playerCenterY = 0;
 let playerHeightFraction = 0;
+let frameCount = 0;
+
+// Keypoint smoothing
+const KP_SMOOTH_WINDOW = 3;
+const KP_LAST_SEEN_MAX = 10;
+let kpSmoothBuffers = {};
+let kpLastSeen = {};
+let kpFramesSince = {};
 
 // Voice coaching
 let voiceEnabled = false;
 let speechSynth = window.speechSynthesis || null;
 let preferredVoice = null;
+
+// NBA Jam / chants
+let makeStreak = 0;
+let maxMakeStreak = 0;
+
+// Makes/Misses
+let sessionMakes = 0;
+let sessionMisses = 0;
+let makeMissLog = []; // [{shotIndex, result}]
+let pendingMakeMiss = false;
+let makeMissTimer = null;
+let makeMissDismissTimer = null;
 
 // Video recording
 let mediaRecorder = null;
@@ -563,11 +811,48 @@ let recordedChunks = [];
 let recordedBlob = null;
 let canvasStream = null;
 
+// Ball tracking
+let ballTrackEnabled = false;
+let ballTracker = null;
+let hoopCenter = null;
+let hoopRadius = 40;
+let hoopPinMode = false;
+let detectingMakeMiss = false;
+let detectMakeMissStart = 0;
+let hoopDetectionBuffer = [];
+
+// Workout
+let activeExercise = 'pushups';
+let exerciseCounters = { pushups: 0, jacks: 0, run: 0 };
+let exerciseCalPerRep = { pushups: 0.5, jacks: 0.2, run: 0.1 };
+let workoutCalories = 0;
+let calibrationFrames = 0;
+let calibrated = false;
+// Push-up state machine
+let pushupState = 'idle';
+let puBaseline = null; // baseline shoulder y
+let puDown = false;
+// Jumping jack state
+let jackState = 'neutral'; // neutral | out
+let jackArmsOut = false;
+let jackLegsOut = false;
+// Run in place
+let runLastLeft = null, runLastRight = null;
+let runLeftUp = false, runRightUp = false;
+let runStepTimes = [];
+
+// Player profiles
+let currentProfile = null;
+let selectedProfilePos = '';
+let newProfileHand = 'right';
+
 const VIDEO = document.getElementById('videoEl');
 const CANVAS = document.getElementById('poseCanvas');
 const CTX = CANVAS.getContext('2d');
 
-// ── Keypoint indices (MoveNet) ─────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// KEYPOINT INDICES (MoveNet)
+// ════════════════════════════════════════════════════════════════════
 const KP = {
   nose:0,leftEye:1,rightEye:2,leftEar:3,rightEar:4,
   leftShoulder:5,rightShoulder:6,
@@ -577,7 +862,6 @@ const KP = {
   leftKnee:13,rightKnee:14,
   leftAnkle:15,rightAnkle:16,
 };
-
 const SKELETON = [
   [KP.leftShoulder,KP.rightShoulder],
   [KP.leftShoulder,KP.leftElbow],[KP.leftElbow,KP.leftWrist],
@@ -588,32 +872,28 @@ const SKELETON = [
   [KP.rightHip,KP.rightKnee],[KP.rightKnee,KP.rightAnkle],
 ];
 
-// ── Helpers ────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════════════════
 function showError(msg) {
   const el = document.getElementById('errorMsg');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent = msg; el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 4000);
 }
-
 function showSuccess(msg) {
   const el = document.getElementById('successMsg');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent = msg; el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 2500);
 }
-
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
-
 function scoreColor(v) {
   if (v >= 80) return 'var(--green)';
   if (v >= 60) return 'var(--yellow)';
   return 'var(--red)';
 }
-
 function releaseGrade(ms) {
   if (!ms || ms <= 0) return '–';
   if (ms < 250) return '⚡ Elite';
@@ -626,7 +906,6 @@ function releaseGradeShort(ms) {
   if (ms < 350) return 'Good';
   return 'Slow';
 }
-
 function generateUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = Math.random() * 16 | 0;
@@ -634,24 +913,139 @@ function generateUUID() {
   });
 }
 
-// ── Zone selection ─────────────────────────────────────────────────────────
-function toggleZone(btn) {
-  btn.classList.toggle('selected');
-  const z = btn.dataset.zone;
-  if (selectedZones.includes(z)) {
-    selectedZones = selectedZones.filter(x => x !== z);
+// ════════════════════════════════════════════════════════════════════
+// PLAYER PROFILES
+// ════════════════════════════════════════════════════════════════════
+function getProfiles() {
+  try { return JSON.parse(localStorage.getItem('shotiq_profiles') || '[]'); } catch(e) { return []; }
+}
+function saveProfiles(p) {
+  try { localStorage.setItem('shotiq_profiles', JSON.stringify(p)); } catch(e) {}
+}
+function openProfileModal() {
+  renderProfileList();
+  document.getElementById('profileModal').classList.remove('hidden');
+}
+function closeProfileModal() {
+  document.getElementById('profileModal').classList.add('hidden');
+  document.getElementById('newProfileForm').style.display = 'none';
+  document.getElementById('addProfileBtn').style.display = '';
+}
+function renderProfileList() {
+  const profiles = getProfiles();
+  const container = document.getElementById('profileList');
+  if (profiles.length === 0) {
+    container.innerHTML = '<div class="no-profiles">No profiles yet. Create one below!</div>';
+    return;
+  }
+  container.innerHTML = profiles.map((p, i) => `
+    <div class="profile-card ${currentProfile && currentProfile.id === p.id ? 'active-profile' : ''}" onclick="selectProfile(${i})">
+      <div class="profile-card-avatar">${p.name.charAt(0).toUpperCase()}</div>
+      <div class="profile-card-info">
+        <div class="profile-card-name">${p.name}${p.number ? ' #'+p.number : ''}</div>
+        <div class="profile-card-meta">${p.position || 'No position'} · ${p.hand === 'left' ? 'Left' : 'Right'} hand</div>
+      </div>
+      ${currentProfile && currentProfile.id === p.id ? '<div class="profile-card-check">✓</div>' : ''}
+      <button class="btn-del-profile" onclick="event.stopPropagation();deleteProfile(${i})">✕</button>
+    </div>
+  `).join('');
+}
+function selectProfile(i) {
+  const profiles = getProfiles();
+  if (profiles[i]) {
+    currentProfile = profiles[i];
+    // Apply hand preference
+    document.querySelectorAll('input[name=hand]').forEach(r => r.value === currentProfile.hand ? r.checked = true : null);
+    shootingHand = currentProfile.hand || 'right';
+    updateLandingProfileBar();
+    closeProfileModal();
+    showSuccess('👤 ' + currentProfile.name + ' selected!');
+  }
+}
+function deleteProfile(i) {
+  const profiles = getProfiles();
+  const p = profiles[i];
+  if (!p) return;
+  if (currentProfile && currentProfile.id === p.id) { currentProfile = null; updateLandingProfileBar(); }
+  profiles.splice(i, 1);
+  saveProfiles(profiles);
+  renderProfileList();
+}
+function showNewProfileForm() {
+  document.getElementById('newProfileForm').style.display = '';
+  document.getElementById('addProfileBtn').style.display = 'none';
+  document.getElementById('profileName').value = '';
+  document.getElementById('profileNumber').value = '';
+  selectedProfilePos = '';
+  document.querySelectorAll('.profile-pos-btn').forEach(b => b.classList.remove('sel'));
+}
+function cancelNewProfile() {
+  document.getElementById('newProfileForm').style.display = 'none';
+  document.getElementById('addProfileBtn').style.display = '';
+}
+function selectPos(btn, pos) {
+  selectedProfilePos = pos;
+  document.querySelectorAll('.profile-pos-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+function saveNewProfile() {
+  const name = document.getElementById('profileName').value.trim();
+  if (!name) { showError('Enter a name'); return; }
+  const phand = document.querySelector('input[name=phand]:checked');
+  const profiles = getProfiles();
+  if (profiles.length >= 5) { showError('Max 5 profiles'); return; }
+  const profile = {
+    id: generateUUID(),
+    name,
+    number: document.getElementById('profileNumber').value.trim(),
+    position: selectedProfilePos,
+    hand: phand ? phand.value : 'right',
+    createdAt: new Date().toISOString(),
+  };
+  profiles.push(profile);
+  saveProfiles(profiles);
+  currentProfile = profile;
+  shootingHand = profile.hand;
+  document.querySelectorAll('input[name=hand]').forEach(r => r.value === profile.hand ? r.checked = true : null);
+  updateLandingProfileBar();
+  cancelNewProfile();
+  renderProfileList();
+  showSuccess('👤 Profile created!');
+}
+function updateLandingProfileBar() {
+  const avatarEl = document.getElementById('landingAvatar');
+  const nameEl = document.getElementById('landingPlayerName');
+  const posEl = document.getElementById('landingPlayerPos');
+  if (currentProfile) {
+    avatarEl.textContent = currentProfile.name.charAt(0).toUpperCase();
+    nameEl.textContent = currentProfile.name + (currentProfile.number ? ' #'+currentProfile.number : '');
+    posEl.textContent = (currentProfile.position || 'Player') + ' · ' + (currentProfile.hand === 'left' ? 'Left' : 'Right') + ' hand';
   } else {
-    selectedZones.push(z);
+    avatarEl.textContent = '?';
+    nameEl.textContent = 'Select Player';
+    posEl.textContent = 'Tap to create or switch profile';
   }
 }
 
+// ════════════════════════════════════════════════════════════════════
+// ZONE SELECTION
+// ════════════════════════════════════════════════════════════════════
+function toggleZone(btn) {
+  btn.classList.toggle('selected');
+  const z = btn.dataset.zone;
+  if (selectedZones.includes(z)) selectedZones = selectedZones.filter(x => x !== z);
+  else selectedZones.push(z);
+}
 function goToZoneSelect() {
   const hand = document.querySelector('input[name=hand]:checked');
   shootingHand = hand ? hand.value : 'right';
+  appMode = 'basketball';
   showScreen('zone-select');
 }
 
-// ── Voice Coach ─────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// VOICE / CHANTS
+// ════════════════════════════════════════════════════════════════════
 function initVoice() {
   if (!speechSynth) return;
   const trySet = () => {
@@ -662,20 +1056,17 @@ function initVoice() {
       || null;
   };
   trySet();
-  speechSynth.onvoiceschanged = trySet;
+  if (speechSynth.onvoiceschanged !== undefined) speechSynth.onvoiceschanged = trySet;
 }
-
-function speak(text) {
-  if (!voiceEnabled || !speechSynth) return;
+function speak(text, rate=1.1, pitch=1.0) {
+  if (!speechSynth) return;
   speechSynth.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.pitch = 1;
-  u.rate = 1.1;
-  u.volume = 1;
+  u.pitch = pitch; u.rate = rate; u.volume = 1;
   if (preferredVoice) u.voice = preferredVoice;
   speechSynth.speak(u);
 }
-
+function speakJam(text) { speak(text, 1.3, 1.2); }
 function toggleVoice() {
   voiceEnabled = !voiceEnabled;
   const btn = document.getElementById('btnVoice');
@@ -684,68 +1075,404 @@ function toggleVoice() {
   if (voiceEnabled) speak('Voice coach enabled. Let\'s shoot!');
 }
 
-// ── Lock-On / Player Tracking ──────────────────────────────────────────────
+function showJamOverlay(emoji, text, isFireText = false) {
+  const overlay = document.getElementById('jamOverlay');
+  const emojiEl = document.getElementById('jamEmoji');
+  const textEl = document.getElementById('jamText');
+  emojiEl.textContent = emoji;
+  textEl.textContent = text;
+  if (isFireText) textEl.className = 'jam-text fire-text';
+  else textEl.className = 'jam-text';
+  overlay.classList.remove('hidden');
+  overlay.classList.add('show');
+  setTimeout(() => {
+    overlay.classList.remove('show');
+    setTimeout(() => { overlay.classList.add('hidden'); textEl.className = 'jam-text'; }, 300);
+  }, 2200);
+}
+
+function triggerMakeChant(streakNow, isPersonalBest, releaseMs) {
+  if (!voiceEnabled) return;
+  // Priority: streak first
+  if (streakNow >= 4) {
+    speakJam('BOOM SHAKALAKA!');
+    showJamOverlay('💥', 'BOOM SHAKALAKA!');
+  } else if (streakNow === 3) {
+    speakJam("HE'S ON FIRE!");
+    showJamOverlay('🔥', "HE'S ON FIRE!", true);
+  } else if (streakNow === 2) {
+    speakJam("He's heating up!");
+    showJamOverlay('🏀', "He's Heating Up!");
+  } else if (isPersonalBest && shotCount > 1) {
+    speakJam('From downtown!');
+    showJamOverlay('⭐', 'From Downtown!');
+  } else if (releaseMs && releaseMs < 250) {
+    speakJam('Nothing but net!');
+    showJamOverlay('💥', 'Nothing But Net!');
+  } else {
+    speakJam('Nice shot!');
+    showJamOverlay('🏀', 'Nice Shot!');
+  }
+}
+function triggerMissChant(hadStreak) {
+  if (!voiceEnabled) return;
+  if (hadStreak >= 3) {
+    speakJam('Ooooh!');
+    showJamOverlay('😬', 'Ooooh!');
+  } else {
+    // silent on regular miss
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════
+// LOCK-ON / PLAYER TRACKING
+// ════════════════════════════════════════════════════════════════════
 function toggleLockOn() {
   lockOnEnabled = !lockOnEnabled;
   const btn = document.getElementById('btnLockOn');
   btn.textContent = lockOnEnabled ? '🎯 Lock ON' : '🎯 Lock';
   btn.classList.toggle('active', lockOnEnabled);
 }
-
 function updateTrackingUI() {
   const statusEl = document.getElementById('trackStatus');
   const closerEl = document.getElementById('trackCloser');
   const cw = CANVAS.width, ch = CANVAS.height;
-
   if (!lockOnEnabled) {
-    statusEl.textContent = '🎯 Lock Off';
-    statusEl.className = 'track-pill';
+    statusEl.textContent = '🎯 Lock Off'; statusEl.className = 'track-pill';
     closerEl.classList.add('hidden');
     ['arrowLeft','arrowRight','arrowUp','arrowDown'].forEach(id => document.getElementById(id).classList.remove('show'));
     return;
   }
-
   if (!playerDetected) {
-    statusEl.textContent = '🔍 Searching...';
-    statusEl.className = 'track-pill searching';
+    statusEl.textContent = '🔍 Searching...'; statusEl.className = 'track-pill searching';
     closerEl.classList.add('hidden');
     ['arrowLeft','arrowRight','arrowUp','arrowDown'].forEach(id => document.getElementById(id).classList.remove('show'));
     return;
   }
-
-  statusEl.textContent = '🎯 Locked';
-  statusEl.className = 'track-pill locked';
-
-  // Zoom hint
-  if (playerHeightFraction < 0.4) {
-    closerEl.classList.remove('hidden');
-  } else {
-    closerEl.classList.add('hidden');
-  }
-
-  // Directional arrows: if player center is near edge
-  const edgeThresh = 0.22; // 22% from edge triggers arrow
-  const cx = playerCenterX / cw;
-  const cy = playerCenterY / ch;
-
-  document.getElementById('arrowLeft').classList.toggle('show',  cx < edgeThresh);
+  statusEl.textContent = '🎯 Locked'; statusEl.className = 'track-pill locked';
+  if (playerHeightFraction < 0.4) closerEl.classList.remove('hidden');
+  else closerEl.classList.add('hidden');
+  const edgeThresh = 0.22;
+  const cx = playerCenterX / cw, cy = playerCenterY / ch;
+  document.getElementById('arrowLeft').classList.toggle('show', cx < edgeThresh);
   document.getElementById('arrowRight').classList.toggle('show', cx > 1 - edgeThresh);
-  document.getElementById('arrowUp').classList.toggle('show',    cy < edgeThresh);
-  document.getElementById('arrowDown').classList.toggle('show',  cy > 1 - edgeThresh);
+  document.getElementById('arrowUp').classList.toggle('show', cy < edgeThresh);
+  document.getElementById('arrowDown').classList.toggle('show', cy > 1 - edgeThresh);
 }
 
-// ── Video Recording ────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// KEYPOINT SMOOTHING
+// ════════════════════════════════════════════════════════════════════
+function smoothKeypoints(keypoints) {
+  frameCount++;
+  const result = keypoints.map((kp, idx) => {
+    if (!kpSmoothBuffers[idx]) { kpSmoothBuffers[idx] = []; kpLastSeen[idx] = null; kpFramesSince[idx] = KP_LAST_SEEN_MAX + 1; }
+    const MIN_CONF = 0.25;
+    if (kp.score >= MIN_CONF) {
+      // Good reading
+      kpSmoothBuffers[idx].push({ x: kp.x, y: kp.y });
+      if (kpSmoothBuffers[idx].length > KP_SMOOTH_WINDOW) kpSmoothBuffers[idx].shift();
+      kpLastSeen[idx] = { x: kp.x, y: kp.y, score: kp.score };
+      kpFramesSince[idx] = 0;
+    } else {
+      kpFramesSince[idx]++;
+    }
+    const buf = kpSmoothBuffers[idx];
+    if (buf.length > 0) {
+      const avgX = buf.reduce((s,v) => s+v.x, 0) / buf.length;
+      const avgY = buf.reduce((s,v) => s+v.y, 0) / buf.length;
+      const sinceFrames = kpFramesSince[idx];
+      // Use last known if dropped for < KP_LAST_SEEN_MAX frames
+      if (kp.score < MIN_CONF && sinceFrames <= KP_LAST_SEEN_MAX && kpLastSeen[idx]) {
+        return { ...kp, x: kpLastSeen[idx].x, y: kpLastSeen[idx].y, score: Math.max(kp.score, MIN_CONF) };
+      }
+      return { ...kp, x: avgX, y: avgY };
+    }
+    return kp;
+  });
+  return result;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// BALL TRACKER CLASS
+// ════════════════════════════════════════════════════════════════════
+class BallTracker {
+  constructor() {
+    this.positions = []; // [{x,y,r,frame}]
+    this.frameNum = 0;
+    this.lastPos = null;
+    this._offCanvas = document.createElement('canvas');
+    this._offCtx = this._offCanvas.getContext('2d', { willReadFrequently: true });
+  }
+  detect(video) {
+    this.frameNum++;
+    const vw = video.videoWidth || 640, vh = video.videoHeight || 480;
+    if (vw === 0 || vh === 0) return null;
+    // Sample at reduced resolution for speed
+    const scale = Math.min(1, 320 / Math.max(vw, vh));
+    const sw = Math.round(vw * scale), sh = Math.round(vh * scale);
+    this._offCanvas.width = sw; this._offCanvas.height = sh;
+    this._offCtx.drawImage(video, 0, 0, sw, sh);
+    let data;
+    try { data = this._offCtx.getImageData(0, 0, sw, sh).data; } catch(e) { return null; }
+    let sumX = 0, sumY = 0, count = 0;
+    const step = 2;
+    for (let y = 0; y < sh; y += step) {
+      for (let x = 0; x < sw; x += step) {
+        const i = (y * sw + x) * 4;
+        const r = data[i], g = data[i+1], b = data[i+2];
+        // Basketball orange filter
+        if (r > 150 && g > 50 && g < 150 && b < 90 && r > g * 1.3 && r > b * 2.5) {
+          sumX += x; sumY += y; count++;
+        }
+      }
+    }
+    if (count < 15) { this.lastPos = null; return null; }
+    // Scale back to canvas coordinates
+    const cw = CANVAS.width, ch = CANVAS.height;
+    const cx = (sumX / count / sw) * cw;
+    const cy = (sumY / count / sh) * ch;
+    const radius = Math.sqrt(count / Math.PI) * (cw / sw);
+    if (radius < 8 || radius > 60) { this.lastPos = null; return null; }
+    const pos = { x: cx, y: cy, r: radius, frame: this.frameNum };
+    this.positions.push(pos);
+    if (this.positions.length > 30) this.positions.shift();
+    this.lastPos = pos;
+    return pos;
+  }
+  getTrail(n = 10) {
+    return this.positions.slice(-n);
+  }
+  getInHoopZone(hc, hr) {
+    if (!hc || this.positions.length < 3) return { passes: 0, topToBottom: false };
+    const rad = hr * 1.5;
+    const inZone = this.positions.filter(p => {
+      const dx = p.x - hc.x, dy = p.y - hc.y;
+      return Math.sqrt(dx*dx + dy*dy) < rad;
+    });
+    if (inZone.length < 2) return { passes: inZone.length, topToBottom: false };
+    const first = inZone[0], last = inZone[inZone.length - 1];
+    const topToBottom = last.y > first.y + hr * 0.5;
+    return { passes: inZone.length, topToBottom };
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════
+// HOOP PIN
+// ════════════════════════════════════════════════════════════════════
+function toggleBallTrack() {
+  ballTrackEnabled = !ballTrackEnabled;
+  const btn = document.getElementById('btnBallTrack');
+  const pill = document.getElementById('ballInfoPill');
+  btn.textContent = ballTrackEnabled ? '🏀 Ball ON' : '🏀 Ball Track';
+  btn.classList.toggle('active', ballTrackEnabled);
+  pill.classList.toggle('show', ballTrackEnabled);
+  if (ballTrackEnabled && !ballTracker) ballTracker = new BallTracker();
+  if (!ballTrackEnabled) { if (ballTracker) { ballTracker.positions = []; } }
+}
+function startHoopPin() {
+  hoopPinMode = true;
+  document.getElementById('hoopPinHint').classList.remove('hidden');
+}
+function handleHoopTap(e) {
+  if (!hoopPinMode) return;
+  const rect = CANVAS.getBoundingClientRect();
+  const px = (e.clientX - rect.left) * (CANVAS.width / rect.width);
+  const py = (e.clientY - rect.top) * (CANVAS.height / rect.height);
+  hoopCenter = { x: px, y: py };
+  hoopRadius = CANVAS.height * 0.04;
+  hoopPinMode = false;
+  document.getElementById('hoopPinHint').classList.add('hidden');
+  document.getElementById('hoopSetIndicator').style.display = 'block';
+  showSuccess('Hoop set! ✓');
+}
+function drawHoop() {
+  if (!hoopCenter) return;
+  const cx = hoopCenter.x, cy = hoopCenter.y, r = hoopRadius;
+  // Backboard
+  CTX.strokeStyle = 'rgba(255,255,255,0.8)';
+  CTX.lineWidth = 3;
+  CTX.beginPath();
+  CTX.moveTo(cx - r * 1.5, cy - r * 0.4);
+  CTX.lineTo(cx + r * 1.5, cy - r * 0.4);
+  CTX.stroke();
+  // Rim
+  CTX.strokeStyle = 'rgba(249,115,22,0.9)';
+  CTX.lineWidth = 2.5;
+  CTX.beginPath();
+  CTX.arc(cx, cy, r, 0, Math.PI * 2);
+  CTX.stroke();
+  // Net lines
+  CTX.strokeStyle = 'rgba(255,255,255,0.5)';
+  CTX.lineWidth = 1;
+  for (let i = 0; i < 5; i++) {
+    const angle = (i / 5) * Math.PI * 2;
+    const bx = cx + Math.cos(angle) * r * 0.7;
+    const by = cy + Math.sin(angle) * r * 0.7 + r * 1.4;
+    CTX.beginPath();
+    CTX.moveTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+    CTX.lineTo(bx, by);
+    CTX.stroke();
+  }
+}
+function drawBallTrack() {
+  if (!ballTracker || !ballTrackEnabled) return;
+  const trail = ballTracker.getTrail(10);
+  if (trail.length === 0) return;
+  // Fading trail
+  for (let i = 0; i < trail.length - 1; i++) {
+    const alpha = (i + 1) / trail.length * 0.6;
+    CTX.strokeStyle = `rgba(249,115,22,${alpha})`;
+    CTX.lineWidth = 2;
+    CTX.setLineDash([4, 4]);
+    CTX.beginPath();
+    CTX.moveTo(trail[i].x, trail[i].y);
+    CTX.lineTo(trail[i+1].x, trail[i+1].y);
+    CTX.stroke();
+    CTX.setLineDash([]);
+  }
+  // Current ball circle
+  const last = trail[trail.length - 1];
+  CTX.strokeStyle = 'rgba(249,115,22,0.9)';
+  CTX.lineWidth = 2.5;
+  CTX.beginPath();
+  CTX.arc(last.x, last.y, last.r, 0, Math.PI * 2);
+  CTX.stroke();
+  // Bright center dot
+  CTX.fillStyle = 'rgba(249,115,22,0.4)';
+  CTX.beginPath();
+  CTX.arc(last.x, last.y, 4, 0, Math.PI * 2);
+  CTX.fill();
+  // Update info pill
+  const infoEl = document.getElementById('ballInfoText');
+  if (infoEl) infoEl.textContent = `r=${Math.round(last.r)}px`;
+}
+
+// Auto make/miss from ball detection
+function startHoopDetection() {
+  if (!ballTrackEnabled || !hoopCenter) return;
+  detectingMakeMiss = true;
+  detectMakeMissStart = performance.now();
+  hoopDetectionBuffer = [];
+  // After 2 seconds analyze
+  setTimeout(() => {
+    if (!detectingMakeMiss) return;
+    detectingMakeMiss = false;
+    if (!ballTracker || !hoopCenter) { showMakeMissPopup(); return; }
+    const result = ballTracker.getInHoopZone(hoopCenter, hoopRadius);
+    if (result.passes >= 2 && result.topToBottom) {
+      // Confident make
+      autoRecordMakeMiss('make');
+    } else if (result.passes >= 1) {
+      // Near but uncertain
+      showMakeMissPopup();
+    } else {
+      // Likely miss
+      autoRecordMakeMiss('miss');
+    }
+  }, 2000);
+}
+function autoRecordMakeMiss(result) {
+  const isMake = result === 'make';
+  flashMakeMiss(isMake);
+  const hadStreak = makeStreak;
+  if (isMake) {
+    sessionMakes++;
+    makeStreak++;
+    if (makeStreak > maxMakeStreak) maxMakeStreak = makeStreak;
+    makeMissLog.push({ shotIndex: shotCount - 1, result: 'make', auto: true });
+    triggerMakeChant(makeStreak, false, null);
+    // mark last shot
+    if (sessionShots.length > 0) sessionShots[sessionShots.length-1].makeResult = 'make';
+  } else {
+    const hadS = makeStreak;
+    makeStreak = 0;
+    sessionMisses++;
+    makeMissLog.push({ shotIndex: shotCount - 1, result: 'miss', auto: true });
+    triggerMissChant(hadS);
+    if (sessionShots.length > 0) sessionShots[sessionShots.length-1].makeResult = 'miss';
+  }
+  updateShotPctDisplay();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// MAKE / MISS POPUP
+// ════════════════════════════════════════════════════════════════════
+function showMakeMissPopup() {
+  if (pendingMakeMiss) return;
+  pendingMakeMiss = true;
+  const popup = document.getElementById('makeMissPopup');
+  const shotNumEl = document.getElementById('mmpShotNum');
+  const timerEl = document.getElementById('mmpTimer');
+  if (shotNumEl) shotNumEl.textContent = shotCount;
+  popup.classList.remove('hidden');
+  let secs = 3;
+  if (timerEl) timerEl.textContent = `Auto-dismiss in ${secs}s`;
+  makeMissDismissTimer = setInterval(() => {
+    secs--;
+    if (timerEl) timerEl.textContent = `Auto-dismiss in ${secs}s`;
+    if (secs <= 0) {
+      clearInterval(makeMissDismissTimer);
+      dismissMakeMissPopup();
+    }
+  }, 1000);
+}
+function dismissMakeMissPopup() {
+  pendingMakeMiss = false;
+  clearInterval(makeMissDismissTimer);
+  document.getElementById('makeMissPopup').classList.add('hidden');
+}
+function recordMakeMiss(result) {
+  dismissMakeMissPopup();
+  autoRecordMakeMiss(result);
+}
+function flashMakeMiss(isMake) {
+  const el = document.getElementById('makeFlash');
+  el.className = isMake ? 'make' : 'miss';
+  setTimeout(() => { el.className = 'fade'; setTimeout(() => { el.className = ''; }, 800); }, 600);
+}
+function updateShotPctDisplay() {
+  const total = sessionMakes + sessionMisses;
+  const pctEl = document.getElementById('shotPctEl');
+  if (total > 0 && pctEl) {
+    const pct = Math.round((sessionMakes / total) * 100);
+    pctEl.textContent = sessionMakes + '/' + total + ' (' + pct + '%)';
+    pctEl.style.display = '';
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════
+// STAT RESET
+// ════════════════════════════════════════════════════════════════════
+function confirmResetStats() {
+  if (confirm('Reset all stats for this session?')) resetSessionStats();
+}
+function resetSessionStats() {
+  sessionShots = []; shotCount = 0; lastShotTime = 0;
+  sessionBestScore = 0; sessionMakes = 0; sessionMisses = 0;
+  makeMissLog = []; makeStreak = 0; maxMakeStreak = 0;
+  wristHistory = []; shootingPhase = 'idle'; postPeakWristPositions = [];
+  pendingMakeMiss = false;
+  clearInterval(makeMissDismissTimer);
+  document.getElementById('makeMissPopup').classList.add('hidden');
+  document.getElementById('shotCountEl').textContent = '0';
+  document.getElementById('liveScoreEl').textContent = '–';
+  document.getElementById('releaseBadge').style.display = 'none';
+  const pctEl = document.getElementById('shotPctEl');
+  if (pctEl) { pctEl.style.display = 'none'; }
+  updateHUD({ elbow:0, height:0, follow:0, overall:0 });
+  showSuccess('🔄 Stats reset!');
+}
+
+// ════════════════════════════════════════════════════════════════════
+// VIDEO RECORDING
+// ════════════════════════════════════════════════════════════════════
 function startRecording() {
-  recordedChunks = [];
-  recordedBlob = null;
+  recordedChunks = []; recordedBlob = null;
   try {
     canvasStream = CANVAS.captureStream(20);
-    // Try to mix with camera audio (usually none for video-only, that's fine)
-    const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-      ? 'video/webm;codecs=vp9'
-      : MediaRecorder.isTypeSupported('video/webm')
-        ? 'video/webm'
-        : '';
+    const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9'
+      : MediaRecorder.isTypeSupported('video/webm') ? 'video/webm' : '';
     const opts = mimeType ? { mimeType } : {};
     mediaRecorder = new MediaRecorder(canvasStream, opts);
     mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
@@ -755,44 +1482,105 @@ function startRecording() {
     };
     mediaRecorder.start(1000);
     document.getElementById('recIndicator').classList.remove('hidden');
-  } catch(e) {
-    console.warn('MediaRecorder not supported:', e);
-  }
+  } catch(e) { console.warn('MediaRecorder not supported:', e); }
 }
-
 function stopRecording() {
   try {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.stop();
-    }
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
     if (canvasStream) { canvasStream.getTracks().forEach(t => t.stop()); canvasStream = null; }
   } catch(e) {}
   document.getElementById('recIndicator').classList.add('hidden');
 }
-
 function saveSessionVideo() {
   if (!recordedBlob) { showError('No video recorded.'); return; }
   const url = URL.createObjectURL(recordedBlob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = 'shotiq-session-' + new Date().toISOString().slice(0,10) + '.webm';
-  a.click();
+  a.href = url; a.download = 'shotiq-session-' + new Date().toISOString().slice(0,10) + '.webm'; a.click();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
   showSuccess('🎬 Video saved!');
 }
 
-// ── Session start ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// SESSION START
+// ════════════════════════════════════════════════════════════════════
 async function startSession() {
+  appMode = 'basketball';
+  await _startCamera();
+  if (!stream) return;
+  // Reset all basketball state
+  sessionShots = []; shotCount = 0; lastShotTime = 0;
+  wristHistory = []; shootingPhase = 'idle'; postPeakWristPositions = [];
+  sessionBestScore = 0; sessionMakes = 0; sessionMisses = 0;
+  makeMissLog = []; makeStreak = 0; maxMakeStreak = 0;
+  pendingMakeMiss = false; kpSmoothBuffers = {}; kpLastSeen = {}; kpFramesSince = {};
+  sessionStartTime = Date.now(); playerDetected = false;
+  hoopCenter = null; hoopPinMode = false;
+  ballTrackEnabled = false;
+  if (ballTracker) { ballTracker.positions = []; }
+  // Reset UI
+  document.getElementById('shotCountEl').textContent = '0';
+  document.getElementById('liveScoreEl').textContent = '–';
+  document.getElementById('releaseBadge').style.display = 'none';
+  document.getElementById('makeMissPopup').classList.add('hidden');
+  document.getElementById('hoopSetIndicator').style.display = 'none';
+  const pctEl = document.getElementById('shotPctEl');
+  if (pctEl) pctEl.style.display = 'none';
+  document.getElementById('btnBallTrack').textContent = '🏀 Ball Track';
+  document.getElementById('btnBallTrack').classList.remove('active');
+  document.getElementById('ballInfoPill').classList.remove('show');
+  // Show basketball UI, hide workout UI
+  document.getElementById('basketballBtns').style.display = '';
+  document.getElementById('statsOverlay').style.display = '';
+  document.getElementById('trackingToolbar').style.display = '';
+  document.getElementById('liveScorePill').style.display = '';
+  document.getElementById('btnStatReset').style.display = '';
+  document.getElementById('workoutOverlay').classList.add('hidden');
+  document.getElementById('trackingToolbar').style.display = '';
+  updateHUD({ elbow:0, height:0, follow:0, overall:0 });
+  initVoice();
+  startRecording();
+  detectLoop();
+}
+
+async function startWorkoutMode() {
+  appMode = 'workout';
+  const hand = document.querySelector('input[name=hand]:checked');
+  shootingHand = hand ? hand.value : 'right';
+  await _startCamera();
+  if (!stream) return;
+  // Reset workout state
+  exerciseCounters = { pushups: 0, jacks: 0, run: 0 };
+  workoutCalories = 0;
+  calibrationFrames = 0; calibrated = false;
+  pushupState = 'idle'; puBaseline = null; puDown = false;
+  jackState = 'neutral'; jackArmsOut = false; jackLegsOut = false;
+  runLastLeft = null; runLastRight = null; runLeftUp = false; runRightUp = false; runStepTimes = [];
+  kpSmoothBuffers = {}; kpLastSeen = {}; kpFramesSince = {};
+  sessionStartTime = Date.now();
+  // Show workout UI, hide basketball UI
+  document.getElementById('basketballBtns').style.display = 'none';
+  document.getElementById('statsOverlay').style.display = 'none';
+  document.getElementById('trackingToolbar').style.display = 'none';
+  document.getElementById('liveScorePill').style.display = 'none';
+  document.getElementById('btnStatReset').style.display = 'none';
+  document.getElementById('workoutOverlay').classList.remove('hidden');
+  // Set active exercise
+  activeExercise = 'pushups';
+  setExercise('pushups');
+  document.getElementById('calibratingMsg').style.display = '';
+  initVoice();
+  detectLoop();
+}
+
+async function _startCamera() {
   showScreen('camera');
   document.getElementById('loadingOverlay').classList.remove('hidden');
+  document.getElementById('loadingText').textContent = 'Loading AI model…';
   document.getElementById('btnSaveVideo').style.display = 'none';
   recordedBlob = null;
-
-  // Request camera
   try {
     stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 } },
-      audio: false,
+      video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false,
     });
     VIDEO.srcObject = stream;
     await new Promise(res => { VIDEO.onloadedmetadata = res; });
@@ -805,64 +1593,43 @@ async function startSession() {
       await VIDEO.play();
     } catch(e2) {
       showError('Camera access denied. Please allow camera permissions.');
-      showScreen('landing');
-      return;
+      showScreen('landing'); return;
     }
   }
-
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
-
   try {
+    document.getElementById('loadingText').textContent = 'Loading pose model (Thunder)…';
     detector = await poseDetection.createDetector(
       poseDetection.SupportedModels.MoveNet,
-      { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
+      { modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER }
     );
   } catch(e) {
-    showError('Failed to load AI model. Check your connection.');
-    showScreen('landing');
-    stopCamera();
-    return;
+    // Fallback to Lightning
+    try {
+      detector = await poseDetection.createDetector(
+        poseDetection.SupportedModels.MoveNet,
+        { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
+      );
+    } catch(e2) {
+      showError('Failed to load AI model. Check your connection.');
+      showScreen('landing'); stopCamera(); return;
+    }
   }
-
   document.getElementById('loadingOverlay').classList.add('hidden');
-
-  // Reset session
-  sessionShots = [];
-  shotCount = 0;
-  lastShotTime = 0;
-  wristHistory = [];
-  shootingPhase = 'idle';
-  postPeakWristPositions = [];
-  sessionBestScore = 0;
-  sessionStartTime = Date.now();
-  playerDetected = false;
-  updateHUD({ elbow:0, height:0, follow:0, overall:0 });
-  document.getElementById('shotCountEl').textContent = '0';
-  document.getElementById('liveScoreEl').textContent = '–';
-  document.getElementById('releaseBadge').style.display = 'none';
-
-  // Init voice
-  initVoice();
-
-  // Start recording
-  startRecording();
-
-  detectLoop();
+  if (!ballTracker) ballTracker = new BallTracker();
 }
 
-function resizeCanvas() {
-  CANVAS.width = window.innerWidth;
-  CANVAS.height = window.innerHeight;
-}
-
+function resizeCanvas() { CANVAS.width = window.innerWidth; CANVAS.height = window.innerHeight; }
 function stopCamera() {
   if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
   if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
   window.removeEventListener('resize', resizeCanvas);
 }
 
-// ── Pose detection loop ────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// DETECTION LOOP
+// ════════════════════════════════════════════════════════════════════
 let lastFrameTime = 0;
 const TARGET_FPS = 18;
 const FRAME_INTERVAL = 1000 / TARGET_FPS;
@@ -879,32 +1646,45 @@ async function detectLoop() {
 
   CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
 
+  // Draw hoop
+  drawHoop();
+
+  // Ball tracking
+  if (ballTrackEnabled && ballTracker) {
+    ballTracker.detect(VIDEO);
+    drawBallTrack();
+  }
+
   if (poses && poses.length > 0) {
-    const pose = poses[0];
-    updatePlayerTracking(pose);
-    drawPose(pose);
-    if (lockOnEnabled) drawTrackingOverlays(pose);
-    analyzePose(pose, now);
+    const raw = poses[0];
+    const smoothed = { ...raw, keypoints: smoothKeypoints(raw.keypoints) };
+    updatePlayerTracking(smoothed);
+    drawPose(smoothed);
+    if (lockOnEnabled) drawTrackingOverlays(smoothed);
+    if (appMode === 'basketball') analyzePose(smoothed, now);
+    else if (appMode === 'workout') analyzeWorkout(smoothed, now);
   } else {
     playerDetected = false;
   }
-  updateTrackingUI();
+  if (appMode === 'basketball') updateTrackingUI();
 }
 
-// ── Player tracking ────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// PLAYER TRACKING (WITH 20% PADDING)
+// ════════════════════════════════════════════════════════════════════
 function updatePlayerTracking(pose) {
   const MIN_CONF = 0.2;
   const kps = pose.keypoints.filter(k => k.score >= MIN_CONF);
   if (kps.length < 3) { playerDetected = false; return; }
-
   playerDetected = true;
   const xs = kps.map(k => toCanvasCoords(k).x);
   const ys = kps.map(k => toCanvasCoords(k).y);
   const minX = Math.min(...xs), maxX = Math.max(...xs);
   const minY = Math.min(...ys), maxY = Math.max(...ys);
+  const padX = (maxX - minX) * 0.2, padY = (maxY - minY) * 0.2;
   playerCenterX = (minX + maxX) / 2;
   playerCenterY = (minY + maxY) / 2;
-  playerHeightFraction = (maxY - minY) / CANVAS.height;
+  playerHeightFraction = ((maxY + padY) - (minY - padY)) / CANVAS.height;
 }
 
 function drawTrackingOverlays(pose) {
@@ -913,58 +1693,47 @@ function drawTrackingOverlays(pose) {
   const MIN_CONF = 0.2;
   const visKps = kps.filter(k => k.score >= MIN_CONF);
   if (visKps.length < 3) return;
-
   const xs = visKps.map(k => toCanvasCoords(k).x);
   const ys = visKps.map(k => toCanvasCoords(k).y);
-  const minX = Math.min(...xs) - 12, maxX = Math.max(...xs) + 12;
-  const minY = Math.min(...ys) - 12, maxY = Math.max(...ys) + 12;
-
-  // Bounding box
+  const padX = (Math.max(...xs) - Math.min(...xs)) * 0.2;
+  const padY = (Math.max(...ys) - Math.min(...ys)) * 0.2;
+  const minX = Math.min(...xs) - padX - 8, maxX = Math.max(...xs) + padX + 8;
+  const minY = Math.min(...ys) - padY - 8, maxY = Math.max(...ys) + padY + 8;
   CTX.strokeStyle = 'rgba(34,197,94,0.7)';
-  CTX.lineWidth = 2;
-  CTX.setLineDash([6, 4]);
+  CTX.lineWidth = 2; CTX.setLineDash([6, 4]);
   CTX.strokeRect(minX, minY, maxX - minX, maxY - minY);
   CTX.setLineDash([]);
-
-  // Target reticle on torso center
   const ls = kps[KP.leftShoulder], rs = kps[KP.rightShoulder];
   const lh = kps[KP.leftHip], rh = kps[KP.rightHip];
   let reticleX = playerCenterX, reticleY = playerCenterY;
-  if (ls && rs && lh && rh && ls.score > MIN_CONF && rs.score > MIN_CONF && lh.score > MIN_CONF && rh.score > MIN_CONF) {
+  if (ls && rs && lh && rh && ls.score > MIN_CONF && rs.score > MIN_CONF) {
     const pls = toCanvasCoords(ls), prs = toCanvasCoords(rs);
     const plh = toCanvasCoords(lh), prh = toCanvasCoords(rh);
     reticleX = (pls.x + prs.x + plh.x + prh.x) / 4;
     reticleY = (pls.y + prs.y + plh.y + prh.y) / 4;
   }
-
   const r = 18;
-  CTX.strokeStyle = 'rgba(34,197,94,0.9)';
-  CTX.lineWidth = 2;
-  // Crosshair
+  CTX.strokeStyle = 'rgba(34,197,94,0.9)'; CTX.lineWidth = 2;
   CTX.beginPath(); CTX.moveTo(reticleX - r, reticleY); CTX.lineTo(reticleX + r, reticleY); CTX.stroke();
   CTX.beginPath(); CTX.moveTo(reticleX, reticleY - r); CTX.lineTo(reticleX, reticleY + r); CTX.stroke();
-  // Circle
   CTX.beginPath(); CTX.arc(reticleX, reticleY, r * 0.6, 0, Math.PI * 2); CTX.stroke();
 }
 
-// ── Draw skeleton ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// DRAW SKELETON
+// ════════════════════════════════════════════════════════════════════
 function toCanvasCoords(kp) {
-  const vw = VIDEO.videoWidth || 640;
-  const vh = VIDEO.videoHeight || 480;
-  const cw = CANVAS.width;
-  const ch = CANVAS.height;
+  const vw = VIDEO.videoWidth || 640, vh = VIDEO.videoHeight || 480;
+  const cw = CANVAS.width, ch = CANVAS.height;
   const scale = Math.max(cw / vw, ch / vh);
-  const ox = (cw - vw * scale) / 2;
-  const oy = (ch - vh * scale) / 2;
-  const mx = cw - (kp.x * scale + ox); // mirror
+  const ox = (cw - vw * scale) / 2, oy = (ch - vh * scale) / 2;
+  const mx = cw - (kp.x * scale + ox);
   const my = kp.y * scale + oy;
   return { x: mx, y: my };
 }
-
 function drawPose(pose) {
   const kps = pose.keypoints;
   const MIN_CONF = 0.25;
-
   CTX.lineWidth = 2.5;
   for (const [a, b] of SKELETON) {
     const ka = kps[a], kb = kps[b];
@@ -973,7 +1742,6 @@ function drawPose(pose) {
     CTX.beginPath(); CTX.moveTo(pa.x, pa.y); CTX.lineTo(pb.x, pb.y);
     CTX.strokeStyle = 'rgba(249,115,22,0.7)'; CTX.stroke();
   }
-
   for (let i = 0; i < kps.length; i++) {
     const kp = kps[i];
     if (!kp || kp.score < MIN_CONF) continue;
@@ -987,21 +1755,20 @@ function drawPose(pose) {
   }
 }
 
-// ── Shot analysis ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// SHOT ANALYSIS (BASKETBALL)
+// ════════════════════════════════════════════════════════════════════
 function analyzePose(pose, now) {
   const kps = pose.keypoints;
   const MIN_CONF = 0.3;
   const wristIdx = shootingHand === 'right' ? KP.rightWrist : KP.leftWrist;
   const elbowIdx = shootingHand === 'right' ? KP.rightElbow : KP.leftElbow;
   const shoulderIdx = shootingHand === 'right' ? KP.rightShoulder : KP.leftShoulder;
-
   const wrist = kps[wristIdx], elbow = kps[elbowIdx], shoulder = kps[shoulderIdx];
   if (!wrist || !elbow || !shoulder) return;
   if (wrist.score < MIN_CONF || elbow.score < MIN_CONF || shoulder.score < MIN_CONF) return;
-
   wristHistory.push({ y: wrist.y, x: wrist.x, time: now });
   wristHistory = wristHistory.filter(h => now - h.time < 800);
-
   const wristNormY = wrist.y;
   const shoulderNormY = shoulder.y;
   const VH = VIDEO.videoHeight || 480;
@@ -1013,19 +1780,14 @@ function analyzePose(pose, now) {
       const deltaT = now - oldest.time;
       const velocity = deltaY / deltaT;
       if (velocity > 0.15 && wristNormY < shoulderNormY) {
-        shootingPhase = 'rising';
-        motionStartTime = now;
-        motionStartY = wristNormY;
-        peakWristY = wristNormY;
-        peakWristTime = now;
-        postPeakWristPositions = [];
+        shootingPhase = 'rising'; motionStartTime = now; motionStartY = wristNormY;
+        peakWristY = wristNormY; peakWristTime = now; postPeakWristPositions = [];
       }
     }
   } else if (shootingPhase === 'rising') {
     if (wristNormY < peakWristY) { peakWristY = wristNormY; peakWristTime = now; }
     if (wristNormY > peakWristY + VH * 0.025) {
-      shootingPhase = 'peaked';
-      postPeakWristPositions = [{ y: wristNormY, time: now }];
+      shootingPhase = 'peaked'; postPeakWristPositions = [{ y: wristNormY, time: now }];
     }
     if (now - motionStartTime > 2000) { shootingPhase = 'idle'; }
   } else if (shootingPhase === 'peaked') {
@@ -1037,8 +1799,7 @@ function analyzePose(pose, now) {
         lastFormScores = scores;
         registerShot(scores, peakWristTime - motionStartTime);
       }
-      shootingPhase = 'idle';
-      wristHistory = [];
+      shootingPhase = 'idle'; wristHistory = [];
     }
     if (now - peakWristTime > 1200) { shootingPhase = 'idle'; }
   }
@@ -1050,10 +1811,8 @@ function scoreShot(kps, peakWristY, peakWristTime, motionStart, postPeak, VH) {
   const elbowIdx = shootingHand === 'right' ? KP.rightElbow : KP.leftElbow;
   const shoulderIdx = shootingHand === 'right' ? KP.rightShoulder : KP.leftShoulder;
   const hipIdx = shootingHand === 'right' ? KP.rightHip : KP.leftHip;
-
   const wrist = kps[wristIdx], elbow = kps[elbowIdx];
   const shoulder = kps[shoulderIdx], hip = kps[hipIdx];
-
   let elbowScore = 0;
   if (wrist && elbow && wrist.score >= MIN_CONF && elbow.score >= MIN_CONF) {
     const dx = Math.abs(wrist.x - elbow.x) / (VIDEO.videoWidth || 640);
@@ -1061,7 +1820,6 @@ function scoreShot(kps, peakWristY, peakWristTime, motionStart, postPeak, VH) {
     if (elbow.y > wrist.y) elbowScore = Math.min(100, elbowScore + 5);
     else elbowScore = Math.max(0, elbowScore - 10);
   } else { elbowScore = 60; }
-
   let heightScore = 0;
   if (shoulder && shoulder.score >= MIN_CONF) {
     const bodyHeight = hip ? (hip.y - shoulder.y) : VH * 0.4;
@@ -1069,7 +1827,6 @@ function scoreShot(kps, peakWristY, peakWristTime, motionStart, postPeak, VH) {
     const normalized = aboveShoulder / (bodyHeight * 0.6);
     heightScore = Math.round(Math.min(100, Math.max(0, 40 + normalized * 80)));
   } else { heightScore = 60; }
-
   let followScore = 0;
   if (postPeak && postPeak.length > 2) {
     const firstY = postPeak[0].y, lastY = postPeak[postPeak.length - 1].y;
@@ -1077,7 +1834,6 @@ function scoreShot(kps, peakWristY, peakWristTime, motionStart, postPeak, VH) {
     const dropRate = (lastY - firstY) / timespan;
     followScore = Math.round(Math.max(0, Math.min(100, 100 - (dropRate / 0.5) * 100)));
   } else { followScore = 55; }
-
   const overall = Math.round((elbowScore + heightScore + followScore) / 3);
   return { elbow: elbowScore, height: heightScore, follow: followScore, overall };
 }
@@ -1085,7 +1841,6 @@ function scoreShot(kps, peakWristY, peakWristTime, motionStart, postPeak, VH) {
 function registerShot(scores, releaseTimeMs) {
   shotCount++;
   lastShotTime = performance.now();
-
   const shot = {
     shotNumber: shotCount,
     timestamp: new Date().toISOString(),
@@ -1096,48 +1851,57 @@ function registerShot(scores, releaseTimeMs) {
     releaseTimeMs: Math.round(releaseTimeMs),
     releaseGrade: releaseGradeShort(releaseTimeMs),
     zones: [...selectedZones],
+    makeResult: null,
   };
   sessionShots.push(shot);
-
   const isPersonalBest = scores.overall > sessionBestScore;
   if (isPersonalBest) sessionBestScore = scores.overall;
-
   updateHUD(scores);
   document.getElementById('shotCountEl').textContent = shotCount;
   document.getElementById('liveScoreEl').textContent = scores.overall;
-
   if (releaseTimeMs > 0 && releaseTimeMs < 3000) {
     document.getElementById('releaseMs').textContent = Math.round(releaseTimeMs) + 'ms';
     document.getElementById('releaseGrade').textContent = releaseGrade(releaseTimeMs);
     document.getElementById('releaseBadge').style.display = 'block';
   }
-
+  // Shot flash
   const flash = document.getElementById('shotFlash');
   flash.classList.remove('show', 'fade');
   void flash.offsetWidth;
   flash.classList.add('show');
   setTimeout(() => { flash.classList.add('fade'); flash.classList.remove('show'); }, 800);
-
-  // Voice feedback
+  // Hoop direction hint (if hoop set)
+  if (hoopCenter && playerDetected) {
+    const playerX = playerCenterX;
+    const hoopX = CANVAS.width - hoopCenter.x; // mirrored canvas
+    const diff = hoopX - playerX;
+    if (Math.abs(diff) > CANVAS.width * 0.1) {
+      const dir = diff > 0 ? 'left' : 'right';
+      const label = document.getElementById('releaseBadge');
+      if (label) {
+        const gradeEl = document.getElementById('releaseGrade');
+        if (gradeEl) { gradeEl.textContent = 'Aim ' + dir; }
+        setTimeout(() => { if (gradeEl) gradeEl.textContent = releaseGrade(releaseTimeMs); }, 2000);
+      }
+    }
+  }
+  // Start hoop detection
+  startHoopDetection();
+  // If no ball tracking or hoop not set, show manual popup
+  if (!ballTrackEnabled || !hoopCenter) {
+    setTimeout(() => showMakeMissPopup(), 1200);
+  }
+  // Form voice feedback
   if (voiceEnabled) {
     const metrics = ['elbow','height','follow'];
     const weakest = metrics.reduce((a,b) => scores[a] < scores[b] ? a : b);
     const weakestLabel = weakest === 'height' ? 'release height' : weakest === 'follow' ? 'follow through' : 'elbow alignment';
-
-    if (isPersonalBest && shotCount > 1) {
-      speak('New personal best! ' + scores.overall + ' percent!');
-    } else if (releaseTimeMs < 250) {
-      speak('Lightning release!');
-    } else if (scores.overall >= 85) {
-      speak('Great shot! ' + scores.overall + ' percent form.');
+    if (scores.overall >= 85) {
+      speak('Great form! ' + scores.overall + ' percent.', 1.1, 1.0);
     } else if (scores.overall >= 70) {
-      speak('Good release, watch your ' + weakestLabel + '.');
+      speak('Good, watch your ' + weakestLabel + '.', 1.1, 1.0);
     } else {
-      speak('Work on your ' + weakestLabel + '.');
-    }
-
-    if (shotCount > 0 && shotCount % 10 === 0) {
-      setTimeout(() => speak('Shot ' + shotCount + '. Keep it up.'), 2500);
+      speak('Work on your ' + weakestLabel + '.', 1.1, 1.0);
     }
   }
 }
@@ -1153,27 +1917,228 @@ function updateHUD(scores) {
   document.getElementById('barOverall').style.width = (scores.overall || 0) + '%';
 }
 
-// ── End Session ────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// WORKOUT MODE
+// ════════════════════════════════════════════════════════════════════
+function setExercise(ex) {
+  activeExercise = ex;
+  ['pushups','jacks','run'].forEach(e => {
+    const tab = document.getElementById('tab' + e.charAt(0).toUpperCase() + e.slice(1));
+    if (tab) tab.classList.toggle('active', e === ex);
+  });
+  updateWorkoutDisplay();
+}
+function resetCurrentExercise() {
+  exerciseCounters[activeExercise] = 0;
+  updateWorkoutDisplay();
+  showSuccess('🔄 Reset!');
+}
+function updateWorkoutDisplay() {
+  const num = exerciseCounters[activeExercise];
+  document.getElementById('wcNum').textContent = num;
+  const labels = { pushups: 'Push-ups', jacks: 'Jumping Jacks', run: 'Steps' };
+  document.getElementById('wcLabel').textContent = labels[activeExercise];
+  const cal = (exerciseCounters.pushups * 0.5 + exerciseCounters.jacks * 0.2 + exerciseCounters.run * 0.1).toFixed(1);
+  document.getElementById('wcCalories').textContent = cal + ' cal burned';
+}
+
+function analyzeWorkout(pose, now) {
+  const kps = pose.keypoints;
+  const MIN_CONF = 0.3;
+  const get = idx => {
+    const k = kps[idx];
+    return (k && k.score >= MIN_CONF) ? toCanvasCoords(k) : null;
+  };
+  // Calibration
+  if (!calibrated) {
+    calibrationFrames++;
+    if (calibrationFrames >= 20) {
+      calibrated = true;
+      document.getElementById('calibratingMsg').style.display = 'none';
+      // Set baseline from current pose
+      const ls = get(KP.leftShoulder), rs = get(KP.rightShoulder);
+      const lh = get(KP.leftHip), rh = get(KP.rightHip);
+      if (ls && rs) puBaseline = (ls.y + rs.y) / 2;
+    }
+    return;
+  }
+
+  if (activeExercise === 'pushups') analyzeWorkoutPushup(pose, now, get);
+  else if (activeExercise === 'jacks') analyzeWorkoutJacks(pose, now, get);
+  else if (activeExercise === 'run') analyzeWorkoutRun(pose, now, get);
+}
+
+function analyzeWorkoutPushup(pose, now, get) {
+  const ls = get(KP.leftShoulder), rs = get(KP.rightShoulder);
+  const lh = get(KP.leftHip), rh = get(KP.rightHip);
+  const la = get(KP.leftAnkle), ra = get(KP.rightAnkle);
+  if (!ls || !rs) return;
+  const shoulderY = (ls.y + rs.y) / 2;
+  const hipY = lh && rh ? (lh.y + rh.y) / 2 : shoulderY + CANVAS.height * 0.2;
+  const bodyHeight = Math.abs(hipY - shoulderY) || CANVAS.height * 0.3;
+  if (!puBaseline) { puBaseline = shoulderY; return; }
+  const downThreshold = puBaseline + bodyHeight * 0.3;
+  const tipEl = document.getElementById('workoutTip');
+  // Form tip: hips should be on the line shoulder-ankle
+  if (la && ra && lh && rh) {
+    const ankleY = (la.y + ra.y) / 2;
+    const expectedHipY = shoulderY + (ankleY - shoulderY) * 0.5;
+    const sagDiff = hipY - expectedHipY;
+    if (sagDiff > CANVAS.height * 0.08 && tipEl) tipEl.textContent = '⚠️ Keep your back straight!';
+    else if (tipEl) tipEl.textContent = '✅ Good form!';
+  }
+  if (pushupState === 'idle' || pushupState === 'up') {
+    if (shoulderY > downThreshold) { pushupState = 'down'; }
+  } else if (pushupState === 'down') {
+    if (shoulderY < downThreshold - bodyHeight * 0.1) {
+      pushupState = 'up';
+      exerciseCounters.pushups++;
+      updateWorkoutDisplay();
+      if (voiceEnabled && exerciseCounters.pushups % 5 === 0) speak(exerciseCounters.pushups + '!', 1.2, 1.1);
+    }
+  }
+}
+
+function analyzeWorkoutJacks(pose, now, get) {
+  const ls = get(KP.leftShoulder), rs = get(KP.rightShoulder);
+  const lw = get(KP.leftWrist), rw = get(KP.rightWrist);
+  const lh = get(KP.leftHip), rh = get(KP.rightHip);
+  const la = get(KP.leftAnkle), ra = get(KP.rightAnkle);
+  const tipEl = document.getElementById('workoutTip');
+  if (!ls || !rs || !lw || !rw) return;
+  const shoulderWidth = Math.abs(rs.x - ls.x);
+  const armsOut = Math.abs(rw.x - lw.x) > shoulderWidth * 1.4 ||
+    (lw.y < ls.y && rw.y < rs.y); // arms raised
+  jackArmsOut = armsOut;
+  let legsOut = false;
+  if (la && ra && lh && rh) {
+    const hipWidth = Math.abs(rh.x - lh.x);
+    legsOut = Math.abs(ra.x - la.x) > hipWidth * 1.4;
+    jackLegsOut = legsOut;
+  }
+  const fullOut = jackArmsOut && (jackLegsOut || !la);
+  if (jackState === 'neutral' && fullOut) { jackState = 'out'; }
+  else if (jackState === 'out' && !jackArmsOut) {
+    jackState = 'neutral';
+    exerciseCounters.jacks++;
+    updateWorkoutDisplay();
+    if (tipEl) tipEl.textContent = '⭐ Jack #' + exerciseCounters.jacks + '!';
+    if (voiceEnabled && exerciseCounters.jacks % 10 === 0) speak(exerciseCounters.jacks + ' jacks!', 1.2, 1.1);
+  }
+  if (tipEl && jackState === 'neutral') tipEl.textContent = '↕️ Arms up + legs out!';
+  if (tipEl && jackState === 'out') tipEl.textContent = '⬇️ Back to neutral!';
+}
+
+function analyzeWorkoutRun(pose, now, get) {
+  const lk = get(KP.leftKnee), rk = get(KP.rightKnee);
+  const lh = get(KP.leftHip), rh = get(KP.rightHip);
+  const tipEl = document.getElementById('workoutTip');
+  if (!lk || !rk) return;
+  const hipY = lh && rh ? (lh.y + rh.y) / 2 : (lk.y + rk.y) / 2 + CANVAS.height * 0.1;
+  const restY = hipY + (lk.y > rk.y ? (lk.y - hipY) : (rk.y - hipY)) * 0.2;
+  const threshold = CANVAS.height * 0.06;
+  // Left knee
+  const leftUp = lk.y < hipY - threshold;
+  const rightUp = rk.y < hipY - threshold;
+  if (leftUp && !runLeftUp) {
+    runLeftUp = true;
+    if (runRightUp) { runRightUp = false; }
+  } else if (!leftUp && runLeftUp) { runLeftUp = false; }
+  if (rightUp && !runRightUp) {
+    runRightUp = true;
+    if (!runLeftUp) {
+      exerciseCounters.run++;
+      runStepTimes.push(now);
+      runStepTimes = runStepTimes.filter(t => now - t < 60000);
+      updateWorkoutDisplay();
+    }
+  } else if (!rightUp && runRightUp) { runRightUp = false; }
+  // Cadence
+  const recentSteps = runStepTimes.filter(t => now - t < 10000);
+  const cadence = recentSteps.length >= 2 ? Math.round((recentSteps.length / 10) * 60) : 0;
+  if (tipEl) tipEl.textContent = cadence > 0 ? `Cadence: ${cadence} steps/min` : '🏃 Lift those knees!';
+}
+
+// ════════════════════════════════════════════════════════════════════
+// END SESSION
+// ════════════════════════════════════════════════════════════════════
 function endSession() {
   stopRecording();
   stopCamera();
-  buildSummary();
-  saveSessionToStorage();
+  if (appMode === 'workout') {
+    buildWorkoutSummary();
+  } else {
+    buildSummary();
+    saveSessionToStorage();
+  }
   showScreen('summary');
 }
 
+function buildWorkoutSummary() {
+  // Show workout summary in the summary screen
+  document.getElementById('summaryTitle').textContent = 'Workout Complete 💪';
+  const total = exerciseCounters.pushups + exerciseCounters.jacks + exerciseCounters.run;
+  document.getElementById('summarySubtitle').textContent = total + ' total reps';
+  const cal = (exerciseCounters.pushups * 0.5 + exerciseCounters.jacks * 0.2 + exerciseCounters.run * 0.1).toFixed(1);
+  document.getElementById('summaryAvgScore').textContent = cal;
+  document.getElementById('summaryScoreLabel').textContent = 'Calories Burned';
+  document.getElementById('summaryAvgScore').className = 'big-score-num score-green';
+  document.getElementById('summaryShots').textContent = exerciseCounters.pushups;
+  document.getElementById('summaryShot1Label').textContent = 'Push-ups';
+  document.getElementById('summaryBest').textContent = exerciseCounters.jacks;
+  document.getElementById('summaryBest').style.color = 'var(--green)';
+  document.getElementById('summaryRelease').textContent = exerciseCounters.run;
+  document.getElementById('summaryReleaseGrade').textContent = '–';
+  document.getElementById('summaryStatsGrid').querySelectorAll('.stat-card-label')[1].textContent = 'Jumping Jacks';
+  document.getElementById('summaryStatsGrid').querySelectorAll('.stat-card-label')[2].textContent = 'Run Steps';
+  document.getElementById('mmSummaryCard').style.display = 'none';
+  document.getElementById('formBreakdown').style.display = 'none';
+  document.getElementById('shotChartCard').style.display = 'none';
+  document.getElementById('summaryPlayerRow').style.display = 'none';
+  const durationSec = Math.round((Date.now() - sessionStartTime) / 1000);
+  const tips = [];
+  if (exerciseCounters.pushups > 0) tips.push(`💪 ${exerciseCounters.pushups} push-ups = ~${(exerciseCounters.pushups * 0.5).toFixed(1)} cal`);
+  if (exerciseCounters.jacks > 0) tips.push(`⭐ ${exerciseCounters.jacks} jumping jacks = ~${(exerciseCounters.jacks * 0.2).toFixed(1)} cal`);
+  if (exerciseCounters.run > 0) tips.push(`🏃 ${exerciseCounters.run} steps = ~${(exerciseCounters.run * 0.1).toFixed(1)} cal`);
+  tips.push('Great workout! Hydrate and stretch! 💧');
+  document.getElementById('coachTips').innerHTML = tips.map(t =>
+    `<div class="coach-tip"><span class="coach-bullet">•</span><span>${t}</span></div>`).join('');
+}
+
 function buildSummary() {
+  // Restore summary elements
+  document.getElementById('formBreakdown').style.display = '';
+  document.getElementById('shotChartCard').style.display = '';
+  document.getElementById('summaryTitle').textContent = 'Session Complete 🏆';
+  document.getElementById('summaryScoreLabel').textContent = 'Average Form Score';
+  document.getElementById('summaryShot1Label').textContent = 'Shot Attempts';
+
+  // Player row
+  if (currentProfile) {
+    const pr = document.getElementById('summaryPlayerRow');
+    const av = document.getElementById('summaryAvatar');
+    const pn = document.getElementById('summaryPlayerName');
+    const pp = document.getElementById('summaryPlayerPos');
+    pr.style.display = 'flex';
+    av.textContent = currentProfile.name.charAt(0).toUpperCase();
+    pn.textContent = currentProfile.name + (currentProfile.number ? ' #'+currentProfile.number : '');
+    pp.textContent = (currentProfile.position || '') + ' · ' + (currentProfile.hand === 'left' ? 'Left' : 'Right') + ' hand';
+  } else { document.getElementById('summaryPlayerRow').style.display = 'none'; }
+
   if (sessionShots.length === 0) {
     document.getElementById('summarySubtitle').textContent = 'No shots detected this session.';
     document.getElementById('summaryAvgScore').textContent = '–';
+    document.getElementById('summaryAvgScore').className = 'big-score-num';
     document.getElementById('summaryAvgScore').style.color = 'var(--muted)';
     document.getElementById('summaryShots').textContent = '0';
     document.getElementById('summaryBest').textContent = '–';
+    document.getElementById('summaryBest').style.color = 'var(--gold)';
     document.getElementById('summaryRelease').textContent = '–';
     document.getElementById('summaryReleaseGrade').textContent = '–';
     ['bElbow','bHeight','bFollow'].forEach(id => document.getElementById(id).style.width = '0%');
     ['pElbow','pHeight','pFollow'].forEach(id => document.getElementById(id).textContent = '–');
     document.getElementById('coachTips').innerHTML = '<div class="coach-tip"><span class="coach-bullet">•</span>No shots detected. Make sure you\'re in frame and try again!</div>';
+    document.getElementById('mmSummaryCard').style.display = 'none';
     drawShotChart([]);
     return;
   }
@@ -1186,22 +2151,19 @@ function buildSummary() {
   const bestOverall = Math.max(...sessionShots.map(x => x.formScore));
   const validReleases = sessionShots.filter(x => x.releaseTimeMs > 0 && x.releaseTimeMs < 3000);
   const avgRelease = validReleases.length > 0
-    ? Math.round(validReleases.reduce((s,x) => s + x.releaseTimeMs, 0) / validReleases.length)
-    : null;
-  const durationSec = Math.round((Date.now() - sessionStartTime) / 1000);
-
-  document.getElementById('summarySubtitle').textContent = `${n} shot${n === 1 ? '' : 's'} analyzed`;
+    ? Math.round(validReleases.reduce((s,x) => s + x.releaseTimeMs, 0) / validReleases.length) : null;
+  document.getElementById('summarySubtitle').textContent = `${n} shot${n===1?'':'s'} analyzed`;
   const avgEl = document.getElementById('summaryAvgScore');
   avgEl.textContent = avgOverall;
   avgEl.className = 'big-score-num ' + (avgOverall >= 80 ? 'score-green' : avgOverall >= 60 ? 'score-yellow' : 'score-red');
-
+  avgEl.style.color = '';
   document.getElementById('summaryShots').textContent = n;
   document.getElementById('summaryBest').textContent = bestOverall;
+  document.getElementById('summaryBest').style.color = 'var(--gold)';
   document.getElementById('summaryRelease').textContent = avgRelease ? avgRelease + 'ms' : '–';
   const rg = releaseGradeShort(avgRelease);
   const rgEl = document.getElementById('summaryReleaseGrade');
-  rgEl.textContent = rg;
-  rgEl.style.color = rg === 'Elite' ? 'var(--green)' : rg === 'Good' ? 'var(--yellow)' : 'var(--red)';
+  rgEl.textContent = rg; rgEl.style.color = rg === 'Elite' ? 'var(--green)' : rg === 'Good' ? 'var(--yellow)' : 'var(--red)';
 
   setTimeout(() => {
     document.getElementById('bElbow').style.width = avgElbow + '%';
@@ -1212,102 +2174,80 @@ function buildSummary() {
   document.getElementById('pHeight').textContent = avgHeight + '%';
   document.getElementById('pFollow').textContent = avgFollow + '%';
 
-  // Draw shot chart
-  drawShotChart(selectedZones);
+  // Make/Miss summary
+  const mm = document.getElementById('mmSummaryCard');
+  const trackedShots = sessionShots.filter(s => s.makeResult !== null);
+  if (trackedShots.length > 0) {
+    mm.style.display = '';
+    const makes = trackedShots.filter(s => s.makeResult === 'make').length;
+    const total = trackedShots.length;
+    const pct = Math.round((makes / total) * 100);
+    document.getElementById('mmMakes').textContent = makes;
+    document.getElementById('mmTotal').textContent = total;
+    document.getElementById('mmPct').textContent = pct + '%';
+    setTimeout(() => {
+      document.getElementById('mmMakeBar').style.width = pct + '%';
+      document.getElementById('mmMissBar').style.width = (100 - pct) + '%';
+    }, 100);
+    document.getElementById('mmMakePct').textContent = makes;
+    document.getElementById('mmMissPct').textContent = total - makes;
+    const sb = document.getElementById('summaryStreakBadge');
+    if (maxMakeStreak >= 3) {
+      sb.style.display = '';
+      sb.innerHTML = `🔥 Best streak: ${maxMakeStreak} in a row!`;
+    } else { sb.style.display = 'none'; }
+  } else { mm.style.display = 'none'; }
 
-  // AI Coach
+  drawShotChart(selectedZones);
   buildCoachTips({ avgElbow, avgHeight, avgFollow, avgOverall, avgRelease, n });
 }
 
-// ── AI Coach Tips ──────────────────────────────────────────────────────────
 function buildCoachTips({ avgElbow, avgHeight, avgFollow, avgOverall, avgRelease, n }) {
   const tips = [];
-
-  if (avgElbow < 70) tips.push("Your elbow alignment needs work. Keep your elbow directly under the ball, pointing at the basket. Think of forming an 'L' with your arm.");
-  if (avgHeight < 70) tips.push("Release the ball higher. Extend fully at the peak of your jump — your release point should be above your forehead.");
-  if (avgFollow < 70) tips.push("Hold your follow-through! Keep your wrist snapped down (like reaching into a cookie jar on a high shelf) for at least 1 second after release.");
-  if (avgRelease && avgRelease > 350) tips.push("Your release is slow. Work on quickening your gather-to-release motion. Try 'catch and shoot' drills.");
+  if (avgElbow < 70) tips.push("Elbow alignment needs work. Keep your elbow under the ball, pointing at the basket.");
+  if (avgHeight < 70) tips.push("Release the ball higher. Extend fully at peak — release point above your forehead.");
+  if (avgFollow < 70) tips.push("Hold your follow-through! Wrist snapped down for 1 second after release.");
+  if (avgRelease && avgRelease > 350) tips.push("Your release is slow. Work on quickening gather-to-release. Try catch-and-shoot drills.");
   if (avgRelease && avgRelease < 250) tips.push("Elite release speed! 🔥 Focus on maintaining this while keeping form consistent.");
-  if (avgOverall > 85) tips.push("Excellent session! 💪 Challenge yourself — try shots from further out or add more fatigue sets.");
+  if (avgOverall > 85) tips.push("Excellent session! 💪 Challenge yourself — try shots from further out.");
   if (n < 10) tips.push("Short session. Aim for 50+ shots per session for meaningful improvement.");
   tips.push("Consistency beats perfection. Come back tomorrow!");
-
-  // Show max 4 tips
   const shown = tips.slice(0, 4);
-  const container = document.getElementById('coachTips');
-  container.innerHTML = shown.map(t =>
-    `<div class="coach-tip"><span class="coach-bullet">•</span><span>${t}</span></div>`
-  ).join('');
+  document.getElementById('coachTips').innerHTML = shown.map(t =>
+    `<div class="coach-tip"><span class="coach-bullet">•</span><span>${t}</span></div>`).join('');
 }
 
-// ── Shot Chart (Canvas) ────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// SHOT CHART
+// ════════════════════════════════════════════════════════════════════
 function drawShotChart(zones) {
   const canvas = document.getElementById('shotChartCanvas');
   const W = canvas.offsetWidth || 340;
-  canvas.width = W;
-  canvas.height = 200;
+  canvas.width = W; canvas.height = 220;
   const ctx = canvas.getContext('2d');
-
-  // Court colors
-  const courtBg = '#1a1a1a';
-  const lineColor = 'rgba(255,255,255,0.3)';
-  const laneColor = 'rgba(249,115,22,0.12)';
-
-  ctx.fillStyle = courtBg;
-  ctx.fillRect(0, 0, W, 200);
-
-  // Scale: half court occupies full canvas
-  // Court: 47 ft wide, 50 ft half. Scale to canvas
-  const scaleX = W / 500;
-  const scaleY = 200 / 470;
-
-  function cx(x) { return x * scaleX; }  // 0-500 (court 0-500 units)
-  function cy(y) { return y * scaleY; }  // 0-470 (court 0-470 units)
-
-  ctx.strokeStyle = lineColor;
-  ctx.lineWidth = 1.5;
-
-  // Baseline
+  ctx.fillStyle = '#1a1a1a'; ctx.fillRect(0, 0, W, 220);
+  const scaleX = W / 500, scaleY = 220 / 490;
+  const cx = x => x * scaleX, cy = y => y * scaleY;
+  const lineColor = 'rgba(255,255,255,0.3)', laneColor = 'rgba(249,115,22,0.1)';
+  ctx.strokeStyle = lineColor; ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.moveTo(0, cy(470)); ctx.lineTo(W, cy(470)); ctx.stroke();
-  // Sidelines
   ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, cy(470)); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(W, 0); ctx.lineTo(W, cy(470)); ctx.stroke();
-
-  // Paint / lane (16 ft wide = 160 units, 19 ft deep = 190 units)
   ctx.fillStyle = laneColor;
   ctx.fillRect(cx(170), cy(280), cx(160), cy(190));
   ctx.strokeRect(cx(170), cy(280), cx(160), cy(190));
-
-  // Free-throw circle
-  ctx.beginPath();
-  ctx.arc(cx(250), cy(280), cx(60), 0, Math.PI * 2);
-  ctx.stroke();
-
-  // Free-throw line
+  ctx.beginPath(); ctx.arc(cx(250), cy(280), cx(60), 0, Math.PI * 2); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(cx(170), cy(280)); ctx.lineTo(cx(330), cy(280)); ctx.stroke();
-
-  // Basket
   ctx.beginPath(); ctx.arc(cx(250), cy(430), cx(10), 0, Math.PI * 2);
   ctx.strokeStyle = 'rgba(251,191,36,0.8)'; ctx.lineWidth = 2; ctx.stroke();
-
-  // Backboard
   ctx.strokeStyle = lineColor; ctx.lineWidth = 3;
   ctx.beginPath(); ctx.moveTo(cx(210), cy(460)); ctx.lineTo(cx(290), cy(460)); ctx.stroke();
-
-  // 3-point arc (radius ~237 units from basket)
   ctx.strokeStyle = lineColor; ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.arc(cx(250), cy(430), cx(237), Math.PI * 1.08, Math.PI * 1.92);
-  ctx.stroke();
-
-  // 3-point corner lines
+  ctx.beginPath(); ctx.arc(cx(250), cy(430), cx(237), Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(cx(30), cy(280)); ctx.lineTo(cx(30), cy(470)); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(cx(470), cy(280)); ctx.lineTo(cx(470), cy(470)); ctx.stroke();
-
-  // Restrict arc
   ctx.beginPath(); ctx.arc(cx(250), cy(430), cx(40), Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
 
-  // Zone hit regions (highlight selected zones)
   const zoneRects = {
     'paint':          { x: cx(190), y: cy(300), w: cx(120), h: cy(130) },
     'left-block':     { x: cx(170), y: cy(370), w: cx(50), h: cy(60) },
@@ -1323,45 +2263,93 @@ function drawShotChart(zones) {
     'mid-lane':       { x: cx(195), y: cy(185), w: cx(110), h: cy(80) },
   };
 
-  // Zone scores from session
-  const zoneScoreMap = {};
+  // Zone score map (form scores)
+  const zoneScoreMap = {}, zoneMakeMap = {}, zoneMissMake = {};
   sessionShots.forEach(s => {
     if (s.zones && s.zones.length) {
       s.zones.forEach(z => {
-        if (!zoneScoreMap[z]) zoneScoreMap[z] = [];
+        if (!zoneScoreMap[z]) { zoneScoreMap[z] = []; zoneMakeMap[z] = { makes:0, total:0 }; }
         zoneScoreMap[z].push(s.formScore);
+        if (s.makeResult) {
+          zoneMakeMap[z].total++;
+          if (s.makeResult === 'make') zoneMakeMap[z].makes++;
+        }
       });
     }
   });
 
-  // Draw zones
+  // Find best zone
+  let bestZone = null, bestPct = -1;
+  for (const [z, mm] of Object.entries(zoneMakeMap)) {
+    if (mm.total >= 2) {
+      const pct = mm.makes / mm.total;
+      if (pct > bestPct) { bestPct = pct; bestZone = z; }
+    }
+  }
+
   for (const [zone, rect] of Object.entries(zoneRects)) {
     const isSelected = zones.includes(zone);
     const scores = zoneScoreMap[zone];
+    const mm = zoneMakeMap[zone];
     if (scores && scores.length) {
       const avg = scores.reduce((a,b) => a+b, 0) / scores.length;
-      // Heat map: 0=red, 100=green
       const r = Math.round(239 - (avg/100) * (239 - 34));
-      const g = Math.round(68  + (avg/100) * (197 - 68));
+      const g = Math.round(68 + (avg/100) * (197 - 68));
       ctx.fillStyle = `rgba(${r},${g},68,0.45)`;
       ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
       ctx.fillStyle = '#fff';
       ctx.font = `bold ${Math.round(9 * scaleX * 5)}px sans-serif`;
       ctx.textAlign = 'center';
-      ctx.fillText(Math.round(avg), rect.x + rect.w/2, rect.y + rect.h/2 + 4);
+      // Show make% if available
+      if (mm && mm.total > 0) {
+        const pct = Math.round((mm.makes / mm.total) * 100);
+        ctx.fillText(pct + '%', rect.x + rect.w/2, rect.y + rect.h/2 + 4);
+      } else {
+        ctx.fillText(Math.round(avg), rect.x + rect.w/2, rect.y + rect.h/2 + 4);
+      }
     } else if (isSelected) {
       ctx.fillStyle = 'rgba(249,115,22,0.35)';
       ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
-      ctx.strokeStyle = 'rgba(249,115,22,0.8)';
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(249,115,22,0.8)'; ctx.lineWidth = 1.5;
       ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
     }
   }
 
-  ctx.textAlign = 'left'; // reset
+  // Draw shot dots (make/miss markers)
+  const shotsWithResult = sessionShots.filter(s => s.makeResult !== null);
+  if (shotsWithResult.length > 0 && zones.length > 0) {
+    shotsWithResult.forEach((s, idx) => {
+      if (!s.zones || s.zones.length === 0) return;
+      const zone = s.zones[0];
+      const rect = zoneRects[zone];
+      if (!rect) return;
+      const dotX = rect.x + rect.w / 2 + (idx % 3 - 1) * 12;
+      const dotY = rect.y + 10 + Math.floor(idx / 3) * 14;
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 5, 0, Math.PI * 2);
+      ctx.fillStyle = s.makeResult === 'make' ? 'rgba(34,197,94,0.9)' : 'rgba(239,68,68,0.9)';
+      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 7px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(s.shotNumber, dotX, dotY + 2.5);
+    });
+  }
+
+  ctx.textAlign = 'left';
+
+  // Best zone label
+  const bzEl = document.getElementById('bestZoneRow');
+  if (bzEl) {
+    if (bestZone) {
+      bzEl.textContent = '🏆 Best zone: ' + bestZone.replace(/-/g, ' ') + ' (' + Math.round(bestPct * 100) + '%)';
+    } else { bzEl.textContent = ''; }
+  }
 }
 
-// ── Save session to localStorage ──────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// SAVE / SHARE
+// ════════════════════════════════════════════════════════════════════
 function saveSessionToStorage() {
   if (sessionShots.length === 0) return;
   const n = sessionShots.length;
@@ -1369,9 +2357,9 @@ function saveSessionToStorage() {
   const bestOverall = Math.max(...sessionShots.map(x => x.formScore));
   const validReleases = sessionShots.filter(x => x.releaseTimeMs > 0 && x.releaseTimeMs < 3000);
   const avgRelease = validReleases.length > 0
-    ? Math.round(validReleases.reduce((s,x) => s + x.releaseTimeMs, 0) / validReleases.length)
-    : null;
-
+    ? Math.round(validReleases.reduce((s,x) => s + x.releaseTimeMs, 0) / validReleases.length) : null;
+  const trackedShots = sessionShots.filter(s => s.makeResult !== null);
+  const makes = trackedShots.filter(s => s.makeResult === 'make').length;
   const record = {
     sessionId: generateUUID(),
     date: new Date(sessionStartTime).toISOString(),
@@ -1382,70 +2370,62 @@ function saveSessionToStorage() {
     avgReleaseTime: avgRelease,
     hand: shootingHand,
     zones: [...selectedZones],
+    makes, misses: trackedShots.length - makes,
+    makePercent: trackedShots.length > 0 ? Math.round((makes / trackedShots.length) * 100) : null,
+    maxStreak: maxMakeStreak,
+    profileId: currentProfile ? currentProfile.id : null,
+    profileName: currentProfile ? currentProfile.name : null,
     shots: sessionShots,
   };
-
   let sessions = [];
   try { sessions = JSON.parse(localStorage.getItem('shotiq_sessions') || '[]'); } catch(e) {}
   sessions.unshift(record);
-  sessions = sessions.slice(0, 10); // keep last 10
+  sessions = sessions.slice(0, 20);
   try { localStorage.setItem('shotiq_sessions', JSON.stringify(sessions)); } catch(e) {}
-
-  // Store current session for JSON download
   window._currentSession = record;
   checkPastSessionsButton();
 }
-
 function checkPastSessionsButton() {
   try {
     const sessions = JSON.parse(localStorage.getItem('shotiq_sessions') || '[]');
     document.getElementById('btnPastSessions').style.display = sessions.length > 0 ? '' : 'none';
   } catch(e) {}
 }
-
 function saveSessionJSON() {
   const data = window._currentSession;
-  if (!data) { showError('No session data available.'); return; }
-  const json = JSON.stringify(data, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
+  if (!data) { showError('No session data.'); return; }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'shotiq-session-' + new Date(data.date).toISOString().slice(0,10) + '.json';
-  a.click();
+  const a = document.createElement('a'); a.href = url;
+  a.download = 'shotiq-' + new Date(data.date).toISOString().slice(0,10) + '.json'; a.click();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
   showSuccess('💾 Stats saved!');
 }
-
 function copySessionSummary() {
   const data = window._currentSession;
-  if (!data) { showError('No session data available.'); return; }
+  if (!data) { showError('No session data.'); return; }
   const lines = [
     '🏀 ShotIQ Session Summary',
     `Date: ${new Date(data.date).toLocaleString()}`,
+    `Player: ${data.profileName || 'Anonymous'}`,
     `Shots: ${data.totalShots}`,
     `Avg Form Score: ${data.avgFormScore}/100`,
     `Best Score: ${data.bestFormScore}/100`,
     data.avgReleaseTime ? `Avg Release: ${data.avgReleaseTime}ms` : '',
+    data.makePercent !== null ? `Shot %: ${data.makePercent}% (${data.makes}/${data.makes+data.misses})` : '',
+    data.maxStreak >= 3 ? `🔥 Best streak: ${data.maxStreak} in a row` : '',
     `Hand: ${data.hand}`,
     data.zones && data.zones.length ? `Zones: ${data.zones.join(', ')}` : '',
-    '',
-    'Analyzed with ShotIQ — shotiq.app',
+    '', 'Analyzed with ShotIQ',
   ].filter(Boolean).join('\n');
-
   if (navigator.clipboard) {
     navigator.clipboard.writeText(lines).then(() => showSuccess('📋 Copied!'));
-  } else {
-    showError('Clipboard not available on this browser.');
-  }
+  } else { showError('Clipboard not available.'); }
 }
-
-// ── Past Sessions ─────────────────────────────────────────────────────────
 function showPastSessions() {
   const container = document.getElementById('pastSessionsList');
   let sessions = [];
   try { sessions = JSON.parse(localStorage.getItem('shotiq_sessions') || '[]'); } catch(e) {}
-
   if (sessions.length === 0) {
     container.innerHTML = '<div class="no-sessions">No past sessions yet. Get shooting! 🏀</div>';
   } else {
@@ -1453,17 +2433,20 @@ function showPastSessions() {
       const d = new Date(s.date);
       const dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
       const color = s.avgFormScore >= 80 ? 'var(--green)' : s.avgFormScore >= 60 ? 'var(--yellow)' : 'var(--red)';
+      const mmStr = s.makePercent !== null ? ` · ${s.makePercent}% FG` : '';
       return `<div class="past-session-row" onclick="togglePastDetail(this)">
         <div class="past-row-header">
           <div>
-            <div class="past-date">${dateStr}</div>
-            <div class="past-meta">${s.totalShots} shots · ${s.hand} hand${s.zones && s.zones.length ? ' · ' + s.zones[0].replace(/-/g,' ') : ''}</div>
+            <div class="past-date">${dateStr}${s.profileName ? ' · ' + s.profileName : ''}</div>
+            <div class="past-meta">${s.totalShots} shots · ${s.hand} hand${mmStr}</div>
           </div>
           <div class="past-score" style="color:${color}">${s.avgFormScore}</div>
         </div>
         <div class="past-details" id="pd-${i}">
           <div class="past-detail-row"><span>Best Score</span><span>${s.bestFormScore}</span></div>
           ${s.avgReleaseTime ? `<div class="past-detail-row"><span>Avg Release</span><span>${s.avgReleaseTime}ms</span></div>` : ''}
+          ${s.makePercent !== null ? `<div class="past-detail-row"><span>FG%</span><span>${s.makePercent}% (${s.makes}/${s.makes+s.misses})</span></div>` : ''}
+          ${s.maxStreak >= 3 ? `<div class="past-detail-row"><span>🔥 Best Streak</span><span>${s.maxStreak}</span></div>` : ''}
           <div class="past-detail-row"><span>Duration</span><span>${Math.round(s.duration/60)}m ${s.duration%60}s</span></div>
           ${s.zones && s.zones.length ? `<div class="past-detail-row"><span>Zones</span><span>${s.zones.map(z=>z.replace(/-/g,' ')).join(', ')}</span></div>` : ''}
         </div>
@@ -1472,35 +2455,31 @@ function showPastSessions() {
   }
   showScreen('past-sessions');
 }
-
 function togglePastDetail(row) {
   const details = row.querySelector('.past-details');
   if (details) details.classList.toggle('open');
 }
-
-// ── Share / New Session ────────────────────────────────────────────────────
 async function shareStats() {
   try {
     if (navigator.share) {
       const n = sessionShots.length;
       const avg = n > 0 ? Math.round(sessionShots.reduce((s,x) => s + x.formScore, 0) / n) : 0;
+      const mmStr = sessionMakes + sessionMisses > 0 ? ` · ${Math.round(sessionMakes/(sessionMakes+sessionMisses)*100)}% FG` : '';
       await navigator.share({
         title: 'My ShotIQ Session',
-        text: `Just analyzed my jump shot! 🏀 ${n} shots, avg form score: ${avg}/100. Try ShotIQ!`,
+        text: `🏀 ${n} shots, ${avg}/100 form score${mmStr}. Try ShotIQ!`,
         url: window.location.href,
       });
-    } else {
-      showError('Use your phone\'s screenshot button to capture the stats!');
-    }
+    } else { showError('Use your phone\'s screenshot to capture stats!'); }
   } catch(e) {}
 }
+function newSession() { showScreen('landing'); }
 
-function newSession() {
-  showScreen('landing');
-}
-
-// ── Init ──────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════════
 checkPastSessionsButton();
+updateLandingProfileBar();
 </script>
 </body>
 </html>
