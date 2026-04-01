@@ -38,7 +38,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* ─── SCREENS ─── */
     .screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.35s ease; }
     .screen.hidden { opacity: 0; pointer-events: none; }
 
@@ -48,25 +47,126 @@
       padding: 32px 24px;
       text-align: center;
       gap: 0;
+      overflow-y: auto;
+      justify-content: center;
     }
     .ball-icon { font-size: 72px; margin-bottom: 12px; animation: bounce 2s ease-in-out infinite; }
     @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
     .app-name { font-size: 42px; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, var(--orange), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .app-tagline { font-size: 15px; color: var(--muted); margin-top: 8px; line-height: 1.5; max-width: 300px; }
-    .features { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 32px 0; width: 100%; max-width: 360px; }
+    .features { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 24px 0 12px; width: 100%; max-width: 360px; }
     .feat { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); border-radius: 12px; padding: 14px 10px; text-align: center; }
     .feat-icon { font-size: 24px; margin-bottom: 4px; }
     .feat-label { font-size: 12px; color: var(--muted); font-weight: 500; }
     .btn-primary { background: var(--orange); color: #fff; border: none; border-radius: var(--radius); padding: 18px 36px; font-size: 17px; font-weight: 700; cursor: pointer; width: 100%; max-width: 360px; letter-spacing: 0.3px; transition: transform 0.15s, opacity 0.15s; }
     .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
-    .hand-toggle { display: flex; align-items: center; gap: 10px; margin-top: 18px; font-size: 14px; color: var(--muted); }
+    .hand-toggle { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 14px; color: var(--muted); }
     .hand-toggle label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
     .hand-toggle input[type=radio] { accent-color: var(--orange); width: 16px; height: 16px; }
+    .btn-ghost { background: transparent; border: 1px solid rgba(249,115,22,0.3); color: var(--orange); border-radius: var(--radius); padding: 13px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; max-width: 360px; margin-top: 10px; transition: background 0.2s; }
+    .btn-ghost:active { background: rgba(249,115,22,0.1); }
+
+    /* ─── ZONE SELECT ─── */
+    #zone-select {
+      background: var(--bg);
+      overflow-y: auto;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+    .zone-select-inner {
+      width: 100%; max-width: 440px; margin: 0 auto;
+      padding: calc(env(safe-area-inset-top, 16px) + 16px) 20px calc(env(safe-area-inset-bottom, 0px) + 20px);
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .zone-select-inner h2 { font-size: 22px; font-weight: 800; color: var(--text); }
+    .zone-select-inner p { font-size: 14px; color: var(--muted); }
+    .zone-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .zone-btn {
+      background: var(--surface-solid);
+      border: 2px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 12px 8px;
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      cursor: pointer; text-align: center; transition: all 0.2s;
+      line-height: 1.3;
+    }
+    .zone-btn .zone-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .zone-btn.selected { border-color: var(--orange); color: var(--orange); background: rgba(249,115,22,0.12); }
+    .zone-btn:active { transform: scale(0.96); }
 
     /* ─── CAMERA ─── */
     #camera { background: #000; padding: 0; justify-content: flex-start; }
     #videoEl { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     #poseCanvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* Tracking toolbar */
+    .tracking-toolbar {
+      position: absolute;
+      top: calc(env(safe-area-inset-top, 16px) + 56px);
+      left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 15;
+    }
+    .track-pill {
+      background: var(--surface); backdrop-filter: blur(12px);
+      border-radius: 50px; padding: 6px 12px;
+      font-size: 12px; font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.1);
+      white-space: nowrap; transition: all 0.3s;
+    }
+    .track-pill.locked { border-color: rgba(34,197,94,0.5); color: var(--green); }
+    .track-pill.searching { color: var(--muted); }
+    .track-pill.closer { border-color: rgba(249,115,22,0.5); color: var(--orange); }
+
+    /* Directional arrows */
+    .dir-arrow {
+      position: absolute; z-index: 15;
+      background: rgba(249,115,22,0.85); color: #fff;
+      border-radius: 10px; padding: 8px 14px;
+      font-size: 14px; font-weight: 700;
+      pointer-events: none; opacity: 0; transition: opacity 0.3s;
+      backdrop-filter: blur(8px);
+    }
+    .dir-arrow.show { opacity: 1; }
+    #arrowLeft  { left: 12px;  top: 50%; transform: translateY(-50%); }
+    #arrowRight { right: 12px; top: 50%; transform: translateY(-50%); }
+    #arrowUp    { top: calc(env(safe-area-inset-top, 16px) + 120px); left: 50%; transform: translateX(-50%); }
+    #arrowDown  { bottom: calc(env(safe-area-inset-bottom, 0px) + 140px); left: 50%; transform: translateX(-50%); }
+
+    /* REC indicator */
+    .rec-indicator {
+      position: absolute;
+      top: calc(env(safe-area-inset-top, 16px) + 4px);
+      left: 16px; z-index: 20;
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(0,0,0,0.5); border-radius: 20px; padding: 4px 10px;
+    }
+    .rec-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); animation: blink 1.2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .rec-text { font-size: 11px; font-weight: 700; color: var(--red); letter-spacing: 1px; }
+    .rec-indicator.hidden { display: none; }
+
+    /* Lock-On button */
+    .btn-lockon {
+      position: absolute;
+      top: calc(env(safe-area-inset-top, 16px) + 4px);
+      right: 80px; z-index: 20;
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-lockon.active { border-color: rgba(34,197,94,0.6); color: var(--green); background: rgba(34,197,94,0.1); }
+
+    /* Voice coach button */
+    .btn-voice {
+      position: absolute;
+      top: calc(env(safe-area-inset-top, 16px) + 36px);
+      right: 16px; z-index: 20;
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-voice.active { border-color: rgba(249,115,22,0.6); color: var(--orange); background: rgba(249,115,22,0.1); }
 
     /* Top HUD */
     .hud-top { position: absolute; top: env(safe-area-inset-top, 16px); left: 0; right: 0; display: flex; justify-content: space-between; align-items: flex-start; padding: 16px; z-index: 10; }
@@ -108,13 +208,13 @@
     .loading-text { font-size: 15px; color: var(--muted); }
 
     /* Release timer badge */
-    .release-badge { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 100px); right: 16px; background: var(--surface); backdrop-filter: blur(12px); border-radius: 12px; padding: 10px 14px; border: 1px solid rgba(255,255,255,0.1); z-index: 10; text-align: right; min-width: 100px; }
+    .release-badge { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 96px); right: 16px; background: var(--surface); backdrop-filter: blur(12px); border-radius: 12px; padding: 10px 14px; border: 1px solid rgba(255,255,255,0.1); z-index: 10; text-align: right; min-width: 100px; }
     .release-ms { font-size: 22px; font-weight: 800; color: var(--gold); }
     .release-grade { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
     /* ─── SUMMARY ─── */
     #summary { background: var(--bg); overflow-y: auto; padding: 0; align-items: stretch; justify-content: flex-start; }
-    .summary-inner { padding: 48px 24px calc(env(safe-area-inset-bottom, 0px) + 32px); width: 100%; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+    .summary-inner { padding: 48px 20px calc(env(safe-area-inset-bottom, 0px) + 32px); width: 100%; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
     .summary-header { text-align: center; }
     .summary-title { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, var(--orange), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .summary-sub { font-size: 14px; color: var(--muted); margin-top: 4px; }
@@ -137,20 +237,62 @@
     .breakdown-bar { height: 100%; border-radius: 4px; transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
     .breakdown-pct { font-size: 13px; font-weight: 700; width: 38px; text-align: right; }
 
+    /* Save actions row */
+    .save-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-save { flex: 1; min-width: 100px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text); border-radius: 12px; padding: 12px 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .btn-save:active { background: rgba(255,255,255,0.12); }
+    .btn-save.orange { border-color: rgba(249,115,22,0.4); color: var(--orange); }
+
     .action-row { display: flex; gap: 12px; }
     .btn-secondary { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text); border-radius: var(--radius); padding: 16px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
     .btn-secondary:active { background: rgba(255,255,255,0.1); }
     .btn-primary-sm { flex: 1; background: var(--orange); color: #fff; border: none; border-radius: var(--radius); padding: 16px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
     .btn-primary-sm:active { opacity: 0.85; }
 
+    /* AI Coach card */
+    .coach-card { background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(15,15,15,0.9)); border: 1px solid rgba(249,115,22,0.25); border-radius: 16px; padding: 18px; }
+    .coach-header { font-size: 15px; font-weight: 700; color: var(--orange); margin-bottom: 12px; }
+    .coach-tip { font-size: 13px; color: var(--text); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; }
+    .coach-tip:last-child { border-bottom: none; }
+    .coach-bullet { color: var(--orange); flex-shrink: 0; }
+
+    /* Shot Chart */
+    .shot-chart-card { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 16px; }
+    .shot-chart-card h3 { font-size: 14px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    #shotChartCanvas { width: 100%; border-radius: 8px; display: block; }
+
+    /* Past Sessions screen */
+    #past-sessions {
+      background: var(--bg);
+      overflow-y: auto;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+    .past-inner { width: 100%; max-width: 480px; margin: 0 auto; padding: calc(env(safe-area-inset-top, 16px) + 16px) 20px calc(env(safe-area-inset-bottom, 0px) + 20px); display: flex; flex-direction: column; gap: 12px; }
+    .past-inner h2 { font-size: 22px; font-weight: 800; }
+    .past-session-row { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 16px; cursor: pointer; transition: background 0.2s; }
+    .past-session-row:active { background: rgba(255,255,255,0.05); }
+    .past-row-header { display: flex; justify-content: space-between; align-items: center; }
+    .past-date { font-size: 13px; color: var(--muted); }
+    .past-score { font-size: 20px; font-weight: 800; color: var(--orange); }
+    .past-meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .past-details { margin-top: 12px; display: none; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px; }
+    .past-details.open { display: block; }
+    .past-detail-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding: 3px 0; }
+    .past-detail-row span:last-child { color: var(--text); font-weight: 600; }
+    .no-sessions { text-align: center; color: var(--muted); font-size: 15px; padding: 40px 0; }
+
     /* color helpers */
     .score-green { color: var(--green); }
     .score-yellow { color: var(--yellow); }
     .score-red { color: var(--red); }
 
-    /* Error */
+    /* Error toast */
     #errorMsg { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(239,68,68,0.9); color: #fff; border-radius: 12px; padding: 12px 20px; font-size: 14px; max-width: 320px; text-align: center; z-index: 100; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     #errorMsg.show { opacity: 1; }
+    /* Success toast */
+    #successMsg { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(34,197,94,0.9); color: #fff; border-radius: 12px; padding: 12px 20px; font-size: 14px; max-width: 320px; text-align: center; z-index: 100; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    #successMsg.show { opacity: 1; }
   </style>
 </head>
 <body>
@@ -175,7 +317,32 @@
   </div>
 
   <br/>
-  <button class="btn-primary" onclick="startSession()">📷 Allow Camera &amp; Start</button>
+  <button class="btn-primary" onclick="goToZoneSelect()">📷 Allow Camera &amp; Start</button>
+  <button class="btn-ghost" id="btnPastSessions" style="display:none" onclick="showPastSessions()">📊 View Past Sessions</button>
+</div>
+
+<!-- ── ZONE SELECT ── -->
+<div id="zone-select" class="screen hidden">
+  <div class="zone-select-inner">
+    <h2>📍 Where are you shooting from?</h2>
+    <p>Select one or more zones — we'll track your form per spot.</p>
+    <div class="zone-grid" id="zoneGrid">
+      <button class="zone-btn" data-zone="left-corner-3"   onclick="toggleZone(this)"><span class="zone-icon">📐</span>Left Corner 3</button>
+      <button class="zone-btn" data-zone="top-key"         onclick="toggleZone(this)"><span class="zone-icon">🔝</span>Top of Key</button>
+      <button class="zone-btn" data-zone="right-corner-3"  onclick="toggleZone(this)"><span class="zone-icon">📐</span>Right Corner 3</button>
+      <button class="zone-btn" data-zone="left-wing-3"     onclick="toggleZone(this)"><span class="zone-icon">🏹</span>Left Wing 3</button>
+      <button class="zone-btn" data-zone="paint"           onclick="toggleZone(this)"><span class="zone-icon">🎯</span>Paint</button>
+      <button class="zone-btn" data-zone="right-wing-3"    onclick="toggleZone(this)"><span class="zone-icon">🏹</span>Right Wing 3</button>
+      <button class="zone-btn" data-zone="left-elbow"      onclick="toggleZone(this)"><span class="zone-icon">💪</span>Left Elbow</button>
+      <button class="zone-btn" data-zone="free-throw"      onclick="toggleZone(this)"><span class="zone-icon">⚪</span>Free Throw</button>
+      <button class="zone-btn" data-zone="right-elbow"     onclick="toggleZone(this)"><span class="zone-icon">💪</span>Right Elbow</button>
+      <button class="zone-btn" data-zone="left-block"      onclick="toggleZone(this)"><span class="zone-icon">🟦</span>Left Block</button>
+      <button class="zone-btn" data-zone="mid-lane"        onclick="toggleZone(this)"><span class="zone-icon">🎪</span>Mid Lane</button>
+      <button class="zone-btn" data-zone="right-block"     onclick="toggleZone(this)"><span class="zone-icon">🟦</span>Right Block</button>
+    </div>
+    <button class="btn-primary" onclick="startSession()">▶ Start Session</button>
+    <button class="btn-ghost" onclick="showScreen('landing')">← Back</button>
+  </div>
 </div>
 
 <!-- ── CAMERA ── -->
@@ -188,6 +355,24 @@
     <div class="loading-text">Loading AI model…</div>
   </div>
 
+  <!-- REC indicator -->
+  <div class="rec-indicator hidden" id="recIndicator">
+    <div class="rec-dot"></div>
+    <div class="rec-text">REC</div>
+  </div>
+
+  <!-- Lock-On toggle -->
+  <button class="btn-lockon" id="btnLockOn" onclick="toggleLockOn()">🎯 Lock</button>
+
+  <!-- Voice Coach toggle -->
+  <button class="btn-voice" id="btnVoice" onclick="toggleVoice()">🔊 Voice</button>
+
+  <!-- Directional arrows -->
+  <div class="dir-arrow" id="arrowLeft">← Move left</div>
+  <div class="dir-arrow" id="arrowRight">Move right →</div>
+  <div class="dir-arrow" id="arrowUp">↑ Move up</div>
+  <div class="dir-arrow" id="arrowDown">↓ Move down</div>
+
   <div class="hud-top">
     <div class="shot-counter">
       <div>
@@ -196,6 +381,12 @@
       </div>
     </div>
     <button class="btn-end" onclick="endSession()">End Session</button>
+  </div>
+
+  <!-- Tracking toolbar -->
+  <div class="tracking-toolbar">
+    <div class="track-pill searching" id="trackStatus">🔍 Searching...</div>
+    <div class="track-pill closer hidden" id="trackCloser">📱 Move closer</div>
   </div>
 
   <div class="live-score-pill" id="liveScorePill">Form Score: <span id="liveScoreEl">–</span></div>
@@ -287,6 +478,25 @@
       </div>
     </div>
 
+    <!-- Shot Chart -->
+    <div class="shot-chart-card">
+      <h3>🏀 Shot Chart</h3>
+      <canvas id="shotChartCanvas" height="200"></canvas>
+    </div>
+
+    <!-- AI Coach -->
+    <div class="coach-card" id="coachCard">
+      <div class="coach-header">🤖 Coach Says:</div>
+      <div id="coachTips"></div>
+    </div>
+
+    <!-- Save actions -->
+    <div class="save-actions">
+      <button class="btn-save orange" onclick="saveSessionJSON()">💾 Save Stats</button>
+      <button class="btn-save" onclick="copySessionSummary()">📋 Copy</button>
+      <button class="btn-save" id="btnSaveVideo" onclick="saveSessionVideo()" style="display:none">🎬 Save Video</button>
+    </div>
+
     <div class="action-row">
       <button class="btn-secondary" onclick="shareStats()">📸 Share</button>
       <button class="btn-primary-sm" onclick="newSession()">New Session</button>
@@ -294,7 +504,17 @@
   </div>
 </div>
 
+<!-- ── PAST SESSIONS ── -->
+<div id="past-sessions" class="screen hidden">
+  <div class="past-inner">
+    <h2>📊 Past Sessions</h2>
+    <div id="pastSessionsList"></div>
+    <button class="btn-ghost" onclick="showScreen('landing')">← Back</button>
+  </div>
+</div>
+
 <div id="errorMsg"></div>
+<div id="successMsg"></div>
 
 <!-- TensorFlow.js -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
@@ -306,23 +526,42 @@ let detector = null;
 let stream = null;
 let rafId = null;
 let shootingHand = 'right';
+let sessionStartTime = null;
 
 // Session data
 let sessionShots = [];
 let shotCount = 0;
 let lastShotTime = 0;
+let selectedZones = [];
+let sessionBestScore = 0;
 
-// Wrist tracking for shot detection
-let wristHistory = []; // [{y, time}]
+// Wrist tracking
+let wristHistory = [];
 let motionStartTime = null;
 let motionStartY = null;
 let peakWristY = null;
 let peakWristTime = null;
-let shootingPhase = 'idle'; // idle | rising | peaked
+let shootingPhase = 'idle';
 let lastFormScores = { elbow: 0, height: 0, follow: 0, overall: 0 };
-
-// For elbow follow-through tracking
 let postPeakWristPositions = [];
+
+// Player tracking / Lock-On
+let lockOnEnabled = false;
+let playerDetected = false;
+let playerCenterX = 0;
+let playerCenterY = 0;
+let playerHeightFraction = 0;
+
+// Voice coaching
+let voiceEnabled = false;
+let speechSynth = window.speechSynthesis || null;
+let preferredVoice = null;
+
+// Video recording
+let mediaRecorder = null;
+let recordedChunks = [];
+let recordedBlob = null;
+let canvasStream = null;
 
 const VIDEO = document.getElementById('videoEl');
 const CANVAS = document.getElementById('poseCanvas');
@@ -330,23 +569,23 @@ const CTX = CANVAS.getContext('2d');
 
 // ── Keypoint indices (MoveNet) ─────────────────────────────────────────────
 const KP = {
-  nose: 0, leftEye: 1, rightEye: 2, leftEar: 3, rightEar: 4,
-  leftShoulder: 5, rightShoulder: 6,
-  leftElbow: 7, rightElbow: 8,
-  leftWrist: 9, rightWrist: 10,
-  leftHip: 11, rightHip: 12,
-  leftKnee: 13, rightKnee: 14,
-  leftAnkle: 15, rightAnkle: 16,
+  nose:0,leftEye:1,rightEye:2,leftEar:3,rightEar:4,
+  leftShoulder:5,rightShoulder:6,
+  leftElbow:7,rightElbow:8,
+  leftWrist:9,rightWrist:10,
+  leftHip:11,rightHip:12,
+  leftKnee:13,rightKnee:14,
+  leftAnkle:15,rightAnkle:16,
 };
 
 const SKELETON = [
-  [KP.leftShoulder, KP.rightShoulder],
-  [KP.leftShoulder, KP.leftElbow], [KP.leftElbow, KP.leftWrist],
-  [KP.rightShoulder, KP.rightElbow], [KP.rightElbow, KP.rightWrist],
-  [KP.leftShoulder, KP.leftHip], [KP.rightShoulder, KP.rightHip],
-  [KP.leftHip, KP.rightHip],
-  [KP.leftHip, KP.leftKnee], [KP.leftKnee, KP.leftAnkle],
-  [KP.rightHip, KP.rightKnee], [KP.rightKnee, KP.rightAnkle],
+  [KP.leftShoulder,KP.rightShoulder],
+  [KP.leftShoulder,KP.leftElbow],[KP.leftElbow,KP.leftWrist],
+  [KP.rightShoulder,KP.rightElbow],[KP.rightElbow,KP.rightWrist],
+  [KP.leftShoulder,KP.leftHip],[KP.rightShoulder,KP.rightHip],
+  [KP.leftHip,KP.rightHip],
+  [KP.leftHip,KP.leftKnee],[KP.leftKnee,KP.leftAnkle],
+  [KP.rightHip,KP.rightKnee],[KP.rightKnee,KP.rightAnkle],
 ];
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -355,6 +594,13 @@ function showError(msg) {
   el.textContent = msg;
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+function showSuccess(msg) {
+  const el = document.getElementById('successMsg');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
 }
 
 function showScreen(id) {
@@ -374,7 +620,6 @@ function releaseGrade(ms) {
   if (ms < 350) return '👍 Good';
   return '🐢 Slow';
 }
-
 function releaseGradeShort(ms) {
   if (!ms || ms <= 0) return '–';
   if (ms < 250) return 'Elite';
@@ -382,13 +627,166 @@ function releaseGradeShort(ms) {
   return 'Slow';
 }
 
-// ── Session start ──────────────────────────────────────────────────────────
-async function startSession() {
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+// ── Zone selection ─────────────────────────────────────────────────────────
+function toggleZone(btn) {
+  btn.classList.toggle('selected');
+  const z = btn.dataset.zone;
+  if (selectedZones.includes(z)) {
+    selectedZones = selectedZones.filter(x => x !== z);
+  } else {
+    selectedZones.push(z);
+  }
+}
+
+function goToZoneSelect() {
   const hand = document.querySelector('input[name=hand]:checked');
   shootingHand = hand ? hand.value : 'right';
+  showScreen('zone-select');
+}
 
+// ── Voice Coach ─────────────────────────────────────────────────────────────
+function initVoice() {
+  if (!speechSynth) return;
+  const trySet = () => {
+    const voices = speechSynth.getVoices();
+    preferredVoice = voices.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes('samantha'))
+      || voices.find(v => v.lang.startsWith('en-US'))
+      || voices.find(v => v.lang.startsWith('en'))
+      || null;
+  };
+  trySet();
+  speechSynth.onvoiceschanged = trySet;
+}
+
+function speak(text) {
+  if (!voiceEnabled || !speechSynth) return;
+  speechSynth.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.pitch = 1;
+  u.rate = 1.1;
+  u.volume = 1;
+  if (preferredVoice) u.voice = preferredVoice;
+  speechSynth.speak(u);
+}
+
+function toggleVoice() {
+  voiceEnabled = !voiceEnabled;
+  const btn = document.getElementById('btnVoice');
+  btn.textContent = voiceEnabled ? '🔊 Voice ON' : '🔊 Voice';
+  btn.classList.toggle('active', voiceEnabled);
+  if (voiceEnabled) speak('Voice coach enabled. Let\'s shoot!');
+}
+
+// ── Lock-On / Player Tracking ──────────────────────────────────────────────
+function toggleLockOn() {
+  lockOnEnabled = !lockOnEnabled;
+  const btn = document.getElementById('btnLockOn');
+  btn.textContent = lockOnEnabled ? '🎯 Lock ON' : '🎯 Lock';
+  btn.classList.toggle('active', lockOnEnabled);
+}
+
+function updateTrackingUI() {
+  const statusEl = document.getElementById('trackStatus');
+  const closerEl = document.getElementById('trackCloser');
+  const cw = CANVAS.width, ch = CANVAS.height;
+
+  if (!lockOnEnabled) {
+    statusEl.textContent = '🎯 Lock Off';
+    statusEl.className = 'track-pill';
+    closerEl.classList.add('hidden');
+    ['arrowLeft','arrowRight','arrowUp','arrowDown'].forEach(id => document.getElementById(id).classList.remove('show'));
+    return;
+  }
+
+  if (!playerDetected) {
+    statusEl.textContent = '🔍 Searching...';
+    statusEl.className = 'track-pill searching';
+    closerEl.classList.add('hidden');
+    ['arrowLeft','arrowRight','arrowUp','arrowDown'].forEach(id => document.getElementById(id).classList.remove('show'));
+    return;
+  }
+
+  statusEl.textContent = '🎯 Locked';
+  statusEl.className = 'track-pill locked';
+
+  // Zoom hint
+  if (playerHeightFraction < 0.4) {
+    closerEl.classList.remove('hidden');
+  } else {
+    closerEl.classList.add('hidden');
+  }
+
+  // Directional arrows: if player center is near edge
+  const edgeThresh = 0.22; // 22% from edge triggers arrow
+  const cx = playerCenterX / cw;
+  const cy = playerCenterY / ch;
+
+  document.getElementById('arrowLeft').classList.toggle('show',  cx < edgeThresh);
+  document.getElementById('arrowRight').classList.toggle('show', cx > 1 - edgeThresh);
+  document.getElementById('arrowUp').classList.toggle('show',    cy < edgeThresh);
+  document.getElementById('arrowDown').classList.toggle('show',  cy > 1 - edgeThresh);
+}
+
+// ── Video Recording ────────────────────────────────────────────────────────
+function startRecording() {
+  recordedChunks = [];
+  recordedBlob = null;
+  try {
+    canvasStream = CANVAS.captureStream(20);
+    // Try to mix with camera audio (usually none for video-only, that's fine)
+    const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+      ? 'video/webm;codecs=vp9'
+      : MediaRecorder.isTypeSupported('video/webm')
+        ? 'video/webm'
+        : '';
+    const opts = mimeType ? { mimeType } : {};
+    mediaRecorder = new MediaRecorder(canvasStream, opts);
+    mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      recordedBlob = new Blob(recordedChunks, { type: 'video/webm' });
+      document.getElementById('btnSaveVideo').style.display = '';
+    };
+    mediaRecorder.start(1000);
+    document.getElementById('recIndicator').classList.remove('hidden');
+  } catch(e) {
+    console.warn('MediaRecorder not supported:', e);
+  }
+}
+
+function stopRecording() {
+  try {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
+    }
+    if (canvasStream) { canvasStream.getTracks().forEach(t => t.stop()); canvasStream = null; }
+  } catch(e) {}
+  document.getElementById('recIndicator').classList.add('hidden');
+}
+
+function saveSessionVideo() {
+  if (!recordedBlob) { showError('No video recorded.'); return; }
+  const url = URL.createObjectURL(recordedBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'shotiq-session-' + new Date().toISOString().slice(0,10) + '.webm';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  showSuccess('🎬 Video saved!');
+}
+
+// ── Session start ──────────────────────────────────────────────────────────
+async function startSession() {
   showScreen('camera');
   document.getElementById('loadingOverlay').classList.remove('hidden');
+  document.getElementById('btnSaveVideo').style.display = 'none';
+  recordedBlob = null;
 
   // Request camera
   try {
@@ -399,31 +797,28 @@ async function startSession() {
     VIDEO.srcObject = stream;
     await new Promise(res => { VIDEO.onloadedmetadata = res; });
     await VIDEO.play();
-  } catch (e) {
-    // Fallback to any camera
+  } catch(e) {
     try {
       stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       VIDEO.srcObject = stream;
       await new Promise(res => { VIDEO.onloadedmetadata = res; });
       await VIDEO.play();
-    } catch (e2) {
+    } catch(e2) {
       showError('Camera access denied. Please allow camera permissions.');
       showScreen('landing');
       return;
     }
   }
 
-  // Resize canvas
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  // Load model
   try {
     detector = await poseDetection.createDetector(
       poseDetection.SupportedModels.MoveNet,
       { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
     );
-  } catch (e) {
+  } catch(e) {
     showError('Failed to load AI model. Check your connection.');
     showScreen('landing');
     stopCamera();
@@ -432,17 +827,26 @@ async function startSession() {
 
   document.getElementById('loadingOverlay').classList.add('hidden');
 
-  // Reset session state
+  // Reset session
   sessionShots = [];
   shotCount = 0;
   lastShotTime = 0;
   wristHistory = [];
   shootingPhase = 'idle';
   postPeakWristPositions = [];
-  updateHUD({ elbow: 0, height: 0, follow: 0, overall: 0 });
+  sessionBestScore = 0;
+  sessionStartTime = Date.now();
+  playerDetected = false;
+  updateHUD({ elbow:0, height:0, follow:0, overall:0 });
   document.getElementById('shotCountEl').textContent = '0';
   document.getElementById('liveScoreEl').textContent = '–';
   document.getElementById('releaseBadge').style.display = 'none';
+
+  // Init voice
+  initVoice();
+
+  // Start recording
+  startRecording();
 
   detectLoop();
 }
@@ -468,21 +872,79 @@ async function detectLoop() {
   const now = performance.now();
   if (now - lastFrameTime < FRAME_INTERVAL) return;
   lastFrameTime = now;
-
   if (!detector || VIDEO.readyState < 2) return;
 
   let poses;
-  try {
-    poses = await detector.estimatePoses(VIDEO);
-  } catch (e) { return; }
+  try { poses = await detector.estimatePoses(VIDEO); } catch(e) { return; }
 
   CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
 
   if (poses && poses.length > 0) {
     const pose = poses[0];
+    updatePlayerTracking(pose);
     drawPose(pose);
+    if (lockOnEnabled) drawTrackingOverlays(pose);
     analyzePose(pose, now);
+  } else {
+    playerDetected = false;
   }
+  updateTrackingUI();
+}
+
+// ── Player tracking ────────────────────────────────────────────────────────
+function updatePlayerTracking(pose) {
+  const MIN_CONF = 0.2;
+  const kps = pose.keypoints.filter(k => k.score >= MIN_CONF);
+  if (kps.length < 3) { playerDetected = false; return; }
+
+  playerDetected = true;
+  const xs = kps.map(k => toCanvasCoords(k).x);
+  const ys = kps.map(k => toCanvasCoords(k).y);
+  const minX = Math.min(...xs), maxX = Math.max(...xs);
+  const minY = Math.min(...ys), maxY = Math.max(...ys);
+  playerCenterX = (minX + maxX) / 2;
+  playerCenterY = (minY + maxY) / 2;
+  playerHeightFraction = (maxY - minY) / CANVAS.height;
+}
+
+function drawTrackingOverlays(pose) {
+  if (!playerDetected) return;
+  const kps = pose.keypoints;
+  const MIN_CONF = 0.2;
+  const visKps = kps.filter(k => k.score >= MIN_CONF);
+  if (visKps.length < 3) return;
+
+  const xs = visKps.map(k => toCanvasCoords(k).x);
+  const ys = visKps.map(k => toCanvasCoords(k).y);
+  const minX = Math.min(...xs) - 12, maxX = Math.max(...xs) + 12;
+  const minY = Math.min(...ys) - 12, maxY = Math.max(...ys) + 12;
+
+  // Bounding box
+  CTX.strokeStyle = 'rgba(34,197,94,0.7)';
+  CTX.lineWidth = 2;
+  CTX.setLineDash([6, 4]);
+  CTX.strokeRect(minX, minY, maxX - minX, maxY - minY);
+  CTX.setLineDash([]);
+
+  // Target reticle on torso center
+  const ls = kps[KP.leftShoulder], rs = kps[KP.rightShoulder];
+  const lh = kps[KP.leftHip], rh = kps[KP.rightHip];
+  let reticleX = playerCenterX, reticleY = playerCenterY;
+  if (ls && rs && lh && rh && ls.score > MIN_CONF && rs.score > MIN_CONF && lh.score > MIN_CONF && rh.score > MIN_CONF) {
+    const pls = toCanvasCoords(ls), prs = toCanvasCoords(rs);
+    const plh = toCanvasCoords(lh), prh = toCanvasCoords(rh);
+    reticleX = (pls.x + prs.x + plh.x + prh.x) / 4;
+    reticleY = (pls.y + prs.y + plh.y + prh.y) / 4;
+  }
+
+  const r = 18;
+  CTX.strokeStyle = 'rgba(34,197,94,0.9)';
+  CTX.lineWidth = 2;
+  // Crosshair
+  CTX.beginPath(); CTX.moveTo(reticleX - r, reticleY); CTX.lineTo(reticleX + r, reticleY); CTX.stroke();
+  CTX.beginPath(); CTX.moveTo(reticleX, reticleY - r); CTX.lineTo(reticleX, reticleY + r); CTX.stroke();
+  // Circle
+  CTX.beginPath(); CTX.arc(reticleX, reticleY, r * 0.6, 0, Math.PI * 2); CTX.stroke();
 }
 
 // ── Draw skeleton ──────────────────────────────────────────────────────────
@@ -491,14 +953,10 @@ function toCanvasCoords(kp) {
   const vh = VIDEO.videoHeight || 480;
   const cw = CANVAS.width;
   const ch = CANVAS.height;
-
-  // Cover scaling
   const scale = Math.max(cw / vw, ch / vh);
   const ox = (cw - vw * scale) / 2;
   const oy = (ch - vh * scale) / 2;
-
-  // Mirror horizontally (front camera feel, also works for environment camera flip)
-  const mx = cw - (kp.x * scale + ox);
+  const mx = cw - (kp.x * scale + ox); // mirror
   const my = kp.y * scale + oy;
   return { x: mx, y: my };
 }
@@ -507,30 +965,21 @@ function drawPose(pose) {
   const kps = pose.keypoints;
   const MIN_CONF = 0.25;
 
-  // Skeleton lines
   CTX.lineWidth = 2.5;
   for (const [a, b] of SKELETON) {
     const ka = kps[a], kb = kps[b];
-    if (!ka || !kb) continue;
-    if (ka.score < MIN_CONF || kb.score < MIN_CONF) continue;
+    if (!ka || !kb || ka.score < MIN_CONF || kb.score < MIN_CONF) continue;
     const pa = toCanvasCoords(ka), pb = toCanvasCoords(kb);
-    CTX.beginPath();
-    CTX.moveTo(pa.x, pa.y);
-    CTX.lineTo(pb.x, pb.y);
-    CTX.strokeStyle = 'rgba(249,115,22,0.7)';
-    CTX.stroke();
+    CTX.beginPath(); CTX.moveTo(pa.x, pa.y); CTX.lineTo(pb.x, pb.y);
+    CTX.strokeStyle = 'rgba(249,115,22,0.7)'; CTX.stroke();
   }
 
-  // Keypoints
   for (let i = 0; i < kps.length; i++) {
     const kp = kps[i];
     if (!kp || kp.score < MIN_CONF) continue;
     const p = toCanvasCoords(kp);
-    const isShootingWrist = (shootingHand === 'right' && i === KP.rightWrist) ||
-                            (shootingHand === 'left' && i === KP.leftWrist);
-    const isShootingElbow = (shootingHand === 'right' && i === KP.rightElbow) ||
-                            (shootingHand === 'left' && i === KP.leftElbow);
-
+    const isShootingWrist = (shootingHand === 'right' && i === KP.rightWrist) || (shootingHand === 'left' && i === KP.leftWrist);
+    const isShootingElbow = (shootingHand === 'right' && i === KP.rightElbow) || (shootingHand === 'left' && i === KP.leftElbow);
     CTX.beginPath();
     CTX.arc(p.x, p.y, isShootingWrist ? 8 : isShootingElbow ? 7 : 5, 0, Math.PI * 2);
     CTX.fillStyle = isShootingWrist ? '#f97316' : isShootingElbow ? '#fbbf24' : 'rgba(255,255,255,0.9)';
@@ -542,40 +991,28 @@ function drawPose(pose) {
 function analyzePose(pose, now) {
   const kps = pose.keypoints;
   const MIN_CONF = 0.3;
-
   const wristIdx = shootingHand === 'right' ? KP.rightWrist : KP.leftWrist;
   const elbowIdx = shootingHand === 'right' ? KP.rightElbow : KP.leftElbow;
   const shoulderIdx = shootingHand === 'right' ? KP.rightShoulder : KP.leftShoulder;
 
-  const wrist = kps[wristIdx];
-  const elbow = kps[elbowIdx];
-  const shoulder = kps[shoulderIdx];
-
+  const wrist = kps[wristIdx], elbow = kps[elbowIdx], shoulder = kps[shoulderIdx];
   if (!wrist || !elbow || !shoulder) return;
   if (wrist.score < MIN_CONF || elbow.score < MIN_CONF || shoulder.score < MIN_CONF) return;
 
-  // Track wrist history (last 500ms)
   wristHistory.push({ y: wrist.y, x: wrist.x, time: now });
   wristHistory = wristHistory.filter(h => now - h.time < 800);
 
-  // Normalize Y: lower Y = higher on screen = higher position
-  const wristNormY = wrist.y; // raw video Y (0 = top)
+  const wristNormY = wrist.y;
   const shoulderNormY = shoulder.y;
-
-  // Shot detection state machine
-  const RISE_THRESHOLD = 0.04; // relative to video height (fraction)
   const VH = VIDEO.videoHeight || 480;
 
   if (shootingPhase === 'idle') {
-    // Check if wrist is rising quickly
     if (wristHistory.length >= 4) {
       const oldest = wristHistory[0];
-      const deltaY = oldest.y - wristNormY; // positive = rising
+      const deltaY = oldest.y - wristNormY;
       const deltaT = now - oldest.time;
-      const velocity = deltaY / deltaT; // pixels/ms
-
+      const velocity = deltaY / deltaT;
       if (velocity > 0.15 && wristNormY < shoulderNormY) {
-        // Wrist above shoulder and rising
         shootingPhase = 'rising';
         motionStartTime = now;
         motionStartY = wristNormY;
@@ -585,30 +1022,17 @@ function analyzePose(pose, now) {
       }
     }
   } else if (shootingPhase === 'rising') {
-    // Track peak
-    if (wristNormY < peakWristY) {
-      peakWristY = wristNormY;
-      peakWristTime = now;
-    }
-
-    // Check if wrist started descending (peak passed)
+    if (wristNormY < peakWristY) { peakWristY = wristNormY; peakWristTime = now; }
     if (wristNormY > peakWristY + VH * 0.025) {
       shootingPhase = 'peaked';
       postPeakWristPositions = [{ y: wristNormY, time: now }];
     }
-
-    // Timeout if rising too long (>2s = probably not a shot)
-    if (now - motionStartTime > 2000) {
-      shootingPhase = 'idle';
-    }
+    if (now - motionStartTime > 2000) { shootingPhase = 'idle'; }
   } else if (shootingPhase === 'peaked') {
     postPeakWristPositions.push({ y: wristNormY, time: now });
-
-    // After collecting ~300ms of post-peak data, score the shot
     if (postPeakWristPositions.length > 0 && now - postPeakWristPositions[0].time > 300) {
       const timeSinceLast = now - lastShotTime;
       if (timeSinceLast > 1500) {
-        // Score this shot
         const scores = scoreShot(kps, peakWristY, peakWristTime, motionStartTime, postPeakWristPositions, VH);
         lastFormScores = scores;
         registerShot(scores, peakWristTime - motionStartTime);
@@ -616,11 +1040,7 @@ function analyzePose(pose, now) {
       shootingPhase = 'idle';
       wristHistory = [];
     }
-
-    // Timeout
-    if (now - peakWristTime > 1200) {
-      shootingPhase = 'idle';
-    }
+    if (now - peakWristTime > 1200) { shootingPhase = 'idle'; }
   }
 }
 
@@ -631,53 +1051,32 @@ function scoreShot(kps, peakWristY, peakWristTime, motionStart, postPeak, VH) {
   const shoulderIdx = shootingHand === 'right' ? KP.rightShoulder : KP.leftShoulder;
   const hipIdx = shootingHand === 'right' ? KP.rightHip : KP.leftHip;
 
-  const wrist = kps[wristIdx];
-  const elbow = kps[elbowIdx];
-  const shoulder = kps[shoulderIdx];
-  const hip = kps[hipIdx];
+  const wrist = kps[wristIdx], elbow = kps[elbowIdx];
+  const shoulder = kps[shoulderIdx], hip = kps[hipIdx];
 
-  // ── 1. Elbow alignment (0-100)
-  // Ideal: elbow x is close to wrist x (vertical alignment), elbow below wrist
   let elbowScore = 0;
   if (wrist && elbow && wrist.score >= MIN_CONF && elbow.score >= MIN_CONF) {
     const dx = Math.abs(wrist.x - elbow.x) / (VIDEO.videoWidth || 640);
-    // 0 = perfect, higher = worse
-    const maxDx = 0.15;
-    elbowScore = Math.max(0, Math.round(100 * (1 - Math.min(dx / maxDx, 1))));
-    // Bonus: elbow should be below wrist (lower y = higher)
+    elbowScore = Math.max(0, Math.round(100 * (1 - Math.min(dx / 0.15, 1))));
     if (elbow.y > wrist.y) elbowScore = Math.min(100, elbowScore + 5);
     else elbowScore = Math.max(0, elbowScore - 10);
-  } else {
-    elbowScore = 60; // default if can't measure
-  }
+  } else { elbowScore = 60; }
 
-  // ── 2. Release height (0-100)
-  // Compare peak wrist Y to shoulder and hip
   let heightScore = 0;
   if (shoulder && shoulder.score >= MIN_CONF) {
     const bodyHeight = hip ? (hip.y - shoulder.y) : VH * 0.4;
-    // How far above shoulder is the peak wrist?
-    const aboveShoulder = shoulder.y - peakWristY; // positive = wrist above shoulder
+    const aboveShoulder = shoulder.y - peakWristY;
     const normalized = aboveShoulder / (bodyHeight * 0.6);
     heightScore = Math.round(Math.min(100, Math.max(0, 40 + normalized * 80)));
-  } else {
-    heightScore = 60;
-  }
+  } else { heightScore = 60; }
 
-  // ── 3. Follow-through (0-100)
-  // After peak, wrist should remain elevated (not drop too fast)
   let followScore = 0;
   if (postPeak && postPeak.length > 2) {
-    const firstY = postPeak[0].y;
-    const lastY = postPeak[postPeak.length - 1].y;
+    const firstY = postPeak[0].y, lastY = postPeak[postPeak.length - 1].y;
     const timespan = postPeak[postPeak.length - 1].time - postPeak[0].time;
-    const dropRate = (lastY - firstY) / timespan; // positive = dropping
-    // Elite: slow drop (wrist stays up)
-    const maxDropRate = 0.5;
-    followScore = Math.round(Math.max(0, Math.min(100, 100 - (dropRate / maxDropRate) * 100)));
-  } else {
-    followScore = 55;
-  }
+    const dropRate = (lastY - firstY) / timespan;
+    followScore = Math.round(Math.max(0, Math.min(100, 100 - (dropRate / 0.5) * 100)));
+  } else { followScore = 55; }
 
   const overall = Math.round((elbowScore + heightScore + followScore) / 3);
   return { elbow: elbowScore, height: heightScore, follow: followScore, overall };
@@ -687,27 +1086,60 @@ function registerShot(scores, releaseTimeMs) {
   shotCount++;
   lastShotTime = performance.now();
 
-  const shot = { scores, releaseTimeMs, timestamp: Date.now() };
+  const shot = {
+    shotNumber: shotCount,
+    timestamp: new Date().toISOString(),
+    formScore: scores.overall,
+    elbowScore: scores.elbow,
+    releaseHeightScore: scores.height,
+    followThroughScore: scores.follow,
+    releaseTimeMs: Math.round(releaseTimeMs),
+    releaseGrade: releaseGradeShort(releaseTimeMs),
+    zones: [...selectedZones],
+  };
   sessionShots.push(shot);
 
-  // Update HUD
+  const isPersonalBest = scores.overall > sessionBestScore;
+  if (isPersonalBest) sessionBestScore = scores.overall;
+
   updateHUD(scores);
   document.getElementById('shotCountEl').textContent = shotCount;
   document.getElementById('liveScoreEl').textContent = scores.overall;
 
-  // Release badge
   if (releaseTimeMs > 0 && releaseTimeMs < 3000) {
     document.getElementById('releaseMs').textContent = Math.round(releaseTimeMs) + 'ms';
     document.getElementById('releaseGrade').textContent = releaseGrade(releaseTimeMs);
     document.getElementById('releaseBadge').style.display = 'block';
   }
 
-  // Flash animation
   const flash = document.getElementById('shotFlash');
   flash.classList.remove('show', 'fade');
   void flash.offsetWidth;
   flash.classList.add('show');
   setTimeout(() => { flash.classList.add('fade'); flash.classList.remove('show'); }, 800);
+
+  // Voice feedback
+  if (voiceEnabled) {
+    const metrics = ['elbow','height','follow'];
+    const weakest = metrics.reduce((a,b) => scores[a] < scores[b] ? a : b);
+    const weakestLabel = weakest === 'height' ? 'release height' : weakest === 'follow' ? 'follow through' : 'elbow alignment';
+
+    if (isPersonalBest && shotCount > 1) {
+      speak('New personal best! ' + scores.overall + ' percent!');
+    } else if (releaseTimeMs < 250) {
+      speak('Lightning release!');
+    } else if (scores.overall >= 85) {
+      speak('Great shot! ' + scores.overall + ' percent form.');
+    } else if (scores.overall >= 70) {
+      speak('Good release, watch your ' + weakestLabel + '.');
+    } else {
+      speak('Work on your ' + weakestLabel + '.');
+    }
+
+    if (shotCount > 0 && shotCount % 10 === 0) {
+      setTimeout(() => speak('Shot ' + shotCount + '. Keep it up.'), 2500);
+    }
+  }
 }
 
 function updateHUD(scores) {
@@ -715,7 +1147,6 @@ function updateHUD(scores) {
   document.getElementById('statHeight').textContent = scores.height || '–';
   document.getElementById('statFollow').textContent = scores.follow || '–';
   document.getElementById('statOverall').textContent = scores.overall || '–';
-
   document.getElementById('barElbow').style.width = (scores.elbow || 0) + '%';
   document.getElementById('barHeight').style.width = (scores.height || 0) + '%';
   document.getElementById('barFollow').style.width = (scores.follow || 0) + '%';
@@ -724,8 +1155,10 @@ function updateHUD(scores) {
 
 // ── End Session ────────────────────────────────────────────────────────────
 function endSession() {
+  stopRecording();
   stopCamera();
   buildSummary();
+  saveSessionToStorage();
   showScreen('summary');
 }
 
@@ -740,19 +1173,22 @@ function buildSummary() {
     document.getElementById('summaryReleaseGrade').textContent = '–';
     ['bElbow','bHeight','bFollow'].forEach(id => document.getElementById(id).style.width = '0%');
     ['pElbow','pHeight','pFollow'].forEach(id => document.getElementById(id).textContent = '–');
+    document.getElementById('coachTips').innerHTML = '<div class="coach-tip"><span class="coach-bullet">•</span>No shots detected. Make sure you\'re in frame and try again!</div>';
+    drawShotChart([]);
     return;
   }
 
   const n = sessionShots.length;
-  const avgElbow = Math.round(sessionShots.reduce((s,x) => s + x.scores.elbow, 0) / n);
-  const avgHeight = Math.round(sessionShots.reduce((s,x) => s + x.scores.height, 0) / n);
-  const avgFollow = Math.round(sessionShots.reduce((s,x) => s + x.scores.follow, 0) / n);
-  const avgOverall = Math.round(sessionShots.reduce((s,x) => s + x.scores.overall, 0) / n);
-  const bestOverall = Math.max(...sessionShots.map(x => x.scores.overall));
+  const avgElbow   = Math.round(sessionShots.reduce((s,x) => s + x.elbowScore, 0) / n);
+  const avgHeight  = Math.round(sessionShots.reduce((s,x) => s + x.releaseHeightScore, 0) / n);
+  const avgFollow  = Math.round(sessionShots.reduce((s,x) => s + x.followThroughScore, 0) / n);
+  const avgOverall = Math.round(sessionShots.reduce((s,x) => s + x.formScore, 0) / n);
+  const bestOverall = Math.max(...sessionShots.map(x => x.formScore));
   const validReleases = sessionShots.filter(x => x.releaseTimeMs > 0 && x.releaseTimeMs < 3000);
   const avgRelease = validReleases.length > 0
     ? Math.round(validReleases.reduce((s,x) => s + x.releaseTimeMs, 0) / validReleases.length)
     : null;
+  const durationSec = Math.round((Date.now() - sessionStartTime) / 1000);
 
   document.getElementById('summarySubtitle').textContent = `${n} shot${n === 1 ? '' : 's'} analyzed`;
   const avgEl = document.getElementById('summaryAvgScore');
@@ -767,7 +1203,6 @@ function buildSummary() {
   rgEl.textContent = rg;
   rgEl.style.color = rg === 'Elite' ? 'var(--green)' : rg === 'Good' ? 'var(--yellow)' : 'var(--red)';
 
-  // Bars with animation delay
   setTimeout(() => {
     document.getElementById('bElbow').style.width = avgElbow + '%';
     document.getElementById('bHeight').style.width = avgHeight + '%';
@@ -776,31 +1211,296 @@ function buildSummary() {
   document.getElementById('pElbow').textContent = avgElbow + '%';
   document.getElementById('pHeight').textContent = avgHeight + '%';
   document.getElementById('pFollow').textContent = avgFollow + '%';
+
+  // Draw shot chart
+  drawShotChart(selectedZones);
+
+  // AI Coach
+  buildCoachTips({ avgElbow, avgHeight, avgFollow, avgOverall, avgRelease, n });
+}
+
+// ── AI Coach Tips ──────────────────────────────────────────────────────────
+function buildCoachTips({ avgElbow, avgHeight, avgFollow, avgOverall, avgRelease, n }) {
+  const tips = [];
+
+  if (avgElbow < 70) tips.push("Your elbow alignment needs work. Keep your elbow directly under the ball, pointing at the basket. Think of forming an 'L' with your arm.");
+  if (avgHeight < 70) tips.push("Release the ball higher. Extend fully at the peak of your jump — your release point should be above your forehead.");
+  if (avgFollow < 70) tips.push("Hold your follow-through! Keep your wrist snapped down (like reaching into a cookie jar on a high shelf) for at least 1 second after release.");
+  if (avgRelease && avgRelease > 350) tips.push("Your release is slow. Work on quickening your gather-to-release motion. Try 'catch and shoot' drills.");
+  if (avgRelease && avgRelease < 250) tips.push("Elite release speed! 🔥 Focus on maintaining this while keeping form consistent.");
+  if (avgOverall > 85) tips.push("Excellent session! 💪 Challenge yourself — try shots from further out or add more fatigue sets.");
+  if (n < 10) tips.push("Short session. Aim for 50+ shots per session for meaningful improvement.");
+  tips.push("Consistency beats perfection. Come back tomorrow!");
+
+  // Show max 4 tips
+  const shown = tips.slice(0, 4);
+  const container = document.getElementById('coachTips');
+  container.innerHTML = shown.map(t =>
+    `<div class="coach-tip"><span class="coach-bullet">•</span><span>${t}</span></div>`
+  ).join('');
+}
+
+// ── Shot Chart (Canvas) ────────────────────────────────────────────────────
+function drawShotChart(zones) {
+  const canvas = document.getElementById('shotChartCanvas');
+  const W = canvas.offsetWidth || 340;
+  canvas.width = W;
+  canvas.height = 200;
+  const ctx = canvas.getContext('2d');
+
+  // Court colors
+  const courtBg = '#1a1a1a';
+  const lineColor = 'rgba(255,255,255,0.3)';
+  const laneColor = 'rgba(249,115,22,0.12)';
+
+  ctx.fillStyle = courtBg;
+  ctx.fillRect(0, 0, W, 200);
+
+  // Scale: half court occupies full canvas
+  // Court: 47 ft wide, 50 ft half. Scale to canvas
+  const scaleX = W / 500;
+  const scaleY = 200 / 470;
+
+  function cx(x) { return x * scaleX; }  // 0-500 (court 0-500 units)
+  function cy(y) { return y * scaleY; }  // 0-470 (court 0-470 units)
+
+  ctx.strokeStyle = lineColor;
+  ctx.lineWidth = 1.5;
+
+  // Baseline
+  ctx.beginPath(); ctx.moveTo(0, cy(470)); ctx.lineTo(W, cy(470)); ctx.stroke();
+  // Sidelines
+  ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, cy(470)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W, 0); ctx.lineTo(W, cy(470)); ctx.stroke();
+
+  // Paint / lane (16 ft wide = 160 units, 19 ft deep = 190 units)
+  ctx.fillStyle = laneColor;
+  ctx.fillRect(cx(170), cy(280), cx(160), cy(190));
+  ctx.strokeRect(cx(170), cy(280), cx(160), cy(190));
+
+  // Free-throw circle
+  ctx.beginPath();
+  ctx.arc(cx(250), cy(280), cx(60), 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Free-throw line
+  ctx.beginPath(); ctx.moveTo(cx(170), cy(280)); ctx.lineTo(cx(330), cy(280)); ctx.stroke();
+
+  // Basket
+  ctx.beginPath(); ctx.arc(cx(250), cy(430), cx(10), 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(251,191,36,0.8)'; ctx.lineWidth = 2; ctx.stroke();
+
+  // Backboard
+  ctx.strokeStyle = lineColor; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(cx(210), cy(460)); ctx.lineTo(cx(290), cy(460)); ctx.stroke();
+
+  // 3-point arc (radius ~237 units from basket)
+  ctx.strokeStyle = lineColor; ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(cx(250), cy(430), cx(237), Math.PI * 1.08, Math.PI * 1.92);
+  ctx.stroke();
+
+  // 3-point corner lines
+  ctx.beginPath(); ctx.moveTo(cx(30), cy(280)); ctx.lineTo(cx(30), cy(470)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx(470), cy(280)); ctx.lineTo(cx(470), cy(470)); ctx.stroke();
+
+  // Restrict arc
+  ctx.beginPath(); ctx.arc(cx(250), cy(430), cx(40), Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
+
+  // Zone hit regions (highlight selected zones)
+  const zoneRects = {
+    'paint':          { x: cx(190), y: cy(300), w: cx(120), h: cy(130) },
+    'left-block':     { x: cx(170), y: cy(370), w: cx(50), h: cy(60) },
+    'right-block':    { x: cx(280), y: cy(370), w: cx(50), h: cy(60) },
+    'left-elbow':     { x: cx(140), y: cy(250), w: cx(60), h: cy(60) },
+    'right-elbow':    { x: cx(300), y: cy(250), w: cx(60), h: cy(60) },
+    'free-throw':     { x: cx(195), y: cy(265), w: cx(110), h: cy(30) },
+    'top-key':        { x: cx(190), y: cy(60),  w: cx(120), h: cy(100) },
+    'left-wing-3':    { x: cx(50),  y: cy(150), w: cx(100), h: cy(100) },
+    'right-wing-3':   { x: cx(350), y: cy(150), w: cx(100), h: cy(100) },
+    'left-corner-3':  { x: cx(0),   y: cy(280), w: cx(50),  h: cy(90) },
+    'right-corner-3': { x: cx(450), y: cy(280), w: cx(50),  h: cy(90) },
+    'mid-lane':       { x: cx(195), y: cy(185), w: cx(110), h: cy(80) },
+  };
+
+  // Zone scores from session
+  const zoneScoreMap = {};
+  sessionShots.forEach(s => {
+    if (s.zones && s.zones.length) {
+      s.zones.forEach(z => {
+        if (!zoneScoreMap[z]) zoneScoreMap[z] = [];
+        zoneScoreMap[z].push(s.formScore);
+      });
+    }
+  });
+
+  // Draw zones
+  for (const [zone, rect] of Object.entries(zoneRects)) {
+    const isSelected = zones.includes(zone);
+    const scores = zoneScoreMap[zone];
+    if (scores && scores.length) {
+      const avg = scores.reduce((a,b) => a+b, 0) / scores.length;
+      // Heat map: 0=red, 100=green
+      const r = Math.round(239 - (avg/100) * (239 - 34));
+      const g = Math.round(68  + (avg/100) * (197 - 68));
+      ctx.fillStyle = `rgba(${r},${g},68,0.45)`;
+      ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+      ctx.fillStyle = '#fff';
+      ctx.font = `bold ${Math.round(9 * scaleX * 5)}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(Math.round(avg), rect.x + rect.w/2, rect.y + rect.h/2 + 4);
+    } else if (isSelected) {
+      ctx.fillStyle = 'rgba(249,115,22,0.35)';
+      ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+      ctx.strokeStyle = 'rgba(249,115,22,0.8)';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+    }
+  }
+
+  ctx.textAlign = 'left'; // reset
+}
+
+// ── Save session to localStorage ──────────────────────────────────────────
+function saveSessionToStorage() {
+  if (sessionShots.length === 0) return;
+  const n = sessionShots.length;
+  const avgOverall = Math.round(sessionShots.reduce((s,x) => s + x.formScore, 0) / n);
+  const bestOverall = Math.max(...sessionShots.map(x => x.formScore));
+  const validReleases = sessionShots.filter(x => x.releaseTimeMs > 0 && x.releaseTimeMs < 3000);
+  const avgRelease = validReleases.length > 0
+    ? Math.round(validReleases.reduce((s,x) => s + x.releaseTimeMs, 0) / validReleases.length)
+    : null;
+
+  const record = {
+    sessionId: generateUUID(),
+    date: new Date(sessionStartTime).toISOString(),
+    duration: Math.round((Date.now() - sessionStartTime) / 1000),
+    totalShots: n,
+    avgFormScore: avgOverall,
+    bestFormScore: bestOverall,
+    avgReleaseTime: avgRelease,
+    hand: shootingHand,
+    zones: [...selectedZones],
+    shots: sessionShots,
+  };
+
+  let sessions = [];
+  try { sessions = JSON.parse(localStorage.getItem('shotiq_sessions') || '[]'); } catch(e) {}
+  sessions.unshift(record);
+  sessions = sessions.slice(0, 10); // keep last 10
+  try { localStorage.setItem('shotiq_sessions', JSON.stringify(sessions)); } catch(e) {}
+
+  // Store current session for JSON download
+  window._currentSession = record;
+  checkPastSessionsButton();
+}
+
+function checkPastSessionsButton() {
+  try {
+    const sessions = JSON.parse(localStorage.getItem('shotiq_sessions') || '[]');
+    document.getElementById('btnPastSessions').style.display = sessions.length > 0 ? '' : 'none';
+  } catch(e) {}
+}
+
+function saveSessionJSON() {
+  const data = window._currentSession;
+  if (!data) { showError('No session data available.'); return; }
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'shotiq-session-' + new Date(data.date).toISOString().slice(0,10) + '.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  showSuccess('💾 Stats saved!');
+}
+
+function copySessionSummary() {
+  const data = window._currentSession;
+  if (!data) { showError('No session data available.'); return; }
+  const lines = [
+    '🏀 ShotIQ Session Summary',
+    `Date: ${new Date(data.date).toLocaleString()}`,
+    `Shots: ${data.totalShots}`,
+    `Avg Form Score: ${data.avgFormScore}/100`,
+    `Best Score: ${data.bestFormScore}/100`,
+    data.avgReleaseTime ? `Avg Release: ${data.avgReleaseTime}ms` : '',
+    `Hand: ${data.hand}`,
+    data.zones && data.zones.length ? `Zones: ${data.zones.join(', ')}` : '',
+    '',
+    'Analyzed with ShotIQ — shotiq.app',
+  ].filter(Boolean).join('\n');
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(lines).then(() => showSuccess('📋 Copied!'));
+  } else {
+    showError('Clipboard not available on this browser.');
+  }
+}
+
+// ── Past Sessions ─────────────────────────────────────────────────────────
+function showPastSessions() {
+  const container = document.getElementById('pastSessionsList');
+  let sessions = [];
+  try { sessions = JSON.parse(localStorage.getItem('shotiq_sessions') || '[]'); } catch(e) {}
+
+  if (sessions.length === 0) {
+    container.innerHTML = '<div class="no-sessions">No past sessions yet. Get shooting! 🏀</div>';
+  } else {
+    container.innerHTML = sessions.map((s, i) => {
+      const d = new Date(s.date);
+      const dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const color = s.avgFormScore >= 80 ? 'var(--green)' : s.avgFormScore >= 60 ? 'var(--yellow)' : 'var(--red)';
+      return `<div class="past-session-row" onclick="togglePastDetail(this)">
+        <div class="past-row-header">
+          <div>
+            <div class="past-date">${dateStr}</div>
+            <div class="past-meta">${s.totalShots} shots · ${s.hand} hand${s.zones && s.zones.length ? ' · ' + s.zones[0].replace(/-/g,' ') : ''}</div>
+          </div>
+          <div class="past-score" style="color:${color}">${s.avgFormScore}</div>
+        </div>
+        <div class="past-details" id="pd-${i}">
+          <div class="past-detail-row"><span>Best Score</span><span>${s.bestFormScore}</span></div>
+          ${s.avgReleaseTime ? `<div class="past-detail-row"><span>Avg Release</span><span>${s.avgReleaseTime}ms</span></div>` : ''}
+          <div class="past-detail-row"><span>Duration</span><span>${Math.round(s.duration/60)}m ${s.duration%60}s</span></div>
+          ${s.zones && s.zones.length ? `<div class="past-detail-row"><span>Zones</span><span>${s.zones.map(z=>z.replace(/-/g,' ')).join(', ')}</span></div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+  showScreen('past-sessions');
+}
+
+function togglePastDetail(row) {
+  const details = row.querySelector('.past-details');
+  if (details) details.classList.toggle('open');
 }
 
 // ── Share / New Session ────────────────────────────────────────────────────
 async function shareStats() {
   try {
     if (navigator.share) {
+      const n = sessionShots.length;
+      const avg = n > 0 ? Math.round(sessionShots.reduce((s,x) => s + x.formScore, 0) / n) : 0;
       await navigator.share({
         title: 'My ShotIQ Session',
-        text: `Just analyzed my jump shot! 🏀 ${sessionShots.length} shots, avg form score: ${
-          sessionShots.length > 0 ? Math.round(sessionShots.reduce((s,x)=>s+x.scores.overall,0)/sessionShots.length) : 0
-        }/100. Try ShotIQ!`,
+        text: `Just analyzed my jump shot! 🏀 ${n} shots, avg form score: ${avg}/100. Try ShotIQ!`,
         url: window.location.href,
       });
     } else {
-      // Screenshot fallback
       showError('Use your phone\'s screenshot button to capture the stats!');
     }
-  } catch(e) {
-    // User cancelled
-  }
+  } catch(e) {}
 }
 
 function newSession() {
   showScreen('landing');
 }
+
+// ── Init ──────────────────────────────────────────────────────────────────
+checkPastSessionsButton();
 </script>
 </body>
 </html>
