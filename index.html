@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ShotIQ" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <title>ShotIQ – Jump Shot Analyzer</title>
+  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU2hvdElRIiwic2hvcnRfbmFtZSI6IlNob3RJUSIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwYTBhMGEiLCJ0aGVtZV9jb2xvciI6IiNmOTczMTYiLCJpY29ucyI6W119" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --orange: #f97316;
+      --orange-dim: #c2570e;
+      --gold: #fbbf24;
+      --surface: rgba(15,15,15,0.85);
+      --surface-solid: #111;
+      --text: #f1f1f1;
+      --muted: #888;
+      --green: #22c55e;
+      --yellow: #eab308;
+      --red: #ef4444;
+      --radius: 16px;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      overflow: hidden;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ─── SCREENS ─── */
+    .screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.35s ease; }
+    .screen.hidden { opacity: 0; pointer-events: none; }
+
+    /* ─── LANDING ─── */
+    #landing {
+      background: radial-gradient(ellipse at 50% 30%, #1a0a00 0%, var(--bg) 65%);
+      padding: 32px 24px;
+      text-align: center;
+      gap: 0;
+    }
+    .ball-icon { font-size: 72px; margin-bottom: 12px; animation: bounce 2s ease-in-out infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .app-name { font-size: 42px; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, var(--orange), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .app-tagline { font-size: 15px; color: var(--muted); margin-top: 8px; line-height: 1.5; max-width: 300px; }
+    .features { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 32px 0; width: 100%; max-width: 360px; }
+    .feat { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); border-radius: 12px; padding: 14px 10px; text-align: center; }
+    .feat-icon { font-size: 24px; margin-bottom: 4px; }
+    .feat-label { font-size: 12px; color: var(--muted); font-weight: 500; }
+    .btn-primary { background: var(--orange); color: #fff; border: none; border-radius: var(--radius); padding: 18px 36px; font-size: 17px; font-weight: 700; cursor: pointer; width: 100%; max-width: 360px; letter-spacing: 0.3px; transition: transform 0.15s, opacity 0.15s; }
+    .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
+    .hand-toggle { display: flex; align-items: center; gap: 10px; margin-top: 18px; font-size: 14px; color: var(--muted); }
+    .hand-toggle label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .hand-toggle input[type=radio] { accent-color: var(--orange); width: 16px; height: 16px; }
+
+    /* ─── CAMERA ─── */
+    #camera { background: #000; padding: 0; justify-content: flex-start; }
+    #videoEl { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #poseCanvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* Top HUD */
+    .hud-top { position: absolute; top: env(safe-area-inset-top, 16px); left: 0; right: 0; display: flex; justify-content: space-between; align-items: flex-start; padding: 16px; z-index: 10; }
+    .shot-counter { background: var(--surface); backdrop-filter: blur(12px); border-radius: 50px; padding: 8px 16px; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(249,115,22,0.3); }
+    .shot-counter-num { font-size: 22px; font-weight: 800; color: var(--orange); line-height: 1; }
+    .shot-counter-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn-end { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.5); color: #ef4444; border-radius: 50px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .btn-end:active { background: rgba(239,68,68,0.3); }
+
+    /* Shot flash */
+    #shotFlash { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; z-index: 20; opacity: 0; transition: opacity 0.15s; }
+    #shotFlash.show { opacity: 1; }
+    #shotFlash.fade { opacity: 0; transition: opacity 0.6s; }
+    .flash-ring { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--orange); animation: ping 0.5s ease-out; }
+    @keyframes ping { 0%{transform:scale(0.5);opacity:1} 100%{transform:scale(1.5);opacity:0} }
+    .flash-text { font-size: 20px; font-weight: 700; color: var(--orange); margin-top: -60px; text-shadow: 0 0 20px rgba(249,115,22,0.8); }
+
+    /* Live score pill */
+    .live-score-pill { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 60px); left: 50%; transform: translateX(-50%); background: var(--surface); backdrop-filter: blur(12px); border-radius: 50px; padding: 6px 16px; border: 1px solid rgba(249,115,22,0.2); font-size: 13px; color: var(--muted); white-space: nowrap; z-index: 10; }
+    .live-score-pill span { color: var(--orange); font-weight: 700; }
+
+    /* Bottom stats overlay */
+    .stats-overlay { position: absolute; bottom: env(safe-area-inset-bottom, 0); left: 0; right: 0; background: var(--surface); backdrop-filter: blur(20px); border-top: 1px solid rgba(249,115,22,0.15); padding: 16px 20px calc(env(safe-area-inset-bottom, 0px) + 16px); z-index: 10; }
+    .stats-row { display: flex; justify-content: space-between; gap: 8px; }
+    .stat-item { flex: 1; text-align: center; }
+    .stat-val { font-size: 20px; font-weight: 700; color: var(--text); }
+    .stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+    .stat-bar-wrap { height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+    .stat-bar { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+    .bar-elbow { background: #818cf8; }
+    .bar-height { background: var(--green); }
+    .bar-follow { background: var(--gold); }
+
+    /* Loading overlay */
+    #loadingOverlay { position: absolute; inset: 0; background: rgba(10,10,10,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; z-index: 50; }
+    #loadingOverlay.hidden { display: none; }
+    .spinner { width: 48px; height: 48px; border: 3px solid rgba(249,115,22,0.2); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: 15px; color: var(--muted); }
+
+    /* Release timer badge */
+    .release-badge { position: absolute; top: calc(env(safe-area-inset-top, 16px) + 100px); right: 16px; background: var(--surface); backdrop-filter: blur(12px); border-radius: 12px; padding: 10px 14px; border: 1px solid rgba(255,255,255,0.1); z-index: 10; text-align: right; min-width: 100px; }
+    .release-ms { font-size: 22px; font-weight: 800; color: var(--gold); }
+    .release-grade { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ─── SUMMARY ─── */
+    #summary { background: var(--bg); overflow-y: auto; padding: 0; align-items: stretch; justify-content: flex-start; }
+    .summary-inner { padding: 48px 24px calc(env(safe-area-inset-bottom, 0px) + 32px); width: 100%; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+    .summary-header { text-align: center; }
+    .summary-title { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, var(--orange), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .summary-sub { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+    .big-score-card { background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(251,191,36,0.08)); border: 1px solid rgba(249,115,22,0.3); border-radius: 20px; padding: 28px; text-align: center; }
+    .big-score-num { font-size: 72px; font-weight: 900; line-height: 1; }
+    .big-score-label { font-size: 13px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-card { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 18px 16px; }
+    .stat-card-val { font-size: 28px; font-weight: 800; }
+    .stat-card-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .form-breakdown { background: var(--surface-solid); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 18px 16px; }
+    .breakdown-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
+    .breakdown-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .breakdown-row:last-child { margin-bottom: 0; }
+    .breakdown-label { font-size: 13px; width: 110px; flex-shrink: 0; }
+    .breakdown-bar-wrap { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+    .breakdown-bar { height: 100%; border-radius: 4px; transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
+    .breakdown-pct { font-size: 13px; font-weight: 700; width: 38px; text-align: right; }
+
+    .action-row { display: flex; gap: 12px; }
+    .btn-secondary { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text); border-radius: var(--radius); padding: 16px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .btn-secondary:active { background: rgba(255,255,255,0.1); }
+    .btn-primary-sm { flex: 1; background: var(--orange); color: #fff; border: none; border-radius: var(--radius); padding: 16px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .btn-primary-sm:active { opacity: 0.85; }
+
+    /* color helpers */
+    .score-green { color: var(--green); }
+    .score-yellow { color: var(--yellow); }
+    .score-red { color: var(--red); }
+
+    /* Error */
+    #errorMsg { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(239,68,68,0.9); color: #fff; border-radius: 12px; padding: 12px 20px; font-size: 14px; max-width: 320px; text-align: center; z-index: 100; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    #errorMsg.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- ── LANDING ── -->
+<div id="landing" class="screen">
+  <div class="ball-icon">🏀</div>
+  <div class="app-name">ShotIQ</div>
+  <div class="app-tagline">AI-powered jump shot analysis. Real-time form scoring using pose detection.</div>
+
+  <div class="features">
+    <div class="feat"><div class="feat-icon">🎯</div><div class="feat-label">Form Score</div></div>
+    <div class="feat"><div class="feat-icon">⚡</div><div class="feat-label">Release Time</div></div>
+    <div class="feat"><div class="feat-icon">💪</div><div class="feat-label">Elbow Check</div></div>
+    <div class="feat"><div class="feat-icon">📊</div><div class="feat-label">Session Stats</div></div>
+  </div>
+
+  <div class="hand-toggle">
+    <span>Shooting hand:</span>
+    <label><input type="radio" name="hand" value="right" checked /> Right</label>
+    <label><input type="radio" name="hand" value="left" /> Left</label>
+  </div>
+
+  <br/>
+  <button class="btn-primary" onclick="startSession()">📷 Allow Camera &amp; Start</button>
+</div>
+
+<!-- ── CAMERA ── -->
+<div id="camera" class="screen hidden">
+  <video id="videoEl" autoplay playsinline muted></video>
+  <canvas id="poseCanvas"></canvas>
+
+  <div id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading AI model…</div>
+  </div>
+
+  <div class="hud-top">
+    <div class="shot-counter">
+      <div>
+        <div class="shot-counter-num" id="shotCountEl">0</div>
+        <div class="shot-counter-label">Shots</div>
+      </div>
+    </div>
+    <button class="btn-end" onclick="endSession()">End Session</button>
+  </div>
+
+  <div class="live-score-pill" id="liveScorePill">Form Score: <span id="liveScoreEl">–</span></div>
+
+  <div class="release-badge" id="releaseBadge" style="display:none">
+    <div class="release-ms" id="releaseMs">–</div>
+    <div class="release-grade" id="releaseGrade">Release</div>
+  </div>
+
+  <div id="shotFlash">
+    <div class="flash-ring"></div>
+    <div class="flash-text">🏀 Shot Detected!</div>
+  </div>
+
+  <div class="stats-overlay">
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-val" id="statElbow">–</div>
+        <div class="stat-lbl">Elbow</div>
+        <div class="stat-bar-wrap"><div class="stat-bar bar-elbow" id="barElbow" style="width:0%"></div></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="statHeight">–</div>
+        <div class="stat-lbl">Height</div>
+        <div class="stat-bar-wrap"><div class="stat-bar bar-height" id="barHeight" style="width:0%"></div></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="statFollow">–</div>
+        <div class="stat-lbl">Follow</div>
+        <div class="stat-bar-wrap"><div class="stat-bar bar-follow" id="barFollow" style="width:0%"></div></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="statOverall">–</div>
+        <div class="stat-lbl">Overall</div>
+        <div class="stat-bar-wrap"><div class="stat-bar" id="barOverall" style="width:0%;background:var(--orange)"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SUMMARY ── -->
+<div id="summary" class="screen hidden">
+  <div class="summary-inner">
+    <div class="summary-header">
+      <div class="summary-title">Session Complete 🏆</div>
+      <div class="summary-sub" id="summarySubtitle">Your shot analysis</div>
+    </div>
+
+    <div class="big-score-card">
+      <div class="big-score-num" id="summaryAvgScore">–</div>
+      <div class="big-score-label">Average Form Score</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card-val" id="summaryShots" style="color:var(--orange)">0</div>
+        <div class="stat-card-label">Shot Attempts</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-val" id="summaryBest" style="color:var(--gold)">–</div>
+        <div class="stat-card-label">Best Form Score</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-val" id="summaryRelease">–</div>
+        <div class="stat-card-label">Avg Release Time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-val" id="summaryReleaseGrade">–</div>
+        <div class="stat-card-label">Release Grade</div>
+      </div>
+    </div>
+
+    <div class="form-breakdown">
+      <div class="breakdown-title">Form Breakdown</div>
+      <div class="breakdown-row">
+        <div class="breakdown-label">💪 Elbow</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bElbow" style="width:0%;background:#818cf8"></div></div>
+        <div class="breakdown-pct" id="pElbow">–</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-label">⬆️ Height</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bHeight" style="width:0%;background:var(--green)"></div></div>
+        <div class="breakdown-pct" id="pHeight">–</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-label">🤙 Follow</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bFollow" style="width:0%;background:var(--gold)"></div></div>
+        <div class="breakdown-pct" id="pFollow">–</div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn-secondary" onclick="shareStats()">📸 Share</button>
+      <button class="btn-primary-sm" onclick="newSession()">New Session</button>
+    </div>
+  </div>
+</div>
+
+<div id="errorMsg"></div>
+
+<!-- TensorFlow.js -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.3/dist/pose-detection.min.js"></script>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let detector = null;
+let stream = null;
+let rafId = null;
+let shootingHand = 'right';
+
+// Session data
+let sessionShots = [];
+let shotCount = 0;
+let lastShotTime = 0;
+
+// Wrist tracking for shot detection
+let wristHistory = []; // [{y, time}]
+let motionStartTime = null;
+let motionStartY = null;
+let peakWristY = null;
+let peakWristTime = null;
+let shootingPhase = 'idle'; // idle | rising | peaked
+let lastFormScores = { elbow: 0, height: 0, follow: 0, overall: 0 };
+
+// For elbow follow-through tracking
+let postPeakWristPositions = [];
+
+const VIDEO = document.getElementById('videoEl');
+const CANVAS = document.getElementById('poseCanvas');
+const CTX = CANVAS.getContext('2d');
+
+// ── Keypoint indices (MoveNet) ─────────────────────────────────────────────
+const KP = {
+  nose: 0, leftEye: 1, rightEye: 2, leftEar: 3, rightEar: 4,
+  leftShoulder: 5, rightShoulder: 6,
+  leftElbow: 7, rightElbow: 8,
+  leftWrist: 9, rightWrist: 10,
+  leftHip: 11, rightHip: 12,
+  leftKnee: 13, rightKnee: 14,
+  leftAnkle: 15, rightAnkle: 16,
+};
+
+const SKELETON = [
+  [KP.leftShoulder, KP.rightShoulder],
+  [KP.leftShoulder, KP.leftElbow], [KP.leftElbow, KP.leftWrist],
+  [KP.rightShoulder, KP.rightElbow], [KP.rightElbow, KP.rightWrist],
+  [KP.leftShoulder, KP.leftHip], [KP.rightShoulder, KP.rightHip],
+  [KP.leftHip, KP.rightHip],
+  [KP.leftHip, KP.leftKnee], [KP.leftKnee, KP.leftAnkle],
+  [KP.rightHip, KP.rightKnee], [KP.rightKnee, KP.rightAnkle],
+];
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function scoreColor(v) {
+  if (v >= 80) return 'var(--green)';
+  if (v >= 60) return 'var(--yellow)';
+  return 'var(--red)';
+}
+
+function releaseGrade(ms) {
+  if (!ms || ms <= 0) return '–';
+  if (ms < 250) return '⚡ Elite';
+  if (ms < 350) return '👍 Good';
+  return '🐢 Slow';
+}
+
+function releaseGradeShort(ms) {
+  if (!ms || ms <= 0) return '–';
+  if (ms < 250) return 'Elite';
+  if (ms < 350) return 'Good';
+  return 'Slow';
+}
+
+// ── Session start ──────────────────────────────────────────────────────────
+async function startSession() {
+  const hand = document.querySelector('input[name=hand]:checked');
+  shootingHand = hand ? hand.value : 'right';
+
+  showScreen('camera');
+  document.getElementById('loadingOverlay').classList.remove('hidden');
+
+  // Request camera
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 } },
+      audio: false,
+    });
+    VIDEO.srcObject = stream;
+    await new Promise(res => { VIDEO.onloadedmetadata = res; });
+    await VIDEO.play();
+  } catch (e) {
+    // Fallback to any camera
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      VIDEO.srcObject = stream;
+      await new Promise(res => { VIDEO.onloadedmetadata = res; });
+      await VIDEO.play();
+    } catch (e2) {
+      showError('Camera access denied. Please allow camera permissions.');
+      showScreen('landing');
+      return;
+    }
+  }
+
+  // Resize canvas
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // Load model
+  try {
+    detector = await poseDetection.createDetector(
+      poseDetection.SupportedModels.MoveNet,
+      { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
+    );
+  } catch (e) {
+    showError('Failed to load AI model. Check your connection.');
+    showScreen('landing');
+    stopCamera();
+    return;
+  }
+
+  document.getElementById('loadingOverlay').classList.add('hidden');
+
+  // Reset session state
+  sessionShots = [];
+  shotCount = 0;
+  lastShotTime = 0;
+  wristHistory = [];
+  shootingPhase = 'idle';
+  postPeakWristPositions = [];
+  updateHUD({ elbow: 0, height: 0, follow: 0, overall: 0 });
+  document.getElementById('shotCountEl').textContent = '0';
+  document.getElementById('liveScoreEl').textContent = '–';
+  document.getElementById('releaseBadge').style.display = 'none';
+
+  detectLoop();
+}
+
+function resizeCanvas() {
+  CANVAS.width = window.innerWidth;
+  CANVAS.height = window.innerHeight;
+}
+
+function stopCamera() {
+  if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+  window.removeEventListener('resize', resizeCanvas);
+}
+
+// ── Pose detection loop ────────────────────────────────────────────────────
+let lastFrameTime = 0;
+const TARGET_FPS = 18;
+const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+async function detectLoop() {
+  rafId = requestAnimationFrame(detectLoop);
+  const now = performance.now();
+  if (now - lastFrameTime < FRAME_INTERVAL) return;
+  lastFrameTime = now;
+
+  if (!detector || VIDEO.readyState < 2) return;
+
+  let poses;
+  try {
+    poses = await detector.estimatePoses(VIDEO);
+  } catch (e) { return; }
+
+  CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
+
+  if (poses && poses.length > 0) {
+    const pose = poses[0];
+    drawPose(pose);
+    analyzePose(pose, now);
+  }
+}
+
+// ── Draw skeleton ──────────────────────────────────────────────────────────
+function toCanvasCoords(kp) {
+  const vw = VIDEO.videoWidth || 640;
+  const vh = VIDEO.videoHeight || 480;
+  const cw = CANVAS.width;
+  const ch = CANVAS.height;
+
+  // Cover scaling
+  const scale = Math.max(cw / vw, ch / vh);
+  const ox = (cw - vw * scale) / 2;
+  const oy = (ch - vh * scale) / 2;
+
+  // Mirror horizontally (front camera feel, also works for environment camera flip)
+  const mx = cw - (kp.x * scale + ox);
+  const my = kp.y * scale + oy;
+  return { x: mx, y: my };
+}
+
+function drawPose(pose) {
+  const kps = pose.keypoints;
+  const MIN_CONF = 0.25;
+
+  // Skeleton lines
+  CTX.lineWidth = 2.5;
+  for (const [a, b] of SKELETON) {
+    const ka = kps[a], kb = kps[b];
+    if (!ka || !kb) continue;
+    if (ka.score < MIN_CONF || kb.score < MIN_CONF) continue;
+    const pa = toCanvasCoords(ka), pb = toCanvasCoords(kb);
+    CTX.beginPath();
+    CTX.moveTo(pa.x, pa.y);
+    CTX.lineTo(pb.x, pb.y);
+    CTX.strokeStyle = 'rgba(249,115,22,0.7)';
+    CTX.stroke();
+  }
+
+  // Keypoints
+  for (let i = 0; i < kps.length; i++) {
+    const kp = kps[i];
+    if (!kp || kp.score < MIN_CONF) continue;
+    const p = toCanvasCoords(kp);
+    const isShootingWrist = (shootingHand === 'right' && i === KP.rightWrist) ||
+                            (shootingHand === 'left' && i === KP.leftWrist);
+    const isShootingElbow = (shootingHand === 'right' && i === KP.rightElbow) ||
+                            (shootingHand === 'left' && i === KP.leftElbow);
+
+    CTX.beginPath();
+    CTX.arc(p.x, p.y, isShootingWrist ? 8 : isShootingElbow ? 7 : 5, 0, Math.PI * 2);
+    CTX.fillStyle = isShootingWrist ? '#f97316' : isShootingElbow ? '#fbbf24' : 'rgba(255,255,255,0.9)';
+    CTX.fill();
+  }
+}
+
+// ── Shot analysis ──────────────────────────────────────────────────────────
+function analyzePose(pose, now) {
+  const kps = pose.keypoints;
+  const MIN_CONF = 0.3;
+
+  const wristIdx = shootingHand === 'right' ? KP.rightWrist : KP.leftWrist;
+  const elbowIdx = shootingHand === 'right' ? KP.rightElbow : KP.leftElbow;
+  const shoulderIdx = shootingHand === 'right' ? KP.rightShoulder : KP.leftShoulder;
+
+  const wrist = kps[wristIdx];
+  const elbow = kps[elbowIdx];
+  const shoulder = kps[shoulderIdx];
+
+  if (!wrist || !elbow || !shoulder) return;
+  if (wrist.score < MIN_CONF || elbow.score < MIN_CONF || shoulder.score < MIN_CONF) return;
+
+  // Track wrist history (last 500ms)
+  wristHistory.push({ y: wrist.y, x: wrist.x, time: now });
+  wristHistory = wristHistory.filter(h => now - h.time < 800);
+
+  // Normalize Y: lower Y = higher on screen = higher position
+  const wristNormY = wrist.y; // raw video Y (0 = top)
+  const shoulderNormY = shoulder.y;
+
+  // Shot detection state machine
+  const RISE_THRESHOLD = 0.04; // relative to video height (fraction)
+  const VH = VIDEO.videoHeight || 480;
+
+  if (shootingPhase === 'idle') {
+    // Check if wrist is rising quickly
+    if (wristHistory.length >= 4) {
+      const oldest = wristHistory[0];
+      const deltaY = oldest.y - wristNormY; // positive = rising
+      const deltaT = now - oldest.time;
+      const velocity = deltaY / deltaT; // pixels/ms
+
+      if (velocity > 0.15 && wristNormY < shoulderNormY) {
+        // Wrist above shoulder and rising
+        shootingPhase = 'rising';
+        motionStartTime = now;
+        motionStartY = wristNormY;
+        peakWristY = wristNormY;
+        peakWristTime = now;
+        postPeakWristPositions = [];
+      }
+    }
+  } else if (shootingPhase === 'rising') {
+    // Track peak
+    if (wristNormY < peakWristY) {
+      peakWristY = wristNormY;
+      peakWristTime = now;
+    }
+
+    // Check if wrist started descending (peak passed)
+    if (wristNormY > peakWristY + VH * 0.025) {
+      shootingPhase = 'peaked';
+      postPeakWristPositions = [{ y: wristNormY, time: now }];
+    }
+
+    // Timeout if rising too long (>2s = probably not a shot)
+    if (now - motionStartTime > 2000) {
+      shootingPhase = 'idle';
+    }
+  } else if (shootingPhase === 'peaked') {
+    postPeakWristPositions.push({ y: wristNormY, time: now });
+
+    // After collecting ~300ms of post-peak data, score the shot
+    if (postPeakWristPositions.length > 0 && now - postPeakWristPositions[0].time > 300) {
+      const timeSinceLast = now - lastShotTime;
+      if (timeSinceLast > 1500) {
+        // Score this shot
+        const scores = scoreShot(kps, peakWristY, peakWristTime, motionStartTime, postPeakWristPositions, VH);
+        lastFormScores = scores;
+        registerShot(scores, peakWristTime - motionStartTime);
+      }
+      shootingPhase = 'idle';
+      wristHistory = [];
+    }
+
+    // Timeout
+    if (now - peakWristTime > 1200) {
+      shootingPhase = 'idle';
+    }
+  }
+}
+
+function scoreShot(kps, peakWristY, peakWristTime, motionStart, postPeak, VH) {
+  const MIN_CONF = 0.3;
+  const wristIdx = shootingHand === 'right' ? KP.rightWrist : KP.leftWrist;
+  const elbowIdx = shootingHand === 'right' ? KP.rightElbow : KP.leftElbow;
+  const shoulderIdx = shootingHand === 'right' ? KP.rightShoulder : KP.leftShoulder;
+  const hipIdx = shootingHand === 'right' ? KP.rightHip : KP.leftHip;
+
+  const wrist = kps[wristIdx];
+  const elbow = kps[elbowIdx];
+  const shoulder = kps[shoulderIdx];
+  const hip = kps[hipIdx];
+
+  // ── 1. Elbow alignment (0-100)
+  // Ideal: elbow x is close to wrist x (vertical alignment), elbow below wrist
+  let elbowScore = 0;
+  if (wrist && elbow && wrist.score >= MIN_CONF && elbow.score >= MIN_CONF) {
+    const dx = Math.abs(wrist.x - elbow.x) / (VIDEO.videoWidth || 640);
+    // 0 = perfect, higher = worse
+    const maxDx = 0.15;
+    elbowScore = Math.max(0, Math.round(100 * (1 - Math.min(dx / maxDx, 1))));
+    // Bonus: elbow should be below wrist (lower y = higher)
+    if (elbow.y > wrist.y) elbowScore = Math.min(100, elbowScore + 5);
+    else elbowScore = Math.max(0, elbowScore - 10);
+  } else {
+    elbowScore = 60; // default if can't measure
+  }
+
+  // ── 2. Release height (0-100)
+  // Compare peak wrist Y to shoulder and hip
+  let heightScore = 0;
+  if (shoulder && shoulder.score >= MIN_CONF) {
+    const bodyHeight = hip ? (hip.y - shoulder.y) : VH * 0.4;
+    // How far above shoulder is the peak wrist?
+    const aboveShoulder = shoulder.y - peakWristY; // positive = wrist above shoulder
+    const normalized = aboveShoulder / (bodyHeight * 0.6);
+    heightScore = Math.round(Math.min(100, Math.max(0, 40 + normalized * 80)));
+  } else {
+    heightScore = 60;
+  }
+
+  // ── 3. Follow-through (0-100)
+  // After peak, wrist should remain elevated (not drop too fast)
+  let followScore = 0;
+  if (postPeak && postPeak.length > 2) {
+    const firstY = postPeak[0].y;
+    const lastY = postPeak[postPeak.length - 1].y;
+    const timespan = postPeak[postPeak.length - 1].time - postPeak[0].time;
+    const dropRate = (lastY - firstY) / timespan; // positive = dropping
+    // Elite: slow drop (wrist stays up)
+    const maxDropRate = 0.5;
+    followScore = Math.round(Math.max(0, Math.min(100, 100 - (dropRate / maxDropRate) * 100)));
+  } else {
+    followScore = 55;
+  }
+
+  const overall = Math.round((elbowScore + heightScore + followScore) / 3);
+  return { elbow: elbowScore, height: heightScore, follow: followScore, overall };
+}
+
+function registerShot(scores, releaseTimeMs) {
+  shotCount++;
+  lastShotTime = performance.now();
+
+  const shot = { scores, releaseTimeMs, timestamp: Date.now() };
+  sessionShots.push(shot);
+
+  // Update HUD
+  updateHUD(scores);
+  document.getElementById('shotCountEl').textContent = shotCount;
+  document.getElementById('liveScoreEl').textContent = scores.overall;
+
+  // Release badge
+  if (releaseTimeMs > 0 && releaseTimeMs < 3000) {
+    document.getElementById('releaseMs').textContent = Math.round(releaseTimeMs) + 'ms';
+    document.getElementById('releaseGrade').textContent = releaseGrade(releaseTimeMs);
+    document.getElementById('releaseBadge').style.display = 'block';
+  }
+
+  // Flash animation
+  const flash = document.getElementById('shotFlash');
+  flash.classList.remove('show', 'fade');
+  void flash.offsetWidth;
+  flash.classList.add('show');
+  setTimeout(() => { flash.classList.add('fade'); flash.classList.remove('show'); }, 800);
+}
+
+function updateHUD(scores) {
+  document.getElementById('statElbow').textContent = scores.elbow || '–';
+  document.getElementById('statHeight').textContent = scores.height || '–';
+  document.getElementById('statFollow').textContent = scores.follow || '–';
+  document.getElementById('statOverall').textContent = scores.overall || '–';
+
+  document.getElementById('barElbow').style.width = (scores.elbow || 0) + '%';
+  document.getElementById('barHeight').style.width = (scores.height || 0) + '%';
+  document.getElementById('barFollow').style.width = (scores.follow || 0) + '%';
+  document.getElementById('barOverall').style.width = (scores.overall || 0) + '%';
+}
+
+// ── End Session ────────────────────────────────────────────────────────────
+function endSession() {
+  stopCamera();
+  buildSummary();
+  showScreen('summary');
+}
+
+function buildSummary() {
+  if (sessionShots.length === 0) {
+    document.getElementById('summarySubtitle').textContent = 'No shots detected this session.';
+    document.getElementById('summaryAvgScore').textContent = '–';
+    document.getElementById('summaryAvgScore').style.color = 'var(--muted)';
+    document.getElementById('summaryShots').textContent = '0';
+    document.getElementById('summaryBest').textContent = '–';
+    document.getElementById('summaryRelease').textContent = '–';
+    document.getElementById('summaryReleaseGrade').textContent = '–';
+    ['bElbow','bHeight','bFollow'].forEach(id => document.getElementById(id).style.width = '0%');
+    ['pElbow','pHeight','pFollow'].forEach(id => document.getElementById(id).textContent = '–');
+    return;
+  }
+
+  const n = sessionShots.length;
+  const avgElbow = Math.round(sessionShots.reduce((s,x) => s + x.scores.elbow, 0) / n);
+  const avgHeight = Math.round(sessionShots.reduce((s,x) => s + x.scores.height, 0) / n);
+  const avgFollow = Math.round(sessionShots.reduce((s,x) => s + x.scores.follow, 0) / n);
+  const avgOverall = Math.round(sessionShots.reduce((s,x) => s + x.scores.overall, 0) / n);
+  const bestOverall = Math.max(...sessionShots.map(x => x.scores.overall));
+  const validReleases = sessionShots.filter(x => x.releaseTimeMs > 0 && x.releaseTimeMs < 3000);
+  const avgRelease = validReleases.length > 0
+    ? Math.round(validReleases.reduce((s,x) => s + x.releaseTimeMs, 0) / validReleases.length)
+    : null;
+
+  document.getElementById('summarySubtitle').textContent = `${n} shot${n === 1 ? '' : 's'} analyzed`;
+  const avgEl = document.getElementById('summaryAvgScore');
+  avgEl.textContent = avgOverall;
+  avgEl.className = 'big-score-num ' + (avgOverall >= 80 ? 'score-green' : avgOverall >= 60 ? 'score-yellow' : 'score-red');
+
+  document.getElementById('summaryShots').textContent = n;
+  document.getElementById('summaryBest').textContent = bestOverall;
+  document.getElementById('summaryRelease').textContent = avgRelease ? avgRelease + 'ms' : '–';
+  const rg = releaseGradeShort(avgRelease);
+  const rgEl = document.getElementById('summaryReleaseGrade');
+  rgEl.textContent = rg;
+  rgEl.style.color = rg === 'Elite' ? 'var(--green)' : rg === 'Good' ? 'var(--yellow)' : 'var(--red)';
+
+  // Bars with animation delay
+  setTimeout(() => {
+    document.getElementById('bElbow').style.width = avgElbow + '%';
+    document.getElementById('bHeight').style.width = avgHeight + '%';
+    document.getElementById('bFollow').style.width = avgFollow + '%';
+  }, 100);
+  document.getElementById('pElbow').textContent = avgElbow + '%';
+  document.getElementById('pHeight').textContent = avgHeight + '%';
+  document.getElementById('pFollow').textContent = avgFollow + '%';
+}
+
+// ── Share / New Session ────────────────────────────────────────────────────
+async function shareStats() {
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: 'My ShotIQ Session',
+        text: `Just analyzed my jump shot! 🏀 ${sessionShots.length} shots, avg form score: ${
+          sessionShots.length > 0 ? Math.round(sessionShots.reduce((s,x)=>s+x.scores.overall,0)/sessionShots.length) : 0
+        }/100. Try ShotIQ!`,
+        url: window.location.href,
+      });
+    } else {
+      // Screenshot fallback
+      showError('Use your phone\'s screenshot button to capture the stats!');
+    }
+  } catch(e) {
+    // User cancelled
+  }
+}
+
+function newSession() {
+  showScreen('landing');
+}
+</script>
+</body>
+</html>
