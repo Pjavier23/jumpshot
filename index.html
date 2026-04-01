@@ -1167,8 +1167,8 @@ function smoothKeypoints(keypoints) {
   frameCount++;
   const result = keypoints.map((kp, idx) => {
     if (!kpSmoothBuffers[idx]) { kpSmoothBuffers[idx] = []; kpLastSeen[idx] = null; kpFramesSince[idx] = KP_LAST_SEEN_MAX + 1; }
-    const MIN_CONF = 0.25;
-    if (kp.score >= MIN_CONF) {
+    const MIN_CONF = 0.15;
+    if (kp.score >= 0.15) {
       // Good reading
       kpSmoothBuffers[idx].push({ x: kp.x, y: kp.y });
       if (kpSmoothBuffers[idx].length > KP_SMOOTH_WINDOW) kpSmoothBuffers[idx].shift();
@@ -1655,8 +1655,11 @@ async function detectLoop() {
     drawBallTrack();
   }
 
+  const debugEl = document.getElementById('debugStatus');
   if (poses && poses.length > 0) {
     const raw = poses[0];
+    const confKps = raw.keypoints.filter(k => k.score >= 0.2);
+    if (debugEl) debugEl.textContent = '👤 ' + confKps.length + ' pts';
     const smoothed = { ...raw, keypoints: smoothKeypoints(raw.keypoints) };
     updatePlayerTracking(smoothed);
     drawPose(smoothed);
@@ -1665,6 +1668,7 @@ async function detectLoop() {
     else if (appMode === 'workout') analyzeWorkout(smoothed, now);
   } else {
     playerDetected = false;
+    if (debugEl) debugEl.textContent = '🔍 No pose';
   }
   if (appMode === 'basketball') updateTrackingUI();
 }
@@ -1699,10 +1703,21 @@ function drawTrackingOverlays(pose) {
   const padY = (Math.max(...ys) - Math.min(...ys)) * 0.2;
   const minX = Math.min(...xs) - padX - 8, maxX = Math.max(...xs) + padX + 8;
   const minY = Math.min(...ys) - padY - 8, maxY = Math.max(...ys) + padY + 8;
-  CTX.strokeStyle = 'rgba(34,197,94,0.7)';
-  CTX.lineWidth = 2; CTX.setLineDash([6, 4]);
+  // Draw bright orange bounding box - highly visible
+  CTX.strokeStyle = '#f97316';
+  CTX.lineWidth = 3; CTX.setLineDash([]);
   CTX.strokeRect(minX, minY, maxX - minX, maxY - minY);
-  CTX.setLineDash([]);
+  // Corner accents
+  const cornerLen = 20;
+  CTX.strokeStyle = '#ffffff'; CTX.lineWidth = 4;
+  // TL
+  CTX.beginPath(); CTX.moveTo(minX, minY+cornerLen); CTX.lineTo(minX, minY); CTX.lineTo(minX+cornerLen, minY); CTX.stroke();
+  // TR
+  CTX.beginPath(); CTX.moveTo(maxX-cornerLen, minY); CTX.lineTo(maxX, minY); CTX.lineTo(maxX, minY+cornerLen); CTX.stroke();
+  // BL
+  CTX.beginPath(); CTX.moveTo(minX, maxY-cornerLen); CTX.lineTo(minX, maxY); CTX.lineTo(minX+cornerLen, maxY); CTX.stroke();
+  // BR
+  CTX.beginPath(); CTX.moveTo(maxX-cornerLen, maxY); CTX.lineTo(maxX, maxY); CTX.lineTo(maxX, maxY-cornerLen); CTX.stroke();
   const ls = kps[KP.leftShoulder], rs = kps[KP.rightShoulder];
   const lh = kps[KP.leftHip], rh = kps[KP.rightHip];
   let reticleX = playerCenterX, reticleY = playerCenterY;
@@ -1712,11 +1727,11 @@ function drawTrackingOverlays(pose) {
     reticleX = (pls.x + prs.x + plh.x + prh.x) / 4;
     reticleY = (pls.y + prs.y + plh.y + prh.y) / 4;
   }
-  const r = 18;
-  CTX.strokeStyle = 'rgba(34,197,94,0.9)'; CTX.lineWidth = 2;
+  const r = 28;
+  CTX.strokeStyle = '#f97316'; CTX.lineWidth = 3;
   CTX.beginPath(); CTX.moveTo(reticleX - r, reticleY); CTX.lineTo(reticleX + r, reticleY); CTX.stroke();
   CTX.beginPath(); CTX.moveTo(reticleX, reticleY - r); CTX.lineTo(reticleX, reticleY + r); CTX.stroke();
-  CTX.beginPath(); CTX.arc(reticleX, reticleY, r * 0.6, 0, Math.PI * 2); CTX.stroke();
+  CTX.beginPath(); CTX.arc(reticleX, reticleY, 10, 0, Math.PI * 2); CTX.stroke();
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -1733,7 +1748,7 @@ function toCanvasCoords(kp) {
 }
 function drawPose(pose) {
   const kps = pose.keypoints;
-  const MIN_CONF = 0.25;
+  const MIN_CONF = 0.15;
   CTX.lineWidth = 2.5;
   for (const [a, b] of SKELETON) {
     const ka = kps[a], kb = kps[b];
